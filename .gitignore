@@ -6,6 +6,12 @@
 
 *.iml
 *.idea
+*.txt
+
+# Folders
+/.idea/
+/target/
+/out/
 
 # Package Files #
 *.jar
