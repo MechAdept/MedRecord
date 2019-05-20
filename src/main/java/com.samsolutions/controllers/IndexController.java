@@ -1,17 +1,18 @@
 package com.samsolutions.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@RequestMapping("")
+import javax.servlet.http.HttpServlet;
+
 @Controller
-public class IndexController {
+public class IndexController extends HttpServlet {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String printIndex(ModelMap model){
-        model.addAttribute("message","Index");
-        return "Index";
+    @RequestMapping("/MedRecord")
+    public String printIndex(@RequestParam(value = "message",required = false,defaultValue = "Patient")String message, Model model){
+        model.addAttribute("message",message);
+        return "index";
     }
 }
