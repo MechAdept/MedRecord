@@ -31,6 +31,9 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:application-context.xml</param-value>
     <log4j.version>2.11.2</log4j.version>
+    <hibernate-core.version>5.4.2.Final</hibernate-core.version>
+    <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
+    <hibernate-entitymanager.version>5.4.2.Final</hibernate-entitymanager.version>
   </properties>
 
   <dependencies>
@@ -88,6 +91,22 @@
       <artifactId>log4j-core</artifactId>
       <version>${log4j.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate-core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-connector-java.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate-entitymanager.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>
