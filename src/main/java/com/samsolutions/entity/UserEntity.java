@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users", schema = "medrecord")
-public class Users {
+@Table(name = "user", schema = "MedRecord", catalog = "")
+public class UserEntity {
     private int id;
     private String login;
     private String password;
@@ -66,7 +66,7 @@ public class Users {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Users that = (Users) o;
+        UserEntity that = (UserEntity) o;
         return id == that.id &&
                 Objects.equals(login, that.login) &&
                 Objects.equals(password, that.password) &&

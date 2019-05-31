@@ -2,6 +2,6 @@
 <html>
     <body>
         <h2>Привет ${message}</h2>
-        <a href="URL">Регистрация</a>
+        <a href="registration">Регистрация</a>
     </body>
 </html>
