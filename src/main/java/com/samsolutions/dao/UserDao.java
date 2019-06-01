@@ -20,22 +20,22 @@ public class UserDao {
         this.sessionFactory = sessionFactory;
     }
 
-    public void createUser(User user) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(user);
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    public List<User> getUserList() {
-        Session session = sessionFactory.openSession();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<User> cq = cb.createQuery(User.class);
-        Root<User> root = cq.from(User.class);
-        Query query = session.createQuery(cq);
-        List<User> userList = query.getResultList();
-        session.close();
-        return userList;
-    }
+//    public void createUser(User user) {
+//        Session session = sessionFactory.openSession();
+//        session.beginTransaction();
+//        session.save(user);
+//        session.getTransaction().commit();
+//        session.close();
+//    }
+    
+//    public List<User> getUserList() {
+//        Session session = sessionFactory.openSession();
+//        CriteriaBuilder cb = session.getCriteriaBuilder();
+//        CriteriaQuery<User> cq = cb.createQuery(User.class);
+//        Root<User> root = cq.from(User.class);
+//        Query query = session.createQuery(cq);
+//        List<User> userList = query.getResultList();
+//        session.close();
+//        return userList;
+//    }
 }

@@ -18,13 +18,13 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    @Transactional
-    public void createUser(User user) {
-        userDao.createUser(user);
-    }
-
-    @Transactional
-    public List<User> getUsers() {
-        return userDao.getUserList();
-    }
+//    @Transactional
+//    public void createUser(User user) {
+//        userDao.createUser(user);
+//    }
+//
+//    @Transactional
+//    public List<User> getUsers() {
+//        return userDao.getUserList();
+//    }
 }
