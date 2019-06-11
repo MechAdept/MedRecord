@@ -1,30 +1,17 @@
 package com.samsolutions.service;
+//import com.samsolutions.dao.UserDAO;
 
-import com.samsolutions.dao.UserDao;
 import com.samsolutions.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserService {
+public interface UserService {
 
-    private final UserDao userDao;
+    Optional<User> findById(Integer id);
 
-    @Autowired
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-//    @Transactional
-//    public void createUser(User user) {
-//        userDao.createUser(user);
-//    }
-//
-//    @Transactional
-//    public List<User> getUsers() {
-//        return userDao.getUserList();
-//    }
 }

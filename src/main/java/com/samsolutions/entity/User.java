@@ -9,11 +9,18 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "user")
+@Table(name = "user", schema = "medrecord")
+@NamedQueries({
+        @NamedQuery(
+                name = "User.findAll",
+                query = "from User"
+        )}
+)
 public class User implements Serializable {
+
+    public User() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
