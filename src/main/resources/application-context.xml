@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns="http://www.springframework.org/schema/beans" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 
-    <!-- DispatcherServlet Context: defines this servlet's request-processing
-        infrastructure -->
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-    <!-- Enables the Spring MVC @Controller programming model -->
-    <mvc:annotation-driven />
+    <!-- Root Context: определяет ресурсы, доступные всему приложению, всем сервлетам -->
 
-    <!-- Handles HTTP GET requests for /resources/** by efficiently serving
-        up static resources in the ${webappRoot}/resources directory -->
-    <mvc:resources mapping="/resources/**" location="/resources/" />
+    <!-- Включаем опцию использования конфигурационных аннотаций (@Annotation-based configuration)-->
+<!--    <context:annotation-config />-->
 
-    <context:component-scan base-package="com.samsolutions.controllers" />
+    <!-- Определяем папки, в которых будем автоматически искать бины-компоненты (@Component, @Service)  -->
+<!--    <context:component-scan base-package="com.samsolutions"/>-->
+<!--    <context:component-scan base-package="com.samsolutions.service" />-->
+    <jpa:repositories base-package="com.samsolutions.repository" />
+
+    <!-- Файл с настройками ресурсов для работы с данными (Data Access Resources) -->
+    <import resource="application-data.xml" />
+
 </beans>

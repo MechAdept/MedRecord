@@ -1,39 +1,41 @@
 package com.samsolutions.controllers;
 
+import com.samsolutions.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.samsolutions.service.UserService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.List;
 
 public class Main {
-
-    static final Logger rootLogger = LogManager.getRootLogger();
-    static final Logger userLogger = LogManager.getLogger(User.class);
-
     public static void main(String[] args) {
-        User user = new User();
-        user.setName("Anakin");
-        user.setLastName("Skywalker");
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath*:/application-context.xml");
 
-        userLogger.info(user.showMeMessage());
-        userLogger.info(user.giveMeASign());
+        UserService service = ctx.getBean("UserService", UserService.class);
+        List<User> users = service.findAll();
+        printAll(users);
 
-        rootLogger.info("Root Logger: "  + user.showMeMessage());
+        users = service.findById(2);
+        printAll(users);
 
-        //debug
-        if (rootLogger.isDebugEnabled()) {
-            rootLogger.debug("RootLogger: In debug message");
-            userLogger.debug("UserLogger in debug");
+        users = service.findByLogin("USER1");
+        printAll(users);
+    }
+    private static void printAll(List<User> users) {
+        System.out.println("printAll: ");
+        System.out.println("printAll: ");
+        System.out.println("printAll: ");
+        System.out.println("printAll: ");
+        System.out.println("printAll: ");
+        System.out.println("printAll: ");
+        System.out.println("printAll: ");
+        System.out.println("printAll: ");
+        System.out.println("printAll: ");
+
+        for (User user : users) {
+            System.out.println(user.getType());
         }
-
-        try {
-            User userNull = new User();
-            userNull.getName().toString();
-        } catch (NullPointerException ex) {
-            userLogger.error("error message: " + ex.getMessage());
-            userLogger.fatal("fatal error message: " + ex.getMessage());
-            rootLogger.debug("RootLogger: In debug message");
-            userLogger.debug("UserLogger in debug");
-        }
-
-
     }
 }
