@@ -4,7 +4,7 @@
     <!-- Logging Properties -->
     <Properties>
         <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss} %p %m%n</Property>
-        <Property name="APP_LOG_ROOT">log</Property>
+        <Property name="APP_LOG_ROOT">classpath*:log</Property>
     </Properties>
 
     <Appenders>

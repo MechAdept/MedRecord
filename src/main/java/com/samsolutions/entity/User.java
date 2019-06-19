@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user", schema = "MedRecord", catalog = "")
+@Table(name = "user", schema = "MedRecord")
 public class User {
     private int id;
     private String login;
@@ -22,6 +22,7 @@ public class User {
         this.id = id;
     }
 
+    @Id
     @Basic
     @Column(name = "login", nullable = true, length = 45)
     public String getLogin() {

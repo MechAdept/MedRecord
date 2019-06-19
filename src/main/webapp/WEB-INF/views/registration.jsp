@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -33,7 +34,7 @@
         </tr>
         <tr>
             <td><form:label path="password">password</form:label></td>
-            <td><form:input path="password"/></td>
+            <td><form:input path="password" value="${user.password}"/></td>
         </tr>
         <tr>
             <td><form:label path="mail">mail</form:label></td>
@@ -61,22 +62,35 @@
         </tr>
     </table>
 </form:form>
-<table>
+
 <c:forEach items="${userList}" var="user">
-    <form:form method="POST"
-               action="/delete-submit/" modelAttribute="user">
     <tr>
     <td>${user.id}</td>
-    <td>${user.login}</td>
-    <td>${user.password}</td>
-    <td>${user.mail}</td>
-    <td>${user.type}</td>
-    <td><input type="submit" value="Delete user"/></td>
+    <td><input name="login" type="text" value="${user.login}"></td>
+    <td><input name="password" type="text" value="${user.password}"></td>
+    <td><input name="mail" type="text" value="${user.mail}"></td>
+    <td><input name="type" type="text" value="${user.type}"></td>
+    <td><a href="/delete?id=${user.id}">Delete</a></td>
+    <td><a href="/edit?id=${user.id}">Edit</a></td>
     </tr>
-    </form:form>
 </c:forEach>
-</table>
 
 
+
+<%--<c:forEach items="${userList}" var="user" varStatus="index">--%>
+<%--    <form:form method="post" action = "edit" commandName="user">--%>
+<%--        <tr>--%>
+<%--            <td><form:input path = "login" value = "${user.login}" /></td>--%>
+<%--            <td><form:input path = "password" value = "${user.password}" /></td>--%>
+<%--            <td><form:input path = "type" value = "${user.type}" /></td>--%>
+<%--            <td><form:input path = "mail" value = "${user.mail}" /></td>--%>
+<%--            <form:hidden path="id" value=""/>--%>
+<%--&lt;%&ndash;            <td>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                <a href="delete/${user.id}"><spring:message code="label.delete" /></a>&ndash;%&gt;--%>
+<%--&lt;%&ndash;            </td>&ndash;%&gt;--%>
+<%--        </tr>--%>
+<%--        <input type="submit" value = "edit">--%>
+<%--    </form:form>--%>
+<%--</c:forEach>--%>
 </body>
 </html>

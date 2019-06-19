@@ -17,11 +17,14 @@ import java.util.List;
 @Service("UserService")
 //@Repository
 public class UserServiceImpl implements UserService {
+
     final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     @Qualifier("userRepository")
     private UserRepository userRepository;
 
+    //read
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
@@ -30,13 +33,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findById(Integer Id) {
-        return userRepository.findById(Id);
+    public void updateUser(User user) {userRepository.save(user);}
+
+    //delete
+    @Override
+    @Transactional
+    public void delete(Integer id) {
+        userRepository.delete(id);
+    }
+
+    @Override
+    public boolean exists(User user) {
+        return userRepository.exists(user.getId());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findByLogin(String Login) {
+    public List<User> findById(Integer Id) {
+        return userRepository.findById(Id);
+    }
+
+    //create
+    @Override
+    @Transactional
+    public void createUser(User user) {userRepository.save(user);}
+
+    @Override
+    @Transactional(readOnly = true)
+    public User findByLogin(String Login) {
         return userRepository.findByLogin(Login);
     }
 }
