@@ -2,15 +2,17 @@ package com.samsolutions.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "role", schema = "MedRecord")
 public class Role {
     private int id;
-    private String role;
+    private String name;
+    private Set<User> users;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -20,26 +22,36 @@ public class Role {
     }
 
     @Basic
-    @Column(name = "role")
-    public String getRole() {
-        return role;
+    @Column(name = "name", nullable = true, length = 45)
+    public String getName() {
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Role role1 = (Role) o;
-        return id == role1.id &&
-                Objects.equals(role, role1.role);
+        Role role = (Role) o;
+        return id == role.id &&
+                Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, role);
+        return Objects.hash(id, name);
     }
+
+    @OneToMany(mappedBy = "role")
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
 }

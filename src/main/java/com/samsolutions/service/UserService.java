@@ -1,8 +1,10 @@
 package com.samsolutions.service;
 import com.samsolutions.entity.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface UserService {
     //crud
     void createUser(User user);
@@ -12,6 +14,9 @@ public interface UserService {
     boolean exists(User user);
 
     //other methods
-    User findByLogin(String login);
     List<User> findById(Integer id);
+
+    //security
+    void save(User user);
+    User findByUsername(String username);
 }
