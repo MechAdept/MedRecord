@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
     @Qualifier("roleRepository")
     private RoleRepository roleRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     //read
     @Override
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRole(roleRepository.findRoleById(user.getId()));
         userRepository.save(user);
     }

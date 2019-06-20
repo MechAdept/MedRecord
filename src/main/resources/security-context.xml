@@ -53,21 +53,21 @@
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/" access="hasRoles('ROLE_USER','admin')"/>
         <intercept-url pattern="/welcome" access="hasRoles('admin','admin')"/>
-        <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/login?error" username-parameter="admin" password-parameter="password"/>
+        <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/login?error" username-parameter="username" password-parameter="password"/>
         <logout logout-success-url="/login?logout" />
     </http>
 
     <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="userDetailsServiceImpl">
-            <password-encoder ref="encoder"/>
+<!--            <password-encoder ref="encoder"/>-->
         </authentication-provider>
     </authentication-manager>
 
     <beans:bean id="userDetailsServiceImpl" class="com.samsolutions.service.impl.UserDetailsServiceImpl"/>
 
-    <beans:bean id="encoder"
-                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-    <beans:constructor-arg name="strength" value="11"/>
-    </beans:bean>
+<!--    <beans:bean id="encoder"-->
+<!--                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">-->
+<!--    <beans:constructor-arg name="strength" value="11"/>-->
+<!--    </beans:bean>-->
 
 </beans:beans>
