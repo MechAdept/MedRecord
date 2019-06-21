@@ -1,19 +1,37 @@
 package com.samsolutions.entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
-@Table(name = "user", schema = "MedRecord")
 public class User {
+
+    @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @Column(name = "id", nullable = false, insertable = false, updatable = false)
     private int id;
+
+    @Basic
+    @Column(name = "username", nullable = true, length = 255)
     private String username;
+
+    @Basic
+    @Column(name = "password", nullable = true, length = 255)
     private String password;
-    private String passwordConfirm;
+
+    @ManyToOne (optional=false, cascade=CascadeType.ALL)
+    @JoinColumn (table="Role", referencedColumnName = "id", insertable = false, updatable = false)
     private Role role;
 
-    @Id
-    @Column(name = "id", nullable = false)
+    private String passwordConfirm;
+
     public int getId() {
         return id;
     }
@@ -22,8 +40,6 @@ public class User {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "username", nullable = true, length = 255)
     public String getUsername() {
         return username;
     }
@@ -32,8 +48,6 @@ public class User {
         this.username = username;
     }
 
-    @Basic
-    @Column(name = "password", nullable = true, length = 255)
     public String getPassword() {
         return password;
     }
@@ -42,15 +56,22 @@ public class User {
         this.password = password;
     }
 
-    @Transient
-    public String getPasswordConfirm() {
-        return passwordConfirm;
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
 
+    @Transient
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,17 +85,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password);
+        return Objects.hash(id, username, password, role);
     }
-
-    @ManyToOne
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
 }

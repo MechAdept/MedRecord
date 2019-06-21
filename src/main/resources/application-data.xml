@@ -33,13 +33,13 @@
     </bean>
 
     <!-- Настройки бина dataSource будем хранить в отдельном файле -->
-    <context:property-placeholder location="classpath*:database.properties"/>
+    <context:property-placeholder location="classpath*:properties/database.properties"/>
 
     <!-- Непосредственно бин dataSource -->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="${jdbc.driverClassName}"
-          p:url="${jdbc.databaseurl}"
+          p:url="${jdbc.url}"
           p:username="${jdbc.username}"
           p:password="${jdbc.password}" />
 </beans>

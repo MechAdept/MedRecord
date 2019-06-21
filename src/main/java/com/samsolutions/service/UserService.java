@@ -14,7 +14,7 @@ public interface UserService {
     boolean exists(User user);
 
     //other methods
-    List<User> findById(Integer id);
+    User findById(Integer id);
 
     //security
     void save(User user);

@@ -9,18 +9,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
-        <%@include file="/WEB-INF/views/css/bootstrap.min.css"%>
+        <%@include file="/resources/css/bootstrap.min.css"%>
     </style>
     <title>Reply</title>
 </head>
 <body>
 <script type="text/javascript">
-    <%@include file="/WEB-INF/views/js/jquery-3.4.1.min.js"%>
+    <%@include file="/resources/js/jquery-3.4.1.min.js"%>
 </script>
 <script type="text/javascript">
-    <%@include file="/WEB-INF/views/js/bootstrap.min.js"%>
+    <%@include file="/resources/js/bootstrap.min.js"%>
 </script>
-
 <h3>${userForm.login}</h3>
 <h3>${userForm.password}</h3>
 </body>

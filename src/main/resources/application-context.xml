@@ -11,11 +11,6 @@
 
     <!-- Файл с настройками ресурсов для работы с данными (Data Access Resources) -->
     <import resource="application-data.xml" />
-
-<!--    <import resource="security.xml" />-->
-<!--    <security:global-method-security pre-post-annotations= "enabled" secured-annotations= "enabled" jsr250-annotations= "enabled"/>-->
-<!--    <import resource="security-context.xml" />-->
-<!--    <import resource="security.xml"/>-->
     <import resource="security-context.xml"/>
 
 </beans>

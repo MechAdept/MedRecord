@@ -1,29 +1,21 @@
 package com.samsolutions.service.impl;
 
 import com.google.common.collect.Lists;
-import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
 import com.samsolutions.repository.RoleRepository;
 import com.samsolutions.repository.UserRepository;
 import com.samsolutions.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.HashSet;
+
 import java.util.List;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
-
-
-//    final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     @Qualifier("userRepository")
@@ -33,10 +25,10 @@ public class UserServiceImpl implements UserService {
     @Qualifier("roleRepository")
     private RoleRepository roleRepository;
 
-//    @Autowired
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    @Qualifier("encoder")
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    //read
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
@@ -44,10 +36,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional()
     public void updateUser(User user) {userRepository.save(user);}
 
-    //delete
     @Override
     @Transactional
     public void delete(Integer id) {
@@ -61,11 +52,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findById(Integer Id) {
-        return userRepository.findById(Id);
+    public User findById(Integer Id) {
+        return userRepository.findOne(Id);
     }
 
-    //create
     @Override
     @Transactional
     public void createUser(User user) {userRepository.save(user);}
@@ -77,8 +67,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRole(roleRepository.findRoleById(user.getId()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setRole(roleRepository.findOne(user.getId()));
         userRepository.save(user);
     }
 }

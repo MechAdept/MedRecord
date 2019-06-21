@@ -1,34 +1,48 @@
 package com.samsolutions.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "role", schema = "MedRecord")
 public class Role {
-    private int id;
-    private String name;
-    private Set<User> users;
 
+    @GeneratedValue(strategy = IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
+    private int id;
+
+    @Basic
+    @Column(name = "name", nullable = true, length = 45)
+    private String name;
+
+    @OneToMany(mappedBy = "", fetch = FetchType.EAGER)
+    private Set<User> users;
+
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Basic
-    @Column(name = "name", nullable = true, length = 45)
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override
@@ -43,15 +57,6 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
-    }
-
-    @OneToMany(mappedBy = "role")
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 
 }
