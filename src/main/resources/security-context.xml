@@ -1,0 +1,73 @@
+<?xml version= "1.0" encoding= "UTF-8"?>
+<beans:beans xmlns:beans= "http://www.springframework.org/schema/beans"
+             xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+             xmlns= "http://www.springframework.org/schema/security"
+             xsi:schemaLocation= "http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!-- auto-config= "true" > Automatically registers a login form, BASIC authentication,
+    logout services. use-expressions Enables EL-expressions in the access attribute -->
+
+<!--    <http auto-config= "true" use-expressions= "true"  >-->
+
+<!--        &lt;!&ndash;used to define the set of URL patterns that the application is interested in-->
+<!--        and to configure how they should be handled. It is used to construct the-->
+<!--        FilterInvocationSecurityMetadataSource used by the FilterSecurityInterceptor&ndash;&gt;-->
+<!--        <intercept-url pattern= "/security/**" access= "hasRole('admin')"/>-->
+<!--        &lt;!&ndash;Если попытаться войти без логина на страницу в этом маппинге (например http://localhost:8080/),-->
+<!--        то будет переброшено на страницу, указанную в form-login login-page='WEB-INF/views/form/login.jsp' &ndash;&gt;-->
+<!--        <intercept-url pattern= "/user/**" access= "hasAnyRole('user','admin')"/>-->
+
+
+<!--        <form-login login-page= "WEB-INF/views/form/login.jsp"-->
+<!--                    username-parameter= "j_username"-->
+<!--                    password-parameter= "j_password"-->
+<!--                    login-processing-url= "/j_spring_security_check"-->
+<!--                    authentication-failure-url= "WEB-INF/views/form/login.jsp?error=true" />-->
+
+<!--        <logout logout-url= "/j_spring_security_logout" logout-success-url= "/"/>-->
+
+<!--        &lt;!&ndash;Save logged user in cookie with name key='name' &ndash;&gt;-->
+<!--        <remember-me key= "myKey" token-validity-seconds= "300"/>-->
+
+<!--        <csrf disabled= "true"/>-->
+
+<!--    </http>-->
+
+<!--    <authentication-manager alias="authenticationManager">-->
+<!--        <authentication-provider user-service-ref="userDetailsServiceImpl">-->
+<!--            <password-encoder ref="encoder"></password-encoder>-->
+<!--        </authentication-provider>-->
+<!--    </authentication-manager>-->
+
+
+<!--    <beans:bean id="userDetailsServiceImpl" class="com.samsolutions.service.impl.UserDetailsServiceImpl"></beans:bean>-->
+
+<!--    <beans:bean id="encoder"-->
+<!--                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">-->
+<!--        <beans:constructor-arg name="strength" value="11"/>-->
+<!--    </beans:bean>-->
+
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/" access="hasRoles('ROLE_USER','admin')"/>
+        <intercept-url pattern="/welcome" access="hasRoles('admin','admin')"/>
+        <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/login?error" username-parameter="username" password-parameter="password"/>
+        <logout logout-success-url="/login?logout" />
+    </http>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="userDetailsServiceImpl">
+<!--            <password-encoder ref="encoder"/>-->
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="userDetailsServiceImpl" class="com.samsolutions.service.impl.UserDetailsServiceImpl"/>
+
+<!--    <beans:bean id="encoder"-->
+<!--                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">-->
+<!--    <beans:constructor-arg name="strength" value="11"/>-->
+<!--    </beans:bean>-->
+
+</beans:beans>

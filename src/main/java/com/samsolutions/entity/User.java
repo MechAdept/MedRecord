@@ -1,45 +1,80 @@
 package com.samsolutions.entity;
 
-import com.sun.istack.NotNull;
-import lombok.*;
-
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
-@Getter
-@Setter
-@RequiredArgsConstructor
-@Table(name = "user", schema = "medrecord")
-@NamedQueries({
-        @NamedQuery(
-                name = "User.findAll",
-                query = "from User"
-        )}
-)
-public class User implements Serializable {
-
-    public User() {
-    }
+@Table(name = "user", schema = "MedRecord")
+public class User {
+    private int id;
+    private String username;
+    private String password;
+    private String passwordConfirm;
+    private Role role;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-    @NonNull
-    @Column(name = "login")
-    private String login;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    @NonNull
-    @Column(name = "password")
-    private String password;
+    @Basic
+    @Column(name = "username", nullable = true, length = 255)
+    public String getUsername() {
+        return username;
+    }
 
-    @NonNull
-    @Column(name = "type")
-    private String type;
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    @NotNull
-    @Column(name = "mail")
-    private String mail;
+    @Basic
+    @Column(name = "password", nullable = true, length = 255)
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Transient
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password);
+    }
+
+    @ManyToOne
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
 }
