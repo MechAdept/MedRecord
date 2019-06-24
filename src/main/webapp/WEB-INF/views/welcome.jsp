@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
+<html>
+<head>
+    <title>welcome</title>
+    <link rel="stylesheet" type="text/css" href="../../resources/css/bootstrap.min.css">
+</head>
+
+<body>
+<script type="text/javascript">
+    <%@include file="/resources/js/jquery-3.4.1.min.js"%>
+</script>
+<script type="text/javascript">
+    <%@include file="/resources/js/bootstrap.min.js"%>
+</script>
+<div class="container">
+
+    <c:if test="${pageContext.request.userPrincipal.name != null}">
+        <form id="logoutForm" method="POST" action="${contextPath}/logout">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+
+        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+
+    </c:if>
+
+</div>
+</body>
+</html>

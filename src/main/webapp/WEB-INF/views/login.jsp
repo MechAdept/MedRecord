@@ -8,13 +8,11 @@
 
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <style>
-        <%@include file="/resources/css/bootstrap.min.css"%>
-    </style>
-    <title>Reply</title>
+    <title>Log in with your account</title>
+    <link rel="stylesheet" type="text/css" href="../../resources/css/bootstrap.min.css">
 </head>
+
+
 <body>
 <script type="text/javascript">
     <%@include file="/resources/js/jquery-3.4.1.min.js"%>
