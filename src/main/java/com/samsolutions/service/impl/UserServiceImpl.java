@@ -1,6 +1,7 @@
 package com.samsolutions.service.impl;
 
 import com.google.common.collect.Lists;
+import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
 import com.samsolutions.repository.RoleRepository;
 import com.samsolutions.repository.UserRepository;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {

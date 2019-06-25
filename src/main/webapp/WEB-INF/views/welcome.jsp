@@ -2,21 +2,22 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 
 <html>
 <head>
-    <title>welcome</title>
-    <link rel="stylesheet" type="text/css" href="../../resources/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        <%@include file="/resources/css/bootstrap.min.css"%>
+        <%@include file="/resources/css/common.css"%>
+    </style>
+    <title>Log in with your account</title>
 </head>
 
 <body>
 <script type="text/javascript">
     <%@include file="/resources/js/jquery-3.4.1.min.js"%>
-</script>
-<script type="text/javascript">
     <%@include file="/resources/js/bootstrap.min.js"%>
 </script>
 <div class="container">
