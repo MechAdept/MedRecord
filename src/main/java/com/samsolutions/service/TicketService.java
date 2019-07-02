@@ -1,9 +1,10 @@
 package com.samsolutions.service;
 
 import com.samsolutions.entity.Role;
+import com.samsolutions.entity.Ticket;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface RoleService {
-    Role findRoleById(Long id);
+public interface TicketService {
+    Ticket findTicketById(Long id);
 }

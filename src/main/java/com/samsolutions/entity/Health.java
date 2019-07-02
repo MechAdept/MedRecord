@@ -6,32 +6,24 @@ import java.util.Objects;
 
 @Entity
 
-@Table(name = "Health", schema = "medrecord")
+@Table(name = "health", schema = "medrecord")
 public class Health {
-    private int id;
-    private Integer patient;
+
+    private Long id;
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User patient;
     private String photo;
     private Date birth;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "patient", nullable = true)
-    public Integer getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Integer patient) {
-        this.patient = patient;
     }
 
     @Basic
@@ -52,6 +44,14 @@ public class Health {
 
     public void setBirth(Date birth) {
         this.birth = birth;
+    }
+
+    public User getPatient() {
+        return patient;
+    }
+
+    public void setPatient(User patient) {
+        this.patient = patient;
     }
 
     @Override

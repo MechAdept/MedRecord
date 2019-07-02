@@ -6,10 +6,12 @@ import java.util.Objects;
 
 @Entity
 
-@Table(name = "Visit", schema = "medrecord")
+@Table(name = "visit", schema = "medrecord")
 public class Visit {
-    private int id;
-    private Integer ticket;
+    private Long id;
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
     private Timestamp datetime;
     private String complaint;
     private String examination;
@@ -19,22 +21,12 @@ public class Visit {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "ticket", nullable = true)
-    public Integer getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Integer ticket) {
-        this.ticket = ticket;
     }
 
     @Basic
@@ -86,6 +78,16 @@ public class Visit {
     public void setTreatment(String treatment) {
         this.treatment = treatment;
     }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

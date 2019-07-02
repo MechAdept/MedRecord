@@ -6,20 +6,28 @@ import java.util.Objects;
 
 @Entity
 
-@Table(name = "Ticket", schema = "medrecord")
+@Table(name = "ticket", schema = "medrecord")
 public class Ticket {
-    private int id;
+    private Long id;
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User patient;
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User doctor;
     private Timestamp datetime;
     private Byte attendance;
+    @OneToOne(mappedBy = "visit")
+    private Visit visit;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,6 +49,30 @@ public class Ticket {
 
     public void setAttendance(Byte attendance) {
         this.attendance = attendance;
+    }
+
+    public User getPatient() {
+        return patient;
+    }
+
+    public void setPatient(User patient) {
+        this.patient = patient;
+    }
+
+    public User getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(User doctor) {
+        this.doctor = doctor;
+    }
+
+    public Visit getVisit() {
+        return visit;
+    }
+
+    public void setVisit(Visit visit) {
+        this.visit = visit;
     }
 
     @Override

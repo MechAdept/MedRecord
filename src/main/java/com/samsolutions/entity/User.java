@@ -20,6 +20,11 @@ public class User {
     private String passwordConfirm;
     private Set<Role> roles;
 
+    @OneToOne(mappedBy="user")
+    private Health health;
+    @OneToOne(mappedBy = "ticket")
+    private Ticket ticket;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
@@ -55,7 +60,23 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    public Health getHealth() {
+        return health;
+    }
+
+    public void setHealth(Health health) {
+        this.health = health;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
+    @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     public Set<Role> getRoles() {
         return roles;
