@@ -9,16 +9,15 @@ import java.util.Objects;
 public class Ticket {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    @JoinColumn(name = "patient", referencedColumnName = "id")
     private User patient;
 
     @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "doctor_id",referencedColumnName = "id")
+    @JoinColumn(name = "doctor",referencedColumnName = "id")
     private User doctor;
 
     @Column(name = "datetime")

@@ -8,12 +8,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "health", schema = "medrecord")
 public class Health {
-
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "id")
-    private User user;
+    @JoinColumn(name = "patient", referencedColumnName = "id")
+//    @OneToOne(mappedBy="health")
+//    @JoinColumn(name="id", referencedColumnName = "patient")
+    private User patient;
 
     @Column(name = "photo")
     private String photo;
@@ -21,7 +22,7 @@ public class Health {
     private Date birth;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
@@ -30,8 +31,8 @@ public class Health {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "photo", nullable = true, length = 500)
+//    @Basic
+//    @Column(name = "photo", nullable = true, length = 500)
     public String getPhoto() {
         return photo;
     }
@@ -40,8 +41,7 @@ public class Health {
         this.photo = photo;
     }
 
-    @Basic
-    @Column(name = "birth", nullable = true)
+//    @Basic
     public Date getBirth() {
         return birth;
     }
@@ -51,11 +51,11 @@ public class Health {
     }
 
     public User getUser() {
-        return user;
+        return patient;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.patient = user;
     }
 
     @Override
@@ -64,13 +64,13 @@ public class Health {
         if (o == null || getClass() != o.getClass()) return false;
         Health health = (Health) o;
         return id == health.id &&
-                Objects.equals(user, health.user) &&
+                Objects.equals(patient, health.patient) &&
                 Objects.equals(photo, health.photo) &&
                 Objects.equals(birth, health.birth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, photo, birth);
+        return Objects.hash(id, patient, photo, birth);
     }
 }

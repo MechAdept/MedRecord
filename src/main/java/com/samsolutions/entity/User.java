@@ -17,7 +17,10 @@ public class User {
     private String passwordConfirm;
     private Set<Role> roles;
 
-    @OneToOne(mappedBy="user")
+    @OneToOne(mappedBy="patient")
+    @JoinColumn(name="patient")
+//    @OneToOne
+//    @JoinColumn(name = "id", referencedColumnName = "patient")
     private Health health;
 
     @OneToOne(mappedBy = "doctor")

@@ -9,7 +9,6 @@ import java.util.Objects;
 @Table(name = "visit", schema = "medrecord")
 public class Visit {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "datetime", nullable = true)
@@ -24,7 +23,7 @@ public class Visit {
     private String treatment;
 
     @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "ticket_id")
+    @JoinColumn(name = "ticket")
     private Ticket ticket;
 
     public Long getId() {
