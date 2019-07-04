@@ -5,24 +5,30 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-
 @Table(name = "ticket", schema = "medrecord")
 public class Ticket {
-    private Long id;
-    @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User patient;
-    @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User doctor;
-    private Timestamp datetime;
-    private Byte attendance;
-    @OneToOne(mappedBy = "visit")
-    private Visit visit;
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    private User patient;
+
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "doctor_id",referencedColumnName = "id")
+    private User doctor;
+
+    @Column(name = "datetime")
+    private Timestamp datetime;
+    @Column(name = "attendance")
+    private Byte attendance;
+
+    @OneToOne(mappedBy = "ticket")
+    private Visit visit;
+
     public Long getId() {
         return id;
     }
@@ -32,7 +38,6 @@ public class Ticket {
     }
 
     @Basic
-    @Column(name = "datetime", nullable = true)
     public Timestamp getDatetime() {
         return datetime;
     }
@@ -42,7 +47,6 @@ public class Ticket {
     }
 
     @Basic
-    @Column(name = "attendance", nullable = true)
     public Byte getAttendance() {
         return attendance;
     }

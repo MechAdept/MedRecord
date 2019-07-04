@@ -8,19 +8,25 @@ import java.util.Objects;
 
 @Table(name = "visit", schema = "medrecord")
 public class Visit {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "datetime", nullable = true)
+    private Timestamp datetime;
+    @Column(name="complaint")
+    private String complaint;
+    @Column(name="examination")
+    private String examination;
+    @Column(name="diagnosis")
+    private String diagnosis;
+    @Column(name="treatment")
+    private String treatment;
+
     @OneToOne(cascade= CascadeType.ALL)
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
-    private Timestamp datetime;
-    private String complaint;
-    private String examination;
-    private String diagnosis;
-    private String treatment;
 
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -30,7 +36,6 @@ public class Visit {
     }
 
     @Basic
-    @Column(name = "datetime", nullable = true)
     public Timestamp getDatetime() {
         return datetime;
     }
@@ -40,7 +45,7 @@ public class Visit {
     }
 
     @Basic
-    @Column(name = "complaint", nullable = true, length = -1)
+//    @Column(name = "complaint", nullable = true, length = -1)
     public String getComplaint() {
         return complaint;
     }
@@ -50,7 +55,7 @@ public class Visit {
     }
 
     @Basic
-    @Column(name = "examination", nullable = true, length = -1)
+//    @Column(name = "examination", nullable = true, length = -1)
     public String getExamination() {
         return examination;
     }
@@ -60,7 +65,7 @@ public class Visit {
     }
 
     @Basic
-    @Column(name = "diagnosis", nullable = true, length = -1)
+//    @Column(name = "diagnosis", nullable = true, length = -1)
     public String getDiagnosis() {
         return diagnosis;
     }
@@ -70,7 +75,7 @@ public class Visit {
     }
 
     @Basic
-    @Column(name = "treatment", nullable = true, length = -1)
+//    @Column(name = "treatment", nullable = true, length = -1)
     public String getTreatment() {
         return treatment;
     }

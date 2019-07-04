@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service("HealthService")
-
 public class HealthServiceImpl implements HealthService {
     @Autowired
     @Qualifier("healthRepository")

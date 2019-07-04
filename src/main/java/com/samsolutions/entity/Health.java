@@ -1,19 +1,23 @@
 package com.samsolutions.entity;
 
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-
 @Table(name = "health", schema = "medrecord")
 public class Health {
 
     private Long id;
-    @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User patient;
+
+    @OneToOne
+    @JoinColumn(name = "id")
+    private User user;
+
+    @Column(name = "photo")
     private String photo;
+    @Column(name = "birth")
     private Date birth;
 
     @Id
@@ -46,12 +50,12 @@ public class Health {
         this.birth = birth;
     }
 
-    public User getPatient() {
-        return patient;
+    public User getUser() {
+        return user;
     }
 
-    public void setPatient(User patient) {
-        this.patient = patient;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -60,13 +64,13 @@ public class Health {
         if (o == null || getClass() != o.getClass()) return false;
         Health health = (Health) o;
         return id == health.id &&
-                Objects.equals(patient, health.patient) &&
+                Objects.equals(user, health.user) &&
                 Objects.equals(photo, health.photo) &&
                 Objects.equals(birth, health.birth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, patient, photo, birth);
+        return Objects.hash(id, user, photo, birth);
     }
 }

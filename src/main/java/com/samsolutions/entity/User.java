@@ -1,29 +1,30 @@
 package com.samsolutions.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Objects;
+
 import java.util.Set;
 
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "user", schema = "medrecord")
 public class User {
+
     private Long id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
     private String password;
     private String passwordConfirm;
     private Set<Role> roles;
 
     @OneToOne(mappedBy="user")
     private Health health;
-    @OneToOne(mappedBy = "ticket")
-    private Ticket ticket;
+
+    @OneToOne(mappedBy = "doctor")
+    private Ticket ticket_doctor;
+
+    @OneToOne(mappedBy = "patient")
+    private Ticket ticket_patient;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,12 +69,20 @@ public class User {
         this.health = health;
     }
 
-    public Ticket getTicket() {
-        return ticket;
+    public Ticket getTicket_doctor() {
+        return ticket_doctor;
     }
 
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
+    public void setTicket_doctor(Ticket ticket_doctor) {
+        this.ticket_doctor = ticket_doctor;
+    }
+
+    public Ticket getTicket_patient() {
+        return ticket_patient;
+    }
+
+    public void setTicket_patient(Ticket ticket_patient) {
+        this.ticket_patient = ticket_patient;
     }
 
     @ManyToMany
