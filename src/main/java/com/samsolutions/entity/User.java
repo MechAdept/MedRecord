@@ -9,28 +9,29 @@ import java.util.Set;
 @Table(name = "user", schema = "medrecord")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
     private String password;
+    @Transient
     private String passwordConfirm;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @OneToOne(mappedBy="patient")
-    @JoinColumn(name="patient")
-//    @OneToOne
-//    @JoinColumn(name = "id", referencedColumnName = "patient")
-    private Health health;
+//    @OneToOne(mappedBy="patient")
+//    private Health health;
+//
+//    @OneToOne(mappedBy = "doctor")
+//    private Ticket ticket_doctor;
+//
+//    @OneToOne(mappedBy = "patient")
+//    private Ticket ticket_patient;
 
-    @OneToOne(mappedBy = "doctor")
-    private Ticket ticket_doctor;
-
-    @OneToOne(mappedBy = "patient")
-    private Ticket ticket_patient;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -55,7 +56,6 @@ public class User {
         this.password = password;
     }
 
-    @Transient
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
@@ -64,32 +64,30 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-    public Health getHealth() {
-        return health;
-    }
+//    public Health getHealth() {
+//        return health;
+//    }
+//
+//    public void setHealth(Health health) {
+//        this.health = health;
+//    }
+//
+//    public Ticket getTicket_doctor() {
+//        return ticket_doctor;
+//    }
+//
+//    public void setTicket_doctor(Ticket ticket_doctor) {
+//        this.ticket_doctor = ticket_doctor;
+//    }
+//
+//    public Ticket getTicket_patient() {
+//        return ticket_patient;
+//    }
+//
+//    public void setTicket_patient(Ticket ticket_patient) {
+//        this.ticket_patient = ticket_patient;
+//    }
 
-    public void setHealth(Health health) {
-        this.health = health;
-    }
-
-    public Ticket getTicket_doctor() {
-        return ticket_doctor;
-    }
-
-    public void setTicket_doctor(Ticket ticket_doctor) {
-        this.ticket_doctor = ticket_doctor;
-    }
-
-    public Ticket getTicket_patient() {
-        return ticket_patient;
-    }
-
-    public void setTicket_patient(Ticket ticket_patient) {
-        this.ticket_patient = ticket_patient;
-    }
-
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     public Set<Role> getRoles() {
         return roles;
     }

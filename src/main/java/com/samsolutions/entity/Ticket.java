@@ -12,18 +12,18 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "patient", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
     private User patient;
 
-    @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "doctor",referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
     private User doctor;
 
     @Column(name = "datetime")
     private Timestamp datetime;
     @Column(name = "attendance")
-    private Byte attendance;
+    private Boolean attendance;
 
     @OneToOne(mappedBy = "ticket")
     private Visit visit;
@@ -36,7 +36,6 @@ public class Ticket {
         this.id = id;
     }
 
-    @Basic
     public Timestamp getDatetime() {
         return datetime;
     }
@@ -45,12 +44,11 @@ public class Ticket {
         this.datetime = datetime;
     }
 
-    @Basic
-    public Byte getAttendance() {
+    public Boolean getAttendance() {
         return attendance;
     }
 
-    public void setAttendance(Byte attendance) {
+    public void setAttendance(Boolean attendance) {
         this.attendance = attendance;
     }
 

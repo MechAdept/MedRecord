@@ -18,12 +18,13 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 public class Role {
 
-    private Long id;
-    private String name;
-    private Set<User> users;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
+
     public Long getId() {
         return id;
     }
@@ -40,7 +41,6 @@ public class Role {
         this.name = name;
     }
 
-    @ManyToMany(mappedBy = "roles")
     public Set<User> getUsers() {
         return users;
     }

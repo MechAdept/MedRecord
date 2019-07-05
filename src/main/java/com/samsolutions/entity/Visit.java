@@ -34,7 +34,6 @@ public class Visit {
         this.id = id;
     }
 
-    @Basic
     public Timestamp getDatetime() {
         return datetime;
     }
@@ -43,7 +42,6 @@ public class Visit {
         this.datetime = datetime;
     }
 
-    @Basic
 //    @Column(name = "complaint", nullable = true, length = -1)
     public String getComplaint() {
         return complaint;
@@ -53,7 +51,6 @@ public class Visit {
         this.complaint = complaint;
     }
 
-    @Basic
 //    @Column(name = "examination", nullable = true, length = -1)
     public String getExamination() {
         return examination;
@@ -63,7 +60,6 @@ public class Visit {
         this.examination = examination;
     }
 
-    @Basic
 //    @Column(name = "diagnosis", nullable = true, length = -1)
     public String getDiagnosis() {
         return diagnosis;
@@ -73,8 +69,6 @@ public class Visit {
         this.diagnosis = diagnosis;
     }
 
-    @Basic
-//    @Column(name = "treatment", nullable = true, length = -1)
     public String getTreatment() {
         return treatment;
     }

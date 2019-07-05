@@ -8,12 +8,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "health", schema = "medrecord")
 public class Health {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "patient", referencedColumnName = "id")
-//    @OneToOne(mappedBy="health")
-//    @JoinColumn(name="id", referencedColumnName = "patient")
+    @JoinColumn(referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
     private User patient;
 
     @Column(name = "photo")
@@ -21,8 +21,6 @@ public class Health {
     @Column(name = "birth")
     private Date birth;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
@@ -31,8 +29,6 @@ public class Health {
         this.id = id;
     }
 
-//    @Basic
-//    @Column(name = "photo", nullable = true, length = 500)
     public String getPhoto() {
         return photo;
     }
@@ -41,7 +37,6 @@ public class Health {
         this.photo = photo;
     }
 
-//    @Basic
     public Date getBirth() {
         return birth;
     }
