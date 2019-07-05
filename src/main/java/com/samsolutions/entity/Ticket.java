@@ -12,21 +12,18 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private User patient;
 
-    @JoinColumn(referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private User doctor;
 
     @Column(name = "datetime")
     private Timestamp datetime;
     @Column(name = "attendance")
     private Boolean attendance;
-
-    @OneToOne(mappedBy = "ticket")
-    private Visit visit;
 
     public Long getId() {
         return id;
@@ -66,14 +63,6 @@ public class Ticket {
 
     public void setDoctor(User doctor) {
         this.doctor = doctor;
-    }
-
-    public Visit getVisit() {
-        return visit;
-    }
-
-    public void setVisit(Visit visit) {
-        this.visit = visit;
     }
 
     @Override
