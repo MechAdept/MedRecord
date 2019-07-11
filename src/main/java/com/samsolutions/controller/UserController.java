@@ -1,6 +1,7 @@
-package com.samsolutions.controllers;
+package com.samsolutions.controller;
 
-import com.samsolutions.entity.User;
+import com.samsolutions.dto.UserDTO;
+import com.samsolutions.service.RoleService;
 import com.samsolutions.service.SecurityService;
 import com.samsolutions.service.UserService;
 import com.samsolutions.validator.UserValidator;
@@ -15,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class UserController {
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private SecurityService securityService;
@@ -29,13 +34,14 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
-        model.addAttribute("userForm", new User());
-
-        return "registration";
+    model.addAttribute("userForm", new UserDTO());
+    model.addAttribute("roleList", roleService.getRoles());
+    return "registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+    public String registration(@ModelAttribute("userForm") UserDTO userForm, BindingResult bindingResult, Model model) {
+        model.addAttribute("roleList", roleService.getRoles());
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -45,8 +51,7 @@ public class UserController {
         userService.save(userForm);
 
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
-
-        return "redirect:/welcome";
+        return "redirect:/welcome"; //check
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

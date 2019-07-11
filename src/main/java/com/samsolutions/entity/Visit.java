@@ -1,24 +1,24 @@
 package com.samsolutions.entity;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-
 @Table(name = "visit", schema = "medrecord")
-public class Visit {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "datetime", nullable = true)
-    private Timestamp datetime;
+public class Visit extends Essential{
+    @Column(name = "datetime")
+    private LocalDateTime datetime;
+
     @Column(name="complaint")
     private String complaint;
+
     @Column(name="examination")
     private String examination;
+
     @Column(name="diagnosis")
     private String diagnosis;
+
     @Column(name="treatment")
     private String treatment;
 
@@ -26,23 +26,15 @@ public class Visit {
     @OneToOne(cascade = CascadeType.ALL)
     private Ticket ticket;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Timestamp getDatetime() {
+    public LocalDateTime getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Timestamp datetime) {
+    public void setDatetime(LocalDateTime datetime) {
         this.datetime = datetime;
     }
 
-//    @Column(name = "complaint", nullable = true, length = -1)
+    //    @Column(name = "complaint", nullable = true, length = -1)
     public String getComplaint() {
         return complaint;
     }
@@ -84,8 +76,6 @@ public class Visit {
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
-
-
 
     @Override
     public boolean equals(Object o) {

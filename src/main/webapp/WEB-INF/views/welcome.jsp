@@ -14,23 +14,19 @@
     </style>
     <title>Log in with your account</title>
 </head>
-
 <body>
 <script type="text/javascript">
     <%@include file="/resources/js/jquery-3.4.1.min.js"%>
     <%@include file="/resources/js/bootstrap.min.js"%>
 </script>
 <div class="container">
-
     <c:if test="${pageContext.request.userPrincipal.name != null}">
         <form id="logoutForm" method="POST" action="${contextPath}/logout">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
-
         <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
-
+        <a href = "/adminPanel">Админка</a>
     </c:if>
-
 </div>
 </body>
 </html>

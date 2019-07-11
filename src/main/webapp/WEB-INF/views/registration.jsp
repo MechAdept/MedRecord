@@ -3,6 +3,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="input" uri="http://www.springframework.org/tags/form" %>
 
 
 <html>
@@ -12,6 +13,7 @@
     <style>
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
+        <%@include file="/resources/css/registration.css"%>
     </style>
     <title>Log in with your account</title>
 </head>
@@ -20,33 +22,29 @@
 <script type="text/javascript">
     <%@include file="/resources/js/jquery-3.4.1.min.js"%>
     <%@include file="/resources/js/bootstrap.min.js"%>
+    <%@include file="/resources/js/registration.js"%>
 </script>
 <div class="container">
 
     <form:form method="POST" modelAttribute="userForm" class="form-signin">
         <h2 class="form-signin-heading">Create your account</h2>
-        <spring:bind path="username">
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <form:input type="text" path="username" class="form-control" placeholder="Username"
-                            autofocus="true"></form:input>
-                <form:errors path="username"></form:errors>
+                            autofocus="true"/>
+                <form:errors path="username"/>
             </div>
-        </spring:bind>
 
-        <spring:bind path="password">
             <div class="form-group ${status.error ? 'has-error' : ''}">
-                <form:input type="password" path="password" class="form-control" placeholder="Password"></form:input>
-                <form:errors path="password"></form:errors>
+                <form:input type="password" path="password" class="form-control" placeholder="Password"/>
+                <form:errors path="password"/>
             </div>
-        </spring:bind>
 
-        <spring:bind path="passwordConfirm">
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <form:input type="password" path="passwordConfirm" class="form-control"
-                            placeholder="Confirm your password"></form:input>
-                <form:errors path="passwordConfirm"></form:errors>
+                            placeholder="Confirm your password"/>
+                <form:errors path="passwordConfirm"/>
             </div>
-        </spring:bind>
+
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     </form:form>

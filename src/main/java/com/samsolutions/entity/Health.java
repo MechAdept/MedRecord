@@ -7,11 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "health", schema = "medrecord")
-public class Health {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Health extends Essential{
     @JoinColumn(referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.ALL)
     private User patient;
@@ -20,14 +16,6 @@ public class Health {
     private String photo;
     @Column(name = "birth")
     private Date birth;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getPhoto() {
         return photo;

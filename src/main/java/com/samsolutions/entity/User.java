@@ -7,11 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user", schema = "medrecord")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends Essential{
     @Column(name = "username")
     private String username;
     @Column(name = "password")
@@ -22,15 +18,6 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -56,29 +43,6 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-//    public Health getHealth() {
-//        return health;
-//    }
-//
-//    public void setHealth(Health health) {
-//        this.health = health;
-//    }
-//
-//    public Ticket getTicket_doctor() {
-//        return ticket_doctor;
-//    }
-//
-//    public void setTicket_doctor(Ticket ticket_doctor) {
-//        this.ticket_doctor = ticket_doctor;
-//    }
-//
-//    public Ticket getTicket_patient() {
-//        return ticket_patient;
-//    }
-//
-//    public void setTicket_patient(Ticket ticket_patient) {
-//        this.ticket_patient = ticket_patient;
-//    }
 
     public Set<Role> getRoles() {
         return roles;

@@ -1,17 +1,12 @@
 package com.samsolutions.entity;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "ticket", schema = "medrecord")
-public class Ticket {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Ticket extends Essential {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private User patient;
@@ -21,23 +16,17 @@ public class Ticket {
     private User doctor;
 
     @Column(name = "datetime")
-    private Timestamp datetime;
+//    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime datetime;
+
     @Column(name = "attendance")
     private Boolean attendance;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Timestamp getDatetime() {
+    public LocalDateTime getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Timestamp datetime) {
+    public void setDatetime(LocalDateTime datetime) {
         this.datetime = datetime;
     }
 
