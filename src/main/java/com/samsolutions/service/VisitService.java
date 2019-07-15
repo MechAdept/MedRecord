@@ -1,10 +1,19 @@
 package com.samsolutions.service;
 
-import com.samsolutions.entity.User;
-import com.samsolutions.entity.Visit;
+import com.samsolutions.dto.VisitDTO;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+
+@Service(value = "visitService")
 public interface VisitService {
-    Visit findById(Long id);
+    VisitDTO findVisitById(Long id);
+
+    void update(VisitDTO ticketDTO);
+
+    void save(VisitDTO ticketDTO);
+
+    List<VisitDTO> getvisits();
+
+    void deleteVisit(Long id);
 }

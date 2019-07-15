@@ -1,5 +1,8 @@
 package com.samsolutions.service.impl;
 
+import com.samsolutions.converter.DTOConverter;
+import com.samsolutions.converter.VisitConverter;
+import com.samsolutions.dto.VisitDTO;
 import com.samsolutions.entity.Visit;
 import com.samsolutions.repository.VisitRepository;
 import com.samsolutions.service.VisitService;
@@ -7,14 +10,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service("VisitService")
+import java.util.List;
+
+@Service
 public class VisitServiceImpl implements VisitService {
+
     @Autowired
-    @Qualifier(value = "visitRepository")
     private VisitRepository visitRepository;
 
+    DTOConverter<Visit, VisitDTO> converter = new VisitConverter();
+
     @Override
-    public Visit findById(Long id) {
-        return null;
+    public void update(VisitDTO visitDTO) {
+    }
+
+    @Override
+    public void save(VisitDTO visitDTO) {
+        Visit visit = converter.DTOToEntity(visitDTO);
+        visitRepository.save(visit);
+    }
+
+    @Override
+    public List<VisitDTO> getvisits() {
+        return converter.EListToDTO(visitRepository.findAll());
+    }
+
+    @Override
+    public void deleteVisit(Long id) {
+        visitRepository.delete(id);
+    }
+
+    @Override
+    public VisitDTO findVisitById(Long id) {
+        return converter.EntityToDTO(visitRepository.findOne(id));
     }
 }

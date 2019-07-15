@@ -1,10 +1,11 @@
 package com.samsolutions.service.impl;
 
+import com.samsolutions.converter.DTOConverter;
+import com.samsolutions.converter.RoleConverter;
 import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.entity.Role;
 import com.samsolutions.repository.RoleRepository;
 import com.samsolutions.service.RoleService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,36 +19,34 @@ public class RoleServiceImpl implements RoleService {
     @Qualifier("roleRepository")
     private RoleRepository roleRepository;
 
+    private DTOConverter<Role,RoleDTO> converter= new RoleConverter();
+
     @Override
-    public RoleDTO save(RoleDTO roleDTO) {
-        Role roleEntity = new Role();
-        BeanUtils.copyProperties(roleDTO, roleEntity);
-        roleEntity = roleRepository.save(roleEntity);
-        BeanUtils.copyProperties(roleEntity, roleDTO);
-        return roleDTO;
+    public void save(RoleDTO roleDTO) {
+        Role role = converter.DTOToEntity(roleDTO);
+        roleRepository.save(role);
     }
 
     @Override
     @Transactional(readOnly = true)
     public RoleDTO findRoleById(Long id) {
-        RoleDTO roleDTO = new RoleDTO();
-        Role role = roleRepository.findOne(id);
-        BeanUtils.copyProperties(role, roleDTO);
-        return roleDTO;
+        return converter.EntityToDTO(roleRepository.findOne(id));
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Role findRoleByName(String name) {
-        return findRoleByName(name);
+    public List<RoleDTO> getRoles() {
+        return  converter.EListToDTO(roleRepository.findAll());
     }
 
     @Override
-    public List<Role> getRoles() {
-        return  roleRepository.findAll();
+    @Transactional
+    public void update(RoleDTO roleDTO) {
+        Role role =  converter.DTOToEntity(roleDTO);
+        roleRepository.updateProduct(role.getId(),role.getName());
     }
 
     @Override
+    @Transactional
     public void deleteRole(Long id) {
         roleRepository.delete(id);
     }

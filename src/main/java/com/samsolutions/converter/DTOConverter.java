@@ -2,11 +2,16 @@ package com.samsolutions.converter;
 
 import java.util.List;
 
-public interface DTOConverter<A,B> {
-    public B EntityToDTO(A entity);
-    public A DTOToEntity(B dto);
-    public List<B> EListToDTO(List<A> entityList);
-    public List<A> DTOListToEntity(List<B> dtoList);
-    public String DTOToJSON(B dto);
-    public B JSONToDTO (String json);
+public interface DTOConverter<A, B> {
+    B EntityToDTO(A entity);
+
+    A DTOToEntity(B dto);
+
+    List<B> EListToDTO(List<A> entityList);
+
+    List<A> DTOListToEntity(List<B> dtoList);
+
+    String DTOToJSON(B dto);
+
+    B JSONToDTO(String json);
 }

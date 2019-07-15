@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>AdminPanel</title>
+    <title>RoleCrud</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -20,30 +20,42 @@
 </head>
 
 <body>
-<a href="/adminpanel/role"  class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
+<a href="/adminpanel/role" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
 <a href="/adminpanel/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Пользователи</a>
 <a href="/adminpanel/ticket" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Талоны</a>
 <a href="/adminpanel/visit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Посещения</a>
 <a href="/adminpanel/health" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Карты здоровья</a>
 <br>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">id</th>
+        <th scope="col">username</th>
+        <th scope="col">action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${roleDTOList}" var="role">
+        <tr>
+            <th scope="row">${role.id}</th>
+            <th scope="row">${role.name}</th>
+                <%--        <td><input type="text"${role.name}" value="></td>--%>
+            <td><a href="/adminpanel/role/delete/${role.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+            </td>
+            <td><a href="/adminpanel/role/update/${role.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
+            </td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+<form:form method="POST" action="/adminpanel/role/create" modelAttribute="roleDTOForm">
+    <table>
+        <tr>
+            <td><form:label path="name">Name</form:label></td>
+            <td><form:input path="name"/></td>
+            <td><input type="submit" value="Create role"/></td>
+        </tr>
+    </table>
+</form:form>
 </body>
 </html>
-
-
-<%--<script type="text/javascript">--%>
-<%--    $(function() {--%>
-<%--        $('a').on('click', function(e){--%>
-<%--            e.preventDefault();--%>
-<%--            $('div').show().not($(this).data('rel')).hide();--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>
-
-<%--</div>--%>
-<%--<a href="" data-rel=".nomer1">Фильтр1</a>--%>
-<%--<a href="" data-rel=".nomer2">Фильтр2</a>--%>
-
-<%--<div class="nomer1" >КОНТЕНТ, группа 1</div>--%>
-<%--<div class="nomer1" >КОНТЕНТ, группа 1</div>--%>
-<%--<div class="nomer2" >КОНТЕНТ, группа 2</div>--%>
-<%--</div>--%>

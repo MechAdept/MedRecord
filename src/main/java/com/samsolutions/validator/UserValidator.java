@@ -1,16 +1,12 @@
 package com.samsolutions.validator;
 
 import com.samsolutions.dto.UserDTO;
-import com.samsolutions.entity.User;
 import com.samsolutions.service.UserService;
-import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import java.util.Collections;
 
 @Component
 public class UserValidator implements Validator {

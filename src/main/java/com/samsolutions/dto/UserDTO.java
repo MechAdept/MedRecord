@@ -1,15 +1,24 @@
 package com.samsolutions.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.samsolutions.entity.Role;
 
 import java.util.Objects;
 import java.util.Set;
 
-public class UserDTO extends DTOEssential{
+public class UserDTO {
+    @JsonProperty(value = "id")
+    Long id;
+
+    @JsonProperty(value = "username")
     private String username;
+    @JsonProperty(value = "password")
     private String password;
+    @JsonIgnore
     private String passwordConfirm;
+    @JsonProperty(value = "roles")
     private Set<Role> roles;
 
     public UserDTO(Long id, String username, String password, String passwordConfirm, Set<Role> roles) {
@@ -18,6 +27,14 @@ public class UserDTO extends DTOEssential{
         this.password = password;
         this.passwordConfirm = passwordConfirm;
         this.roles = roles;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public UserDTO() {

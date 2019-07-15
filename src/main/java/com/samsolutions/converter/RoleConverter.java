@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoleConverter implements DTOConverter<Role, RoleDTO>{
+public class RoleConverter implements DTOConverter<Role, RoleDTO> {
     @Override
     public RoleDTO EntityToDTO(Role role) {
         RoleDTO roleDTO = new RoleDTO();
@@ -21,14 +21,14 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO>{
     @Override
     public Role DTOToEntity(RoleDTO roleDTO) {
         Role role = new Role();
-        BeanUtils.copyProperties(roleDTO,role );
+        BeanUtils.copyProperties(roleDTO, role);
         return role;
     }
 
     @Override
-    public List<RoleDTO> EListToDTO(List<Role> roleList) {
+    public List<RoleDTO> EListToDTO(List<Role> entityList) {
         List<RoleDTO> roleDTOList = new ArrayList<>();
-        for (Role source : roleList) {
+        for (Role source : entityList) {
             RoleDTO target = new RoleDTO();
             BeanUtils.copyProperties(source, target);
             roleDTOList.add(target);

@@ -6,17 +6,21 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "ticket", schema = "medrecord")
-public class Ticket extends Essential {
+public class Ticket{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    @JoinColumn(name = "patient", referencedColumnName = "id")
     private User patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    @JoinColumn(name = "doctor", referencedColumnName = "id")
     private User doctor;
 
     @Column(name = "datetime")
-//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime datetime;
 
     @Column(name = "attendance")

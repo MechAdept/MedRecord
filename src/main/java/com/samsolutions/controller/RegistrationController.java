@@ -1,6 +1,10 @@
 package com.samsolutions.controller;
 
+import com.samsolutions.converter.DTOConverter;
+import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.UserDTO;
+import com.samsolutions.entity.Role;
+import com.samsolutions.entity.User;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.SecurityService;
 import com.samsolutions.service.UserService;
@@ -15,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class UserController {
+public class RegistrationController {
 
+    private DTOConverter<User, UserDTO> converter;
     @Autowired
     private UserService userService;
 
@@ -47,7 +52,6 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-
         userService.save(userForm);
 
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());

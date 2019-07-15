@@ -1,17 +1,19 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.RoleDTO;
-import com.samsolutions.entity.Role;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface RoleService {
-    RoleDTO save(RoleDTO roleDTO);
-    RoleDTO findRoleById(Long id);
-    Role findRoleByName(String name);
+    void update(RoleDTO role);
 
-    List<Role> getRoles();
+    void save(RoleDTO role);
+
+    RoleDTO findRoleById(Long id);
+
+    List<RoleDTO> getRoles();
+
     void deleteRole(Long id);
 }

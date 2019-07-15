@@ -1,34 +1,31 @@
-package com.samsolutions.entity;
+package com.samsolutions.dto;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.samsolutions.entity.Ticket;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
-@Table(name = "visit", schema = "medrecord")
-public class Visit{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class VisitDTO {
+    @JsonProperty(value = "id")
     Long id;
 
-    @Column(name = "datetime")
+    @JsonProperty(value = "datetime")
     private LocalDateTime datetime;
 
-    @Column(name="complaint")
+    @JsonProperty(value = "complaint")
     private String complaint;
 
-    @Column(name="examination")
+    @JsonProperty(value = "examination")
     private String examination;
 
-    @Column(name="diagnosis")
+    @JsonProperty(value = "diagnosis")
     private String diagnosis;
 
-    @Column(name="treatment")
+    @JsonProperty(value = "treatment")
     private String treatment;
 
-    @JoinColumn(name = "ticket",referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @JsonProperty(value = "ticket")
     private Ticket ticket;
 
     public Long getId() {
@@ -47,7 +44,6 @@ public class Visit{
         this.datetime = datetime;
     }
 
-    //    @Column(name = "complaint", nullable = true, length = -1)
     public String getComplaint() {
         return complaint;
     }
@@ -56,7 +52,6 @@ public class Visit{
         this.complaint = complaint;
     }
 
-//    @Column(name = "examination", nullable = true, length = -1)
     public String getExamination() {
         return examination;
     }
@@ -65,7 +60,6 @@ public class Visit{
         this.examination = examination;
     }
 
-//    @Column(name = "diagnosis", nullable = true, length = -1)
     public String getDiagnosis() {
         return diagnosis;
     }
@@ -94,18 +88,18 @@ public class Visit{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Visit visit = (Visit) o;
-        return id == visit.id &&
-                Objects.equals(ticket, visit.ticket) &&
-                Objects.equals(datetime, visit.datetime) &&
-                Objects.equals(complaint, visit.complaint) &&
-                Objects.equals(examination, visit.examination) &&
-                Objects.equals(diagnosis, visit.diagnosis) &&
-                Objects.equals(treatment, visit.treatment);
+        VisitDTO visitDTO = (VisitDTO) o;
+        return Objects.equals(id, visitDTO.id) &&
+                Objects.equals(datetime, visitDTO.datetime) &&
+                Objects.equals(complaint, visitDTO.complaint) &&
+                Objects.equals(examination, visitDTO.examination) &&
+                Objects.equals(diagnosis, visitDTO.diagnosis) &&
+                Objects.equals(treatment, visitDTO.treatment) &&
+                Objects.equals(ticket, visitDTO.ticket);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ticket, datetime, complaint, examination, diagnosis, treatment);
+        return Objects.hash(id, datetime, complaint, examination, diagnosis, treatment, ticket);
     }
 }
