@@ -1,28 +1,38 @@
 package com.samsolutions.entity;
 
+import org.checkerframework.common.aliasing.qual.Unique;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
+
 @Entity
-@Table(name = "role", schema = "MedRecord")
+@Table(name = "role", schema = "medrecord")
 public class Role {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    Long id;
+
     private String name;
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users;
 
-    @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
+    public Role(String name) {
+        this.name = name;
+    }
+
+    public Role() {
+    }
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name", nullable = true, length = 45)
     public String getName() {
         return name;
     }
@@ -31,21 +41,6 @@ public class Role {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return id == role.id &&
-                Objects.equals(name, role.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
-
-    @OneToMany(mappedBy = "role")
     public Set<User> getUsers() {
         return users;
     }
@@ -54,4 +49,23 @@ public class Role {
         this.users = users;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(id, role.id) &&
+                Objects.equals(name, role.name) &&
+                Objects.equals(users, role.users);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, users);
+    }
 }
