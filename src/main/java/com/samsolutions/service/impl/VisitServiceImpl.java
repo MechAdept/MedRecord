@@ -23,11 +23,6 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public List<VisitDTO> getVisits() {
-        return converter.EListToDTO(visitRepository.findAll());
-    }
-
-    @Override
     public void save(VisitDTO visitDTO) {
         Visit visit = converter.DTOToEntity(visitDTO);
         visitRepository.save(visit);
