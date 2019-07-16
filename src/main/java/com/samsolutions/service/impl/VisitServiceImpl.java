@@ -7,12 +7,13 @@ import com.samsolutions.entity.Visit;
 import com.samsolutions.repository.VisitRepository;
 import com.samsolutions.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class VisitServiceImpl implements VisitService {
+
     @Autowired
     private VisitRepository visitRepository;
 

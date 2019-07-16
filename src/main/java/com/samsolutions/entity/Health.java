@@ -13,7 +13,7 @@ public class Health{
     @Column(name = "id")
     Long id;
 
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "patient",referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.ALL)
     private User patient;
 

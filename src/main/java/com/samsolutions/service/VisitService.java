@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service(value = "visitService")
 public interface VisitService {
     VisitDTO findVisitById(Long id);
 

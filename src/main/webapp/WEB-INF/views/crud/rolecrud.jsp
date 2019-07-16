@@ -37,7 +37,7 @@
     <tbody>
     <c:forEach items="${roleDTOList}" var="role">
         <tr>
-            <th scope="row">${role.}</th>
+            <th scope="row">${role.id}</th>
             <th scope="row">${role.name}</th>
                 <%--        <td><input type="text"${role.name}" value="></td>--%>
             <td><a href="/adminpanel/role/delete/${role.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>

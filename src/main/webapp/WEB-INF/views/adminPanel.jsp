@@ -20,7 +20,7 @@
 </head>
 
 <body>
-<a href="/adminpanel/role" data-rel=".nomer1" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
+<a href="/adminpanel/role"  class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
 <a href="/adminpanel/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Пользователи</a>
 <a href="/adminpanel/ticket" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Талоны</a>
 <a href="/adminpanel/visit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Посещения</a>
@@ -28,3 +28,22 @@
 <br>
 </body>
 </html>
+
+
+<%--<script type="text/javascript">--%>
+<%--    $(function() {--%>
+<%--        $('a').on('click', function(e){--%>
+<%--            e.preventDefault();--%>
+<%--            $('div').show().not($(this).data('rel')).hide();--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
+
+<%--</div>--%>
+<%--<a href="" data-rel=".nomer1">Фильтр1</a>--%>
+<%--<a href="" data-rel=".nomer2">Фильтр2</a>--%>
+
+<%--<div class="nomer1" >КОНТЕНТ, группа 1</div>--%>
+<%--<div class="nomer1" >КОНТЕНТ, группа 1</div>--%>
+<%--<div class="nomer2" >КОНТЕНТ, группа 2</div>--%>
+<%--</div>--%>

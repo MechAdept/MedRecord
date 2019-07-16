@@ -27,7 +27,7 @@ public class Visit{
     @Column(name="treatment")
     private String treatment;
 
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "ticket",referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.ALL)
     private Ticket ticket;
 
