@@ -37,7 +37,9 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public List<TicketDTO> gettickets() {
+    public List<TicketDTO> getTickets() {
+        List<Ticket> userList= ticketRepository.findAll();
+        System.out.println("some test");
         return converter.EListToDTO(ticketRepository.findAll());
     }
 

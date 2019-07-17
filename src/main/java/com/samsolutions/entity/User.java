@@ -1,5 +1,7 @@
 package com.samsolutions.entity;
 
+import net.bytebuddy.build.Plugin;
+
 import javax.persistence.*;
 
 import java.util.Set;
@@ -17,12 +19,19 @@ public class User{
     private String username;
     @Column(name = "password")
     private String password;
+
     @Transient
     private String passwordConfirm;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+    private Set<Ticket> patientTicket;
+
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
+    private Set<Ticket> doctorTicket;
 
     public Long getId() {
         return id;
@@ -56,6 +65,21 @@ public class User{
         this.passwordConfirm = passwordConfirm;
     }
 
+    public Set<Ticket> getPatientTicket() {
+        return patientTicket;
+    }
+
+    public void setPatientTicket(Set<Ticket> patientTicket) {
+        this.patientTicket = patientTicket;
+    }
+
+    public Set<Ticket> getDoctorTicket() {
+        return doctorTicket;
+    }
+
+    public void setDoctorTicket(Set<Ticket> doctorTicket) {
+        this.doctorTicket = doctorTicket;
+    }
 
     public Set<Role> getRoles() {
         return roles;

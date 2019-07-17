@@ -18,7 +18,7 @@ public class VisitController {
     private VisitService visitService;
 
     @RequestMapping(value = "/adminpanel/visit/create", method = RequestMethod.POST)
-    public String visitCrud(@ModelAttribute(name = "visitDTO") VisitDTO visitDTO, Model model) {
+    public String visitCrud(@ModelAttribute(name = "visitDTO") VisitDTO visitDTO) {
         visitService.save(visitDTO);
         return "redirect: /adminpanel/visit";
     }
@@ -40,13 +40,13 @@ public class VisitController {
     }
 
     @RequestMapping(value = "adminpanel/visit/update", method = RequestMethod.POST)
-    public String visitUpdate(@ModelAttribute VisitDTO visitDTO, Model model) {
+    public String visitUpdate(@ModelAttribute VisitDTO visitDTO) {
         visitService.update(visitDTO);
         return "redirect: /adminpanel/visit";
     }
 
     @RequestMapping(value = "/adminpanel/visit/delete/{id}", method = RequestMethod.GET)
-    public String visitCrud(@PathVariable("id") Long id, Model model) {
+    public String visitCrud(@PathVariable("id") Long id) {
         visitService.deleteVisit(id);
         return "redirect: /adminpanel/visit";
     }

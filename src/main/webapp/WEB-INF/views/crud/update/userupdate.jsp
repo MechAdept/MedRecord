@@ -21,7 +21,29 @@
 </script>
 <a href="/adminpanel" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
 <br>
-
-ТЕХ РАБОТЫ)
+<form:form method = "POST" action = "/adminpanel/user/update" modelAttribute="userDTOForm">
+    <table>
+        <tr>
+            <td><form:hidden path = "id" value="${userDTO.id}"/></td>
+        </tr>
+        <tr>
+            <td>Старый username: ${userDTO.username}</td>
+            <td><form:input path = "username"/></td>
+        </tr>
+        <tr>
+            <td>Новый пароль, оставьте пустым если не хотите изменить</td>
+            <td><form:input path = "password"/></td>
+        </tr>
+        <tr>
+            <form:select path="roles" items="${roleDTOSet}" multiple="true" itemLabel="name"/>
+<%--            <form:checkboxes path="roles" items="${roleDTOSet}" itemLabel="name"/>--%>
+        </tr>
+        <tr>
+            <td colspan = "2">
+                <input type = "submit" value = "Submit"/>
+            </td>
+        </tr>
+    </table>
+</form:form>
 </body>
 </html>

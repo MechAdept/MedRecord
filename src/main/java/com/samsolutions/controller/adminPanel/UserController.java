@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -29,7 +30,7 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping(value = "/adminpanel/user/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute UserDTO userDTO, Model model) {
+    public String create(@ModelAttribute UserDTO userDTO) {
         userService.save(userDTO);
         return "redirect: /adminpanel/user";
     }
@@ -47,18 +48,19 @@ public class UserController {
         UserDTO userDTO = userService.findUserById(id);
         model.addAttribute("userDTOForm", new UserDTO());
         model.addAttribute("userDTO", userDTO);
+        model.addAttribute("roleDTOSet",new HashSet<>(roleService.getRoles()));
         return "crud/update/userupdate";
     }
 
-    @RequestMapping(value = "adminpanel/user/update/", method = RequestMethod.POST)
-    public String roleUpdate(@ModelAttribute UserDTO userDTO) {
+    @RequestMapping(value = "/adminpanel/user/update", method = RequestMethod.POST)
+    public String updatepost(@ModelAttribute UserDTO userDTO) {
         userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         userService.update(userDTO);
         return "redirect: /adminpanel/user";
     }
 
     @RequestMapping(value = "/adminpanel/user/delete/{id}", method = RequestMethod.GET)
-    public String roleCrud(@PathVariable("id") Long id, Model model) {
+    public String delete(@PathVariable("id") Long id) {
         userService.delete(id);
         return "redirect: /adminpanel/user";
     }

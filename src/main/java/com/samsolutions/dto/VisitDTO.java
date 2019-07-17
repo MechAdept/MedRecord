@@ -26,7 +26,7 @@ public class VisitDTO {
     private String treatment;
 
     @JsonProperty(value = "ticket")
-    private Ticket ticket;
+    private TicketDTO ticket;
 
     public Long getId() {
         return id;
@@ -76,11 +76,11 @@ public class VisitDTO {
         this.treatment = treatment;
     }
 
-    public Ticket getTicket() {
+    public TicketDTO getTicket() {
         return ticket;
     }
 
-    public void setTicket(Ticket ticket) {
+    public void setTicket(TicketDTO ticket) {
         this.ticket = ticket;
     }
 

@@ -19,13 +19,13 @@ public class RoleController {
     private RoleService roleService;
 
     @RequestMapping(value = "/adminpanel/role/create", method = RequestMethod.POST)
-    public String roleCrud(@ModelAttribute(name = "roleDTO") RoleDTO roleDTO, Model model) {
+    public String create(@ModelAttribute(name = "roleDTO") RoleDTO roleDTO) {
         roleService.save(roleDTO);
         return "redirect: /adminpanel/role";
     }
 
     @RequestMapping(value = "/adminpanel/role", method = RequestMethod.GET)
-    public String roleCrud(Model model) {
+    public String read(Model model) {
         List<RoleDTO> roleDTOList = roleService.getRoles();
         model.addAttribute("roleDTOForm", new RoleDTO());
         model.addAttribute("roleDTOList", roleDTOList);
@@ -33,21 +33,21 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/adminpanel/role/update/{id}", method = RequestMethod.GET)
-    public String roleUpdate(@PathVariable("id") Long id, Model model) {
+    public String update(@PathVariable("id") Long id, Model model) {
         RoleDTO roleDTO = roleService.findRoleById(id);
         model.addAttribute("roleDTO", roleDTO);
         model.addAttribute("roleDTOForm", new RoleDTO());
         return "crud/update/roleupdate";
     }
 
-    @RequestMapping(value = "adminpanel/roleupdate/action", method = RequestMethod.POST)
-    public String roleUpdate(@ModelAttribute RoleDTO roleDTO, Model model) {
+    @RequestMapping(value = "adminpanel/role/update", method = RequestMethod.POST)
+    public String update(@ModelAttribute RoleDTO roleDTO) {
         roleService.update(roleDTO);
         return "redirect: /adminpanel/role";
     }
 
     @RequestMapping(value = "/adminpanel/role/delete/{id}", method = RequestMethod.GET)
-    public String roleCrud(@PathVariable("id") Long id, Model model) {
+    public String delete(@PathVariable("id") Long id) {
         roleService.deleteRole(id);
         return "redirect: /adminpanel/role";
     }

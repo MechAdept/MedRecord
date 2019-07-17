@@ -21,7 +21,7 @@
 </script>
 <a href="/adminpanel" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
 <br>
-<form:form method = "POST" action = "/adminpanel/roleupdate/action" modelAttribute="roleDTO">
+<form:form method = "POST" action = "/adminpanel/role/update" modelAttribute="roleDTO">
     <table>
         <tr>
             <td><form:label path = "name">Name</form:label></td>

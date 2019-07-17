@@ -1,7 +1,9 @@
 package com.samsolutions.service.impl;
 
 import com.samsolutions.converter.DTOConverter;
+import com.samsolutions.converter.RoleConverter;
 import com.samsolutions.converter.UserConverter;
+import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.UserDTO;
 import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
@@ -25,7 +27,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-    DTOConverter<User, UserDTO> converter = new UserConverter();
+    DTOConverter<User, UserDTO> userConverter = new UserConverter();
+    DTOConverter<Role, RoleDTO> roleConverter = new RoleConverter();
 
     @Autowired
     @Qualifier("encoder")
@@ -33,17 +36,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(UserDTO userDTO) {
-        userRepository.updateUser(userDTO.getId(),userDTO.getUsername(),userDTO.getPassword(),new ArrayList<Role>(userDTO.getRoles()));
+        List<RoleDTO> roleList = null;
+
+        roleList.addAll(userDTO.getRoles());
+        userRepository.updateUser(userDTO.getId(),userDTO.getUsername(),userDTO.getPassword(),
+                new ArrayList<>(roleConverter.DTOListToEntity(roleList)));
     }
 
     @Override
     public List<UserDTO> getUsers() {
-        return converter.EListToDTO(userRepository.findAll());
+        return userConverter.EListToDTO(userRepository.findAll());
     }
 
     @Override
     public void save(UserDTO userDTO) {
-        User user = converter.DTOToEntity(userDTO);
+        User user = userConverter.DTOToEntity(userDTO);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles(new HashSet<>(roleRepository.findAll()));
         userRepository.save(user);
@@ -59,6 +66,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findUserById(Long id) {
-        return converter.EntityToDTO(userRepository.findOne(id));
+        return userConverter.EntityToDTO(userRepository.findOne(id));
     }
 }

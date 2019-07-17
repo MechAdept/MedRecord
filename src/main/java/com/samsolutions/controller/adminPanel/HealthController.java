@@ -18,7 +18,7 @@ public class HealthController {
     private HealthService healthService;
 
     @RequestMapping(value = "/adminpanel/health/create", method = RequestMethod.POST)
-    public String healthCrud(@ModelAttribute(name = "healthDTO") HealthDTO healthDTO, Model model) {
+    public String healthCrud(@ModelAttribute(name = "healthDTO") HealthDTO healthDTO) {
         healthService.save(healthDTO);
         return "redirect: /adminpanel/health";
     }
@@ -40,13 +40,13 @@ public class HealthController {
     }
 
     @RequestMapping(value = "adminpanel/health/update", method = RequestMethod.POST)
-    public String healthUpdate(@ModelAttribute HealthDTO healthDTO, Model model) {
+    public String healthUpdate(@ModelAttribute HealthDTO healthDTO) {
         healthService.update(healthDTO);
         return "redirect: /adminpanel/health";
     }
 
     @RequestMapping(value = "/adminpanel/health/delete/{id}", method = RequestMethod.GET)
-    public String healthCrud(@PathVariable("id") Long id, Model model) {
+    public String healthCrud(@PathVariable("id") Long id) {
         healthService.deleteHealth(id);
         return "redirect: /adminpanel/health";
     }

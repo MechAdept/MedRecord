@@ -19,7 +19,7 @@ public class RoleDTO {
     @JsonProperty(value = "name")
     private String name;
     @JsonIgnore
-    private Set<User> users;
+    private Set<UserDTO> users;
 
     public Long getId() {
         return id;
@@ -37,11 +37,11 @@ public class RoleDTO {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
+    public Set<UserDTO> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(Set<UserDTO> users) {
         this.users = users;
     }
 

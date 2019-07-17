@@ -30,18 +30,20 @@
     <thead>
     <tr>
         <th scope="col">id</th>
-        <th scope="col">username</th>
-        <th scope="col">action</th>
+        <th scope="col">patient</th>
+        <th scope="col">doctor</th>
+        <th scope="col">datetime</th>
+        <th scope="col">attendance</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${ticketDTOList}" var="ticket">
         <tr>
             <th scope="row">${ticket.id}</th>
-            <th scope="row">${ticket.user}</th>
-            <th scope="row">${ticket.birth}</th>
-                <%--            <th scope="row">${ticket.photo}</th>--%>
-                <%--        <td><input type="text"${role.name}" value="></td>--%>
+            <th scope="row">${ticket.patient.id}</th>
+            <th scope="row">${ticket.doctor.id}</th>
+            <th scope="row">${ticket.datetime}</th>
+            <th scope="row">${ticket.attendance.booleanValue()}</th>
             <td><a href="/adminpanel/ticket/delete/${ticket.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
             </td>
             <td><a href="/adminpanel/ticket/update/${ticket.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
@@ -56,7 +58,6 @@
             <td><form:hidden path="attendance" value="false"/></td>
             <td><form:input path="datetime" label="birth"/></td>
             <td><form:input path="doctor" label="birth"/></td>
-                <%--            <td><form:input path="photo" label="link"/></td>--%>
             <td><input type="submit" value="Create ticket"/></td>
         </tr>
     </table>

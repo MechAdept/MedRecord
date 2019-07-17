@@ -30,21 +30,24 @@
     <thead>
     <tr>
         <th scope="col">id</th>
+        <th scope="col">ticket id</th>
         <th scope="col">complaint</th>
         <th scope="col">examination</th>
         <th scope="col">diagnosis</th>
         <th scope="col">treatment</th>
+        <th scope="col">datetime</th>
+        <th scope="col">action</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${visitDTOList}" var="visit">
         <tr>
             <th scope="row">${visit.id}</th>
+            <th scope="row">${visit.ticket.id}</th>
             <th scope="row">${visit.complaint}</th>
             <th scope="row">${visit.examination}</th>
             <th scope="row">${visit.diagnosis}</th>
             <th scope="row">${visit.treatment}</th>
-            <th scope="row">${visit.ticket}</th>
             <th scope="row">${visit.datetime}</th>
                 <%--            <th scope="row">${visit.photo}</th>--%>
                 <%--        <td><input type="text"${role.name}" value="></td>--%>
@@ -56,18 +59,48 @@
     </c:forEach>
     </tbody>
 </table>
+<%--<form:form method="POST" action="/adminpanel/visit/create" modelAttribute="visitDTOForm">--%>
+<%--    <table>--%>
+<%--        <tr>--%>
+<%--            <div class="form-group">--%>
+<%--                <label for="complaint">Complaint:</label>--%>
+<%--                <td><form:textarea path="complaint" label="complaint" cssClass="form-control"/></td>--%>
+<%--            </div>--%>
+<%--            <td><form:input path="ticket" label="birth"/></td>--%>
+<%--            <td><form:input path="datetime" label="datetime"/></td>--%>
+<%--            <td><form:textarea path="complaint" label="complaint" cssClass="form-control"/></td>--%>
+<%--            <td><form:input path="examination" label="examination"/></td>--%>
+<%--            <td><form:input path="diagnosis" label="diagnosis"/></td>--%>
+<%--            <td><form:input path="treatment" label="treatment"/></td>--%>
+<%--            <td><input type="submit" value="Create visit"/></td>--%>
+<%--        </tr>--%>
+<%--    </table>--%>
+<%--</form:form>--%>
+
 <form:form method="POST" action="/adminpanel/visit/create" modelAttribute="visitDTOForm">
-    <table>
-        <tr>
-            <td><form:input path="ticket" label="birth"/></td>
-            <td><form:input path="datetime" label="datetime"/></td>
-            <td><form:input path="complaint" label="complaint"/></td>
-            <td><form:input path="examination" label="complaint"/></td>
-            <td><form:input path="diagnosis" label="complaint"/></td>
-            <td><form:input path="treatment" label="complaint"/></td>
-            <td><input type="submit" value="Create visit"/></td>
-        </tr>
-    </table>
+    <div class="form-group">
+        <form:label path="ticket">ticket ID :</form:label>
+        <td><form:input path="ticket"/></td>
+        <form:label path="datetime">datetime(2010-03-01T12:01:02):</form:label>
+        <td><form:input path="datetime"/></td>
+        <br>
+        <form:label path="complaint">Complaint:</form:label>
+        <td><form:textarea path="complaint" rows="5" cssClass="w-25 form-control border border-dark"/></td>
+            <%--    </div>--%>
+            <%--    <div class="form-group">--%>
+        <form:label path="examination">Examination:</form:label>
+        <td><form:textarea path="examination" rows="5" cssClass="w-25 form-control border border-dark"/></td>
+            <%--    </div>--%>
+            <%--    <div class="form-group">--%>
+        <form:label path="diagnosis">Diagnosis:</form:label>
+        <td><form:textarea path="diagnosis" rows="5" cssClass="w-25 form-control border border-dark"/></td>
+            <%--    </div>--%>
+            <%--    <div class="form-group">--%>
+        <form:label path="treatment">Treatment:</form:label>
+        <td><form:textarea path="treatment" rows="5" cssClass="w-25 form-control border border-dark"/></td>
+    <td><input type="submit" value="Create visit"/></td>
+    </div>
 </form:form>
+
 </body>
 </html>

@@ -18,14 +18,14 @@ public class TicketController {
     private TicketService ticketService;
 
     @RequestMapping(value = "/adminpanel/ticket/create", method = RequestMethod.POST)
-    public String ticketCrud(@ModelAttribute(name = "ticketDTO") TicketDTO ticketDTO, Model model) {
+    public String ticketCrud(@ModelAttribute(name = "ticketDTO") TicketDTO ticketDTO) {
         ticketService.save(ticketDTO);
         return "redirect: /adminpanel/ticket";
     }
 
     @RequestMapping(value = "/adminpanel/ticket", method = RequestMethod.GET)
     public String ticketCrud(Model model) {
-        List<TicketDTO> ticketDTOList = ticketService.gettickets();
+        List<TicketDTO> ticketDTOList = ticketService.getTickets();
         model.addAttribute("ticketDTOForm", new TicketDTO());
         model.addAttribute("ticketDTOList", ticketDTOList);
         return "crud/ticketcrud";
@@ -40,13 +40,13 @@ public class TicketController {
     }
 
     @RequestMapping(value = "adminpanel/ticket/update", method = RequestMethod.POST)
-    public String ticketUpdate(@ModelAttribute TicketDTO ticketDTO, Model model) {
+    public String ticketUpdate(@ModelAttribute TicketDTO ticketDTO) {
         ticketService.update(ticketDTO);
         return "redirect: /adminpanel/ticket";
     }
 
     @RequestMapping(value = "/adminpanel/ticket/delete/{id}", method = RequestMethod.GET)
-    public String ticketCrud(@PathVariable("id") Long id, Model model) {
+    public String ticketCrud(@PathVariable("id") Long id) {
         ticketService.deleteTicket(id);
         return "redirect: /adminpanel/ticket";
     }

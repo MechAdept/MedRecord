@@ -1,22 +1,24 @@
 package com.samsolutions.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "ticket", schema = "medrecord")
-public class Ticket{
+public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient", referencedColumnName = "id")
     private User patient;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor", referencedColumnName = "id")
     private User doctor;
 
@@ -24,6 +26,7 @@ public class Ticket{
     private LocalDateTime datetime;
 
     @Column(name = "attendance")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean attendance;
 
     public LocalDateTime getDatetime() {

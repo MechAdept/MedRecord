@@ -16,6 +16,11 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     @Query("UPDATE Role r SET r.name = ?2 WHERE r.id = ?1")
     void updateProduct(Long id, String name);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE Role r SET r.name = ?2 WHERE r.id = ?1")
+    void updateProduct(Long id, String name, String password);
+
 //    Page<Role> getAllById(Pageable pageable);
 
 //    Page<Role> findAllById(Pageable pageable);
