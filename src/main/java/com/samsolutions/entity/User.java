@@ -179,6 +179,14 @@ public class User {
     }
 
     @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
@@ -198,6 +206,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, passwordConfirm, roles, patientTicket, doctorTicket);
+        return Objects.hash(id, username);
     }
 }
