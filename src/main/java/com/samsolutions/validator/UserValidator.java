@@ -8,18 +8,27 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+/**
+ * Validator for registration form.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.validator
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
+
 @Component
 public class UserValidator implements Validator {
     @Autowired
     private UserService userService;
 
     @Override
-    public boolean supports(Class<?> aClass) {
+    public boolean supports(final Class<?> aClass) {
         return UserDTO.class.equals(aClass);
     }
 
     @Override
-    public void validate(Object o, Errors errors) {
+    public void validate(final Object o, final Errors errors) {
 //        User user = (User) o;
         UserDTO user = (UserDTO) o;
 

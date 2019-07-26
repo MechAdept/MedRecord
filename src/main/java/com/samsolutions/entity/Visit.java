@@ -1,99 +1,191 @@
 package com.samsolutions.entity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Visit Entity.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.entity
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
+
 @Entity
-@Table(name = "visit", schema = "medrecord")
-public class Visit{
+@Table(name = "visit")
+public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @Column(name = "datetime")
     private LocalDateTime datetime;
 
-    @Column(name="complaint")
+    @Column(name = "complaint")
     private String complaint;
 
-    @Column(name="examination")
+    @Column(name = "examination")
     private String examination;
 
-    @Column(name="diagnosis")
+    @Column(name = "diagnosis")
     private String diagnosis;
 
-    @Column(name="treatment")
+    @Column(name = "treatment")
     private String treatment;
 
-    @JoinColumn(name = "ticket",referencedColumnName = "id")
+    @JoinColumn(name = "ticket", referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.ALL)
     private Ticket ticket;
 
+    /**
+     * Returns id.
+     *
+     * @return Long.
+     */
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    /**
+     * Sets id.
+     *
+     * @param id Long to be set.
+     */
+    public void setId(final Long id) {
         this.id = id;
     }
 
+    /**
+     * Returns datetime.
+     *
+     * @return LocalDateTime.
+     */
     public LocalDateTime getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(LocalDateTime datetime) {
+    /**
+     * Sets datetime.
+     *
+     * @param datetime LocalDateTime to be set.
+     */
+    public void setDatetime(final LocalDateTime datetime) {
         this.datetime = datetime;
     }
 
+    /**
+     * Returns complaint.
+     *
+     * @return String.
+     */
     //    @Column(name = "complaint", nullable = true, length = -1)
     public String getComplaint() {
         return complaint;
     }
 
-    public void setComplaint(String complaint) {
+    /**
+     * Returns complaint.
+     *
+     * @param complaint String to be set.
+     */
+    public void setComplaint(final String complaint) {
         this.complaint = complaint;
     }
 
-//    @Column(name = "examination", nullable = true, length = -1)
+    /**
+     * Returns examination.
+     *
+     * @return String.
+     */
+    //    @Column(name = "examination", nullable = true, length = -1)
     public String getExamination() {
         return examination;
     }
 
-    public void setExamination(String examination) {
+    /**
+     * Sets examination.
+     *
+     * @param examination String to be set.
+     */
+    public void setExamination(final String examination) {
         this.examination = examination;
     }
 
-//    @Column(name = "diagnosis", nullable = true, length = -1)
+    /**
+     * Returns diagnosis.
+     *
+     * @return String.
+     */
+    //    @Column(name = "diagnosis", nullable = true, length = -1)
     public String getDiagnosis() {
         return diagnosis;
     }
 
-    public void setDiagnosis(String diagnosis) {
+    /**
+     * Sets diagnosis.
+     *
+     * @param diagnosis String to be set.
+     */
+    public void setDiagnosis(final String diagnosis) {
         this.diagnosis = diagnosis;
     }
 
+    /**
+     * Returns treatment.
+     *
+     * @return String.
+     */
     public String getTreatment() {
         return treatment;
     }
 
-    public void setTreatment(String treatment) {
+    /**
+     * Sets treatment.
+     *
+     * @param treatment String to be set.
+     */
+    public void setTreatment(final String treatment) {
         this.treatment = treatment;
     }
 
+    /**
+     * Returns ticket.
+     *
+     * @return Ticket.
+     */
     public Ticket getTicket() {
         return ticket;
     }
 
-    public void setTicket(Ticket ticket) {
+    /**
+     * Sets ticket.
+     *
+     * @param ticket Ticket to be set.
+     */
+    public void setTicket(final Ticket ticket) {
         this.ticket = ticket;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Visit visit = (Visit) o;
         return id == visit.id &&
                 Objects.equals(ticket, visit.ticket) &&

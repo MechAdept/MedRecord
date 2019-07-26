@@ -26,41 +26,43 @@
 <a href="/adminpanel/visit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Посещения</a>
 <a href="/adminpanel/health" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Карты здоровья</a>
 <br>
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">id</th>
+        <th scope="col">username</th>
+        <th scope="col">roles</th>
+        <th scope="col">action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${userDTOList}" var="user">
         <tr>
-            <th scope="col">id</th>
-            <th scope="col">username</th>
-            <th scope="col">roles</th>
-            <th scope="col">action</th>
+            <th scope="row">${user.id}</th>
+            <th scope="row">${user.username}</th>
+            <th scope="row">
+                <c:forEach items="${user.roles}" var="role">
+                    ${role.name},
+                </c:forEach>
+            </th>
+            <td><a href="/adminpanel/user/delete/${user.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+            </td>
+            <td><a href="/adminpanel/user/update/${user.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
+            </td>
         </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${userDTOList}" var="user">
-            <tr>
-                <th scope="row">${user.id}</th>
-                <th scope="row">${user.username}</th>
-                <th scope="row">
-                        <c:forEach items="${user.roles}" var="role">
-                            ${role.name},
-                        </c:forEach>
-                </th>
-                <td><a href="/adminpanel/user/delete/${user.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a></td>
-                <td><a href="/adminpanel/user/update/${user.id}" class="btn btn-link" role="button" aria-pressed="true">update</a></td>
-            </tr>
-        </c:forEach>
-        </tbody>
+    </c:forEach>
+    </tbody>
+</table>
+<form:form method="POST" action="/adminpanel/user/create" modelAttribute="userDTO">
+    <table>
+        <tr>
+            <td><form:label path="username">Username</form:label></td>
+            <td><form:input path="username"/></td>
+            <td><form:label path="password">Password</form:label></td>
+            <td><form:input path="password"/></td>
+            <td><input type="submit" value="Create user"/></td>
+        </tr>
     </table>
-    <form:form method="POST" action="/adminpanel/user/create" modelAttribute="userDTO">
-        <table>
-            <tr>
-                <td><form:label path="username">Username</form:label></td>
-                <td><form:input path="username"/></td>
-                <td><form:label path="password">Password</form:label></td>
-                <td><form:input path="password"/></td>
-                <td><input type="submit" value="Create user"/></td>
-            </tr>
-        </table>
-    </form:form>
+</form:form>
 </body>
 </html>

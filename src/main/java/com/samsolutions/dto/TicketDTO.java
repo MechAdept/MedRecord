@@ -5,9 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * DataTransferObject for Ticket entity.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.dto
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
+
 public class TicketDTO {
     @JsonProperty(value = "id")
-    Long id;
+    private Long id;
 
     @JsonProperty(value = "patient")
     private UserDTO patient;
@@ -15,56 +24,110 @@ public class TicketDTO {
     @JsonProperty(value = "doctor")
     private UserDTO doctor;
 
-    @JsonProperty(value="datetime")
+    @JsonProperty(value = "datetime")
     private LocalDateTime datetime;
 
-    @JsonProperty(value="attendance")
+    @JsonProperty(value = "attendance")
     private Boolean attendance;
 
+    /**
+     * Returns id.
+     *
+     * @return Long.
+     */
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    /**
+     * Sets userService.
+     *
+     * @param id Long to be set.
+     */
+    public void setId(final Long id) {
         this.id = id;
     }
 
+    /**
+     * Returns patient.
+     *
+     * @return UserDTO.
+     */
     public UserDTO getPatient() {
         return patient;
     }
 
-    public void setPatient(UserDTO patient) {
+    /**
+     * Sets patient.
+     *
+     * @param patient UserDTO to be set.
+     */
+    public void setPatient(final UserDTO patient) {
         this.patient = patient;
     }
 
+    /**
+     * Returns doctor.
+     *
+     * @return UserDTO.
+     */
     public UserDTO getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(UserDTO doctor) {
+    /**
+     * Sets doctor.
+     *
+     * @param doctor UserDTO to be set.
+     */
+    public void setDoctor(final UserDTO doctor) {
         this.doctor = doctor;
     }
 
+    /**
+     * Returns datetime.
+     *
+     * @return LocalDateTime.
+     */
     public LocalDateTime getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(LocalDateTime datetime) {
+    /**
+     * Sets datetime.
+     *
+     * @param datetime LocalDateTime to be set.
+     */
+    public void setDatetime(final LocalDateTime datetime) {
         this.datetime = datetime;
     }
 
+    /**
+     * Returns attendance.
+     *
+     * @return Boolean.
+     */
     public Boolean getAttendance() {
         return attendance;
     }
 
-    public void setAttendance(Boolean attendance) {
+    /**
+     * Sets attendance.
+     *
+     * @param attendance Boolean to be set.
+     */
+    public void setAttendance(final Boolean attendance) {
         this.attendance = attendance;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TicketDTO ticketDTO = (TicketDTO) o;
         return Objects.equals(id, ticketDTO.id) &&
                 Objects.equals(patient, ticketDTO.patient) &&

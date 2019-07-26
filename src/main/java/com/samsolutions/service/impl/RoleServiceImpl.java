@@ -13,41 +13,50 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implements the methods defined in the role service.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.service.impl
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
+
 @Service("RoleService")
 public class RoleServiceImpl implements RoleService {
     @Autowired
     @Qualifier("roleRepository")
     private RoleRepository roleRepository;
 
-    private DTOConverter<Role,RoleDTO> converter= new RoleConverter();
+    private DTOConverter<Role, RoleDTO> converter = new RoleConverter();
 
     @Override
-    public void save(RoleDTO roleDTO) {
-        Role role = converter.DTOToEntity(roleDTO);
+    public void save(final RoleDTO roleDTO) {
+        Role role = converter.dtoToEntity(roleDTO);
         roleRepository.save(role);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RoleDTO findRoleById(Long id) {
-        return converter.EntityToDTO(roleRepository.findOne(id));
+    public RoleDTO findRoleById(final Long id) {
+        return converter.entityToDTO(roleRepository.findOne(id));
     }
 
     @Override
     public List<RoleDTO> getRoles() {
-        return  converter.EListToDTO(roleRepository.findAll());
+        return converter.entitiesToDtoList(roleRepository.findAll());
     }
 
     @Override
     @Transactional
-    public void update(RoleDTO roleDTO) {
-        Role role =  converter.DTOToEntity(roleDTO);
-        roleRepository.updateProduct(role.getId(),role.getName());
+    public void update(final RoleDTO roleDTO) {
+        Role role = converter.dtoToEntity(roleDTO);
+        roleRepository.updateRole(role.getId(), role.getName());
     }
 
     @Override
     @Transactional
-    public void deleteRole(Long id) {
+    public void deleteRole(final Long id) {
         roleRepository.delete(id);
     }
 }

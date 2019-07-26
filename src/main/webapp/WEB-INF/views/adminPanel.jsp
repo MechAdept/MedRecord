@@ -20,7 +20,7 @@
 </head>
 
 <body>
-<a href="/adminpanel/role"  class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
+<a href="/adminpanel/role" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
 <a href="/adminpanel/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Пользователи</a>
 <a href="/adminpanel/ticket" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Талоны</a>
 <a href="/adminpanel/visit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Посещения</a>

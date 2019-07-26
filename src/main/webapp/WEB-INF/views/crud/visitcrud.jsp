@@ -98,7 +98,7 @@
             <%--    <div class="form-group">--%>
         <form:label path="treatment">Treatment:</form:label>
         <td><form:textarea path="treatment" rows="5" cssClass="w-25 form-control border border-dark"/></td>
-    <td><input type="submit" value="Create visit"/></td>
+        <td><input type="submit" value="Create visit"/></td>
     </div>
 </form:form>
 

@@ -1,68 +1,132 @@
 package com.samsolutions.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
+
+/**
+ * DataTransferObject for Health entity.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.dto
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
 
 public class HealthDTO {
     @JsonProperty(value = "id")
-    Long id;
+    private Long id;
 
-    @JsonProperty(value = "user")
-    private UserDTO user;
+    @JsonProperty(value = "patient")
+    private UserDTO patient;
 
     @JsonProperty(value = "photo")
     private String photo;
 
+    @DateTimeFormat(pattern = "yyyy-dd-MM")
     @JsonProperty(value = "birth")
-    private Date birth;
+    private LocalDate birth;
 
+    /**
+     * Returns id.
+     *
+     * @return Long.
+     */
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    /**
+     * Sets id.
+     *
+     * @param id Long to be set.
+     */
+    public void setId(final Long id) {
         this.id = id;
     }
 
-    public UserDTO getUser() {
-        return user;
+    /**
+     * Returns patient.
+     *
+     * @return UserDTO.
+     */
+    public UserDTO getPatient() {
+        return patient;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    /**
+     * Sets patient.
+     *
+     * @param patient UserDTO to be set.
+     */
+    public void setPatient(final UserDTO patient) {
+        this.patient = patient;
     }
 
+    /**
+     * Returns link to photo.
+     *
+     * @return String.
+     */
     public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    /**
+     * Sets photo.
+     *
+     * @param photo String (link to photo) to be set.
+     */
+    public void setPhoto(final String photo) {
         this.photo = photo;
     }
 
-    public Date getBirth() {
+    /**
+     * Returns date of birth.
+     *
+     * @return LocalDate.
+     */
+    public LocalDate getBirth() {
         return birth;
     }
 
-    public void setBirth(Date birth) {
+    /**
+     * Sets date of birth.
+     *
+     * @param birth LocaleDate to be set.
+     */
+    public void setBirth(final LocalDate birth) {
         this.birth = birth;
     }
 
+//    public void setBirth(String birth){
+//        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+//        try {
+//            this.birth = (Date)formatter.parse(birth);
+//        } catch (ParseException e) {
+//            System.out.println("DATE FORMAT EXCEPTION");
+//        } //todo: add logger
+//    }
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         HealthDTO healthDTO = (HealthDTO) o;
         return Objects.equals(id, healthDTO.id) &&
-                Objects.equals(user, healthDTO.user) &&
+                Objects.equals(patient, healthDTO.patient) &&
                 Objects.equals(photo, healthDTO.photo) &&
                 Objects.equals(birth, healthDTO.birth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, photo, birth);
+        return Objects.hash(id, patient, photo, birth);
     }
 }

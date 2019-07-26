@@ -1,18 +1,35 @@
 package com.samsolutions.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Ticket Entity.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.entity
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
+
 @Entity
-@Table(name = "ticket", schema = "medrecord")
+@Table(name = "ticket")
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient", referencedColumnName = "id")
@@ -29,50 +46,114 @@ public class Ticket {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean attendance;
 
+    /**
+     * Returns id.
+     *
+     * @return Long.
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets id.
+     *
+     * @param id Long to be set.
+     */
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    /**
+     * Returns datetime.
+     *
+     * @return LocalDateTime.
+     */
     public LocalDateTime getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(LocalDateTime datetime) {
+    /**
+     * Sets datetime.
+     *
+     * @param datetime LocalDateTime to be set.
+     */
+    public void setDatetime(final LocalDateTime datetime) {
         this.datetime = datetime;
     }
 
+    /**
+     * Returns attendance.
+     *
+     * @return Boolean.
+     */
     public Boolean getAttendance() {
         return attendance;
     }
 
-    public void setAttendance(Boolean attendance) {
+    /**
+     * Sets attendance.
+     *
+     * @param attendance Boolean to be set.
+     */
+    public void setAttendance(final Boolean attendance) {
         this.attendance = attendance;
     }
 
+    /**
+     * Returns patient.
+     *
+     * @return User.
+     */
     public User getPatient() {
         return patient;
     }
 
-    public void setPatient(User patient) {
+    /**
+     * Sets patient.
+     *
+     * @param patient User to be set.
+     */
+    public void setPatient(final User patient) {
         this.patient = patient;
     }
 
+    /**
+     * Returns doctor.
+     *
+     * @return User.
+     */
     public User getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(User doctor) {
+    /**
+     * Sets doctor.
+     *
+     * @param doctor User to be set.
+     */
+    public void setDoctor(final User doctor) {
         this.doctor = doctor;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Ticket ticket = (Ticket) o;
-        return id == ticket.id &&
+        return Objects.equals(id, ticket.id) &&
+                Objects.equals(patient, ticket.patient) &&
+                Objects.equals(doctor, ticket.doctor) &&
                 Objects.equals(datetime, ticket.datetime) &&
                 Objects.equals(attendance, ticket.attendance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, datetime, attendance);
+        return Objects.hash(id, patient, doctor, datetime, attendance);
     }
 }

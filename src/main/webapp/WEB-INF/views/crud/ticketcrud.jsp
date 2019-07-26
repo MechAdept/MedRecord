@@ -40,10 +40,10 @@
     <c:forEach items="${ticketDTOList}" var="ticket">
         <tr>
             <th scope="row">${ticket.id}</th>
-            <th scope="row">${ticket.patient.id}</th>
-            <th scope="row">${ticket.doctor.id}</th>
+            <th scope="row">${ticket.patient.username}</th>
+            <th scope="row">${ticket.doctor.username}</th>
             <th scope="row">${ticket.datetime}</th>
-            <th scope="row">${ticket.attendance.booleanValue()}</th>
+            <th scope="row">${ticket.attendance}</th>
             <td><a href="/adminpanel/ticket/delete/${ticket.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
             </td>
             <td><a href="/adminpanel/ticket/update/${ticket.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
@@ -52,14 +52,22 @@
     </c:forEach>
     </tbody>
 </table>
-<form:form method="POST" action="/adminpanel/role/create" modelAttribute="ticketDTOForm">
+<form:form method="POST" action="/adminpanel/ticket/create" modelAttribute="ticketDTOForm">
     <table>
         <tr>
-            <td><form:hidden path="attendance" value="false"/></td>
-            <td><form:input path="datetime" label="birth"/></td>
-            <td><form:input path="doctor" label="birth"/></td>
-            <td><input type="submit" value="Create ticket"/></td>
+            <td><form:label path="patient">Patient</form:label></td>
+            <td><form:input path="patient"/></td>
         </tr>
+        <tr>
+            <td><form:label path="doctor">Doctor</form:label></td>
+            <td><form:input path="doctor"/></td>
+        </tr>
+        <tr>
+            <td><form:label path="datetime"/>Photo</td>
+            <td><form:input path="datetime"/></td>
+            <td><form:hidden path="attendance"/></td>
+        </tr>
+        <td><input type="submit" value="Create ticket"/></td>
     </table>
 </form:form>
 </body>

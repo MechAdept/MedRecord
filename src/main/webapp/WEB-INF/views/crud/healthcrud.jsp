@@ -1,8 +1,10 @@
+<%--todo: add reading, update, and creating form on separate page--%>
 <!DOCTYPE html>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 
 <html>
 <head>
@@ -30,7 +32,9 @@
     <thead>
     <tr>
         <th scope="col">id</th>
-        <th scope="col">username</th>
+        <th scope="col">patient</th>
+        <th scope="col">photo</th>
+        <th scope="col">birth</th>
         <th scope="col">action</th>
     </tr>
     </thead>
@@ -38,10 +42,9 @@
     <c:forEach items="${healthDTOList}" var="health">
         <tr>
             <th scope="row">${health.id}</th>
-            <th scope="row">${health.user}</th>
+            <th scope="row">${health.patient.username}</th>
+            <th scope="row">${health.photo}</th>
             <th scope="row">${health.birth}</th>
-<%--            <th scope="row">${health.photo}</th>--%>
-                <%--        <td><input type="text"${role.name}" value="></td>--%>
             <td><a href="/adminpanel/health/delete/${health.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
             </td>
             <td><a href="/adminpanel/health/update/${health.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
@@ -53,11 +56,17 @@
 <form:form method="POST" action="/adminpanel/health/create" modelAttribute="healthDTOForm">
     <table>
         <tr>
-            <td><form:input path="user" label="user"/></td>
-            <td><form:input path="birth" label="birth"/></td>
-<%--            <td><form:input path="photo" label="link"/></td>--%>
-            <td><input type="submit" value="Create health"/></td>
+            <td><form:label path="patient">Patient</form:label></td>
         </tr>
+        <tr>
+            <td><form:label path="birth">Birth</form:label></td>
+            <td><form:input type="date" path="birth"/></td>
+        </tr>
+        <tr>
+            <td><form:label path="photo"/>Photo</td>
+            <td><form:input path="photo"/></td>
+        </tr>
+        <td><input type="submit" value="Create health"/></td>
     </table>
 </form:form>
 </body>

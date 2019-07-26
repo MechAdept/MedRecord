@@ -8,13 +8,13 @@
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- Настраивает управление транзакциями с помощью аннотации @Transactional -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
-    <!-- Настройки фабрики сессий Хибернейта -->
+    <!-- enable @Transactional -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!-- SessionFactory config -->
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.samsolutions.entity" />
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.samsolutions.entity"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.show_sql">true</prop>
@@ -26,20 +26,18 @@
         </property>
     </bean>
 
-    <!-- Менеджер транзакций -->
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <!-- Настройки бина dataSource будем хранить в отдельном файле -->
+    <!-- dataSource bean configuration -->
     <context:property-placeholder location="classpath*:properties/database.properties"/>
 
-    <!-- Непосредственно бин dataSource -->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="${jdbc.driverClassName}"
           p:url="${jdbc.url}"
           p:username="${jdbc.username}"
-          p:password="${jdbc.password}" />
+          p:password="${jdbc.password}"/>
 </beans>

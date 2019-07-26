@@ -1,14 +1,22 @@
 package com.samsolutions.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.samsolutions.entity.Ticket;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * DataTransferObject for Visit entity.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.dto
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
+
 public class VisitDTO {
     @JsonProperty(value = "id")
-    Long id;
+    private Long id;
 
     @JsonProperty(value = "datetime")
     private LocalDateTime datetime;
@@ -28,66 +36,140 @@ public class VisitDTO {
     @JsonProperty(value = "ticket")
     private TicketDTO ticket;
 
+    /**
+     * Returns id.
+     *
+     * @return Long.
+     */
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    /**
+     * Sets userService.
+     *
+     * @param id Long to be set.
+     */
+    public void setId(final Long id) {
         this.id = id;
     }
 
+    /**
+     * Returns datetime.
+     *
+     * @return LocalDateTime.
+     */
     public LocalDateTime getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(LocalDateTime datetime) {
+    /**
+     * Sets datetime.
+     *
+     * @param datetime LocalDateTime to be set.
+     */
+    public void setDatetime(final LocalDateTime datetime) {
         this.datetime = datetime;
     }
 
+    /**
+     * Returns complaint.
+     *
+     * @return String.
+     */
     public String getComplaint() {
         return complaint;
     }
 
-    public void setComplaint(String complaint) {
+    /**
+     * Sets datetime.
+     *
+     * @param complaint String to be set.
+     */
+    public void setComplaint(final String complaint) {
         this.complaint = complaint;
     }
 
+    /**
+     * Returns examination.
+     *
+     * @return String.
+     */
     public String getExamination() {
         return examination;
     }
 
-    public void setExamination(String examination) {
+    /**
+     * Sets examination.
+     *
+     * @param examination String to be set.
+     */
+    public void setExamination(final String examination) {
         this.examination = examination;
     }
 
+    /**
+     * Returns diagnosis.
+     *
+     * @return String.
+     */
     public String getDiagnosis() {
         return diagnosis;
     }
 
-    public void setDiagnosis(String diagnosis) {
+    /**
+     * Sets diagnosis.
+     *
+     * @param diagnosis String to be set.
+     */
+    public void setDiagnosis(final String diagnosis) {
         this.diagnosis = diagnosis;
     }
 
+    /**
+     * Returns treatment.
+     *
+     * @return String.
+     */
     public String getTreatment() {
         return treatment;
     }
 
-    public void setTreatment(String treatment) {
+    /**
+     * Sets treatment.
+     *
+     * @param treatment String to be set.
+     */
+    public void setTreatment(final String treatment) {
         this.treatment = treatment;
     }
 
+    /**
+     * Returns ticket.
+     *
+     * @return TicketDTO.
+     */
     public TicketDTO getTicket() {
         return ticket;
     }
 
-    public void setTicket(TicketDTO ticket) {
+    /**
+     * Sets ticket.
+     *
+     * @param ticket TicketDTO to be set.
+     */
+    public void setTicket(final TicketDTO ticket) {
         this.ticket = ticket;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         VisitDTO visitDTO = (VisitDTO) o;
         return Objects.equals(id, visitDTO.id) &&
                 Objects.equals(datetime, visitDTO.datetime) &&

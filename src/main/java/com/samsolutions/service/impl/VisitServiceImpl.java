@@ -11,36 +11,45 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implements the methods defined in the visit service.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.service.impl
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
+
 @Service
 public class VisitServiceImpl implements VisitService {
 
     @Autowired
     private VisitRepository visitRepository;
 
-    DTOConverter<Visit, VisitDTO> converter = new VisitConverter();
+    private DTOConverter<Visit, VisitDTO> converter = new VisitConverter();
 
     @Override
-    public void update(VisitDTO visitDTO) {
+    public void update(final VisitDTO visitDTO) {
     }
 
     @Override
-    public void save(VisitDTO visitDTO) {
-        Visit visit = converter.DTOToEntity(visitDTO);
+    public void save(final VisitDTO visitDTO) {
+        Visit visit = converter.dtoToEntity(visitDTO);
         visitRepository.save(visit);
     }
 
     @Override
-    public List<VisitDTO> getvisits() {
-        return converter.EListToDTO(visitRepository.findAll());
+    public List<VisitDTO> getVisits() {
+        return converter.entitiesToDtoList(visitRepository.findAll());
     }
 
     @Override
-    public void deleteVisit(Long id) {
+    public void deleteVisit(final Long id) {
         visitRepository.delete(id);
     }
 
     @Override
-    public VisitDTO findVisitById(Long id) {
-        return converter.EntityToDTO(visitRepository.findOne(id));
+    public VisitDTO findVisitById(final Long id) {
+        return converter.entityToDTO(visitRepository.findOne(id));
     }
 }

@@ -26,13 +26,13 @@
     </bean>
 
     <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="lang" />
+        <property name="paramName" value="lang"/>
     </bean>
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
         <property name="interceptors">
             <list>
-                <ref bean="localeChangeInterceptor" />
+                <ref bean="localeChangeInterceptor"/>
             </list>
         </property>
     </bean>

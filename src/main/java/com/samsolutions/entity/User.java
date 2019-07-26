@@ -1,19 +1,37 @@
 package com.samsolutions.entity;
 
-import net.bytebuddy.build.Plugin;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import javax.persistence.*;
-
+import java.util.Objects;
 import java.util.Set;
 
+/**
+ * User Entity.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.entity
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
 
 @Entity
-@Table(name = "user", schema = "medrecord")
-public class User{
+@Table(name = "user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @Column(name = "username")
     private String username;
@@ -24,7 +42,8 @@ public class User{
     private String passwordConfirm;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
@@ -33,59 +52,152 @@ public class User{
     @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
     private Set<Ticket> doctorTicket;
 
+    /**
+     * Returns id.
+     *
+     * @return Long.
+     */
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    /**
+     * Sets id.
+     *
+     * @param id Long to be set.
+     */
+    public void setId(final Long id) {
         this.id = id;
     }
 
+    /**
+     * Returns username.
+     *
+     * @return String.
+     */
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    /**
+     * Sets username.
+     *
+     * @param username String to be set.
+     */
+    public void setUsername(final String username) {
         this.username = username;
     }
 
+    /**
+     * Returns password.
+     *
+     * @return String.
+     */
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    /**
+     * Sets password.
+     *
+     * @param password String to be set.
+     */
+    public void setPassword(final String password) {
         this.password = password;
     }
 
+    /**
+     * Returns passwordConfirm.
+     *
+     * @return String.
+     */
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
 
-    public void setPasswordConfirm(String passwordConfirm) {
+    /**
+     * Sets passwordConfirm.
+     *
+     * @param passwordConfirm String to be set.
+     */
+    public void setPasswordConfirm(final String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
 
+    /**
+     * Returns tickets of patient.
+     *
+     * @return Set<TicketDTO>.
+     */
     public Set<Ticket> getPatientTicket() {
         return patientTicket;
     }
 
-    public void setPatientTicket(Set<Ticket> patientTicket) {
+    /**
+     * Sets tickets for patient.
+     *
+     * @param patientTicket Set<TicketDTO> to be set.
+     */
+    public void setPatientTicket(final Set<Ticket> patientTicket) {
         this.patientTicket = patientTicket;
     }
 
+    /**
+     * Returns tickets of doctor.
+     *
+     * @return Set<TicketDTO>.
+     */
     public Set<Ticket> getDoctorTicket() {
         return doctorTicket;
     }
 
-    public void setDoctorTicket(Set<Ticket> doctorTicket) {
+    /**
+     * Sets tickets for doctor.
+     *
+     * @param doctorTicket Set<RoleDTO> to be set.
+     */
+    public void setDoctorTicket(final Set<Ticket> doctorTicket) {
         this.doctorTicket = doctorTicket;
     }
 
+    /**
+     * Returns roles of user.
+     *
+     * @return Set<Role>.
+     */
     public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    /**
+     * Sets roles for user.
+     *
+     * @param roles Set<Role> to be set.
+     */
+    public void setRoles(final Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(passwordConfirm, user.passwordConfirm) &&
+                Objects.equals(roles, user.roles) &&
+                Objects.equals(patientTicket, user.patientTicket) &&
+                Objects.equals(doctorTicket, user.doctorTicket);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, passwordConfirm, roles, patientTicket, doctorTicket);
     }
 }

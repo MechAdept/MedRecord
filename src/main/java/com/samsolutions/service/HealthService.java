@@ -1,21 +1,54 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.HealthDTO;
-import com.samsolutions.dto.RoleDTO;
-import com.samsolutions.entity.Health;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Health service determine methods for working with health table.
+ *
+ * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
+ * @package com.samsolutions.service
+ * @link http ://sam-solutions.com/
+ * @copyright 2019 SaM
+ */
+
 @Service
 public interface HealthService {
-    HealthDTO findHealthById(Long id);
-
-    void update(HealthDTO healthDTO);
-
+    /**
+     * Method for create health.
+     *
+     * @param healthDTO HealthDTO with parameters to be set.
+     */
     void save(HealthDTO healthDTO);
 
-    List<HealthDTO> gethealths();
+    /**
+     * Method for find health by id.
+     *
+     * @param id id of desired health.
+     * @return HealthDTO.
+     */
+    HealthDTO findHealthById(Long id);
 
+    /**
+     * Method for getting healths from table.
+     *
+     * @return List<HealthDTO>.
+     */
+    List<HealthDTO> getHealths();
+
+    /**
+     * Method for update health.
+     *
+     * @param healthDTO HealthDTO with parameters to be set.
+     */
+    void update(HealthDTO healthDTO);
+
+    /**
+     * Method for delete health by id.
+     *
+     * @param id id of desired health.
+     */
     void deleteHealth(Long id);
 }
