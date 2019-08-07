@@ -20,11 +20,11 @@
 </head>
 
 <body>
-<a href="/adminpanel/role" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
-<a href="/adminpanel/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Пользователи</a>
-<a href="/adminpanel/ticket" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Талоны</a>
-<a href="/adminpanel/visit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Посещения</a>
-<a href="/adminpanel/health" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Карты здоровья</a>
+<a href="<c:url value="/adminpanel/role"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
+<a href="<c:url value="/adminpanel/user"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Пользователи</a>
+<a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Талоны</a>
+<a href="<c:url value="/adminpanel/visit"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Посещения</a>
+<a href="<c:url value="/adminpanel/health"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Карты здоровья</a>
 <br>
 <table class="table">
     <thead>
@@ -40,10 +40,12 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${visitDTOList}" var="visit">
+    <c:forEach items="${visitDTOSet}" var="visit">
         <tr>
             <th scope="row">${visit.id}</th>
             <th scope="row">${visit.ticket.id}</th>
+            <th scope="row">${visit.ticket.patient.username}</th>
+            <th scope="row">${visit.ticket.doctor.username}</th>
             <th scope="row">${visit.complaint}</th>
             <th scope="row">${visit.examination}</th>
             <th scope="row">${visit.diagnosis}</th>
@@ -59,30 +61,15 @@
     </c:forEach>
     </tbody>
 </table>
-<%--<form:form method="POST" action="/adminpanel/visit/create" modelAttribute="visitDTOForm">--%>
-<%--    <table>--%>
-<%--        <tr>--%>
-<%--            <div class="form-group">--%>
-<%--                <label for="complaint">Complaint:</label>--%>
-<%--                <td><form:textarea path="complaint" label="complaint" cssClass="form-control"/></td>--%>
-<%--            </div>--%>
-<%--            <td><form:input path="ticket" label="birth"/></td>--%>
-<%--            <td><form:input path="datetime" label="datetime"/></td>--%>
-<%--            <td><form:textarea path="complaint" label="complaint" cssClass="form-control"/></td>--%>
-<%--            <td><form:input path="examination" label="examination"/></td>--%>
-<%--            <td><form:input path="diagnosis" label="diagnosis"/></td>--%>
-<%--            <td><form:input path="treatment" label="treatment"/></td>--%>
-<%--            <td><input type="submit" value="Create visit"/></td>--%>
-<%--        </tr>--%>
-<%--    </table>--%>
-<%--</form:form>--%>
 
 <form:form method="POST" action="/adminpanel/visit/create" modelAttribute="visitDTOForm">
     <div class="form-group">
         <form:label path="ticket">ticket ID :</form:label>
-        <td><form:input path="ticket"/></td>
-        <form:label path="datetime">datetime(2010-03-01T12:01:02):</form:label>
-        <td><form:input path="datetime"/></td>
+        <form:select path="ticket">
+            <form:options items="${uniqueTickets}" itemValue="id"/>
+        </form:select>
+        <form:label path="datetime"></form:label>
+        <td><form:input path="datetime" type="datetime-local"/></td>
         <br>
         <form:label path="complaint">Complaint:</form:label>
         <td><form:textarea path="complaint" rows="5" cssClass="w-25 form-control border border-dark"/></td>

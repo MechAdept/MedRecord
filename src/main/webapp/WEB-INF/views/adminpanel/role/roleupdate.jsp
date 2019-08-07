@@ -11,7 +11,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Health update</title>
+    <title>Role update</title>
 </head>
 
 <body>
@@ -19,9 +19,24 @@
     <%@include file="/resources/js/jquery-3.4.1.min.js"%>
     <%@include file="/resources/js/bootstrap.min.js"%>
 </script>
-<a href="/adminpanel" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
+<a href="<c:url value="/adminpanel"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
 <br>
-
-ТЕХ РАБОТЫ)
+<form:form method="POST" action="/adminpanel/role/update" modelAttribute="roleDTO">
+    <table>
+        <tr>
+            <td><form:label path="name">Name</form:label></td>
+            <td><form:input path="name"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><form:hidden path="id" value="${roleDTO.id}"/></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Submit"/>
+            </td>
+        </tr>
+    </table>
+</form:form>
 </body>
 </html>

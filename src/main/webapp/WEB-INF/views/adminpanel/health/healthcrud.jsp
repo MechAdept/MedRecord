@@ -1,8 +1,10 @@
+<%--todo: add reading, update, and creating form on separate page--%>
 <!DOCTYPE html>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 
 <html>
 <head>
@@ -12,7 +14,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>RoleCrud</title>
+    <title>HealthCrud</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -30,31 +32,41 @@
     <thead>
     <tr>
         <th scope="col">id</th>
-        <th scope="col">username</th>
+        <th scope="col">patient</th>
+        <th scope="col">photo</th>
+        <th scope="col">birth</th>
         <th scope="col">action</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${roleDTOList}" var="role">
+    <c:forEach items="${healthDTOList}" var="health">
         <tr>
-            <th scope="row">${role.id}</th>
-            <th scope="row">${role.name}</th>
-                <%--        <td><input type="text"${role.name}" value="></td>--%>
-            <td><a href="/adminpanel/role/delete/${role.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+            <th scope="row">${health.id}</th>
+            <th scope="row">${health.patient.username}</th>
+            <th scope="row">${health.photo}</th>
+            <th scope="row">${health.birth}</th>
+            <td><a href="/adminpanel/health/delete/${health.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
             </td>
-            <td><a href="/adminpanel/role/update/${role.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
+            <td><a href="/adminpanel/health/update/${health.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<form:form method="POST" action="/adminpanel/role/create" modelAttribute="roleDTOForm">
+<form:form method="POST" action="/adminpanel/health/create" modelAttribute="healthDTOForm">
     <table>
+        <form:select path="patient">
+            <form:options items="${userDTOList}" itemValue="id" itemLabel="username"/>
+        </form:select>
         <tr>
-            <td><form:label path="name">Name</form:label></td>
-            <td><form:input path="name"/></td>
-            <td><input type="submit" value="Create role"/></td>
+            <td><form:label path="birth">Birth</form:label></td>
+            <td><form:input type="date" path="birth"/></td>
         </tr>
+        <tr>
+            <td><form:label path="photo"/>Photo</td>
+            <td><form:input path="photo"/></td>
+        </tr>
+        <td><input type="submit" value="Create health"/></td>
     </table>
 </form:form>
 </body>

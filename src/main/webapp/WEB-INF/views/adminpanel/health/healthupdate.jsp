@@ -11,7 +11,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Role update</title>
+    <title>Health update</title>
 </head>
 
 <body>
@@ -21,21 +21,23 @@
 </script>
 <a href="/adminpanel" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
 <br>
-<form:form method="POST" action="/adminpanel/role/update" modelAttribute="roleDTO">
+
+<form:form method="POST" action="/adminpanel/health/update" modelAttribute="healthDTOForm">
     <table>
+        <form:hidden path="id" value="${healthDTO.id}"/>
+        <form:select path="patient">
+            <form:option value="">Можете выбрать нового пациента</form:option>
+            <form:options items="${uniqueUsers}" itemValue="id" itemLabel="username"/>
+        </form:select>
         <tr>
-            <td><form:label path="name">Name</form:label></td>
-            <td><form:input path="name"/></td>
+            <td><form:label path="birth">Birth</form:label></td>
+            <td><form:input type="date" path="birth" value="${healthDTO.birth}"/></td>
         </tr>
         <tr>
-            <td></td>
-            <td><form:hidden path="id" value="${roleDTO.id}"/></td>
+            <td><form:label path="photo"/>Photo</td>
+            <td><form:input path="photo" value="${healthDTO.photo}"/></td>
         </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Submit"/>
-            </td>
-        </tr>
+        <td><input type="submit" value="Update health"/></td>
     </table>
 </form:form>
 </body>

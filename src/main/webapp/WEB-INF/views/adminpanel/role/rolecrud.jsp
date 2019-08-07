@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>User Crud</title>
+    <title>RoleCrud</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -31,36 +31,29 @@
     <tr>
         <th scope="col">id</th>
         <th scope="col">username</th>
-        <th scope="col">roles</th>
         <th scope="col">action</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${userDTOList}" var="user">
+    <c:forEach items="${roleDTOSet}" var="role">
         <tr>
-            <th scope="row">${user.id}</th>
-            <th scope="row">${user.username}</th>
-            <th scope="row">
-                <c:forEach items="${user.roles}" var="role">
-                    ${role.name},
-                </c:forEach>
-            </th>
-            <td><a href="/adminpanel/user/delete/${user.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+            <th scope="row">${role.id}</th>
+            <th scope="row">${role.name}</th>
+                <%--        <td><input type="text"${role.name}" value="></td>--%>
+            <td><a href="/adminpanel/role/delete/${role.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
             </td>
-            <td><a href="/adminpanel/user/update/${user.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
+            <td><a href="/adminpanel/role/update/${role.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<form:form method="POST" action="/adminpanel/user/create" modelAttribute="userDTO">
+<form:form method="POST" action="/adminpanel/role/create" modelAttribute="roleDTOForm">
     <table>
         <tr>
-            <td><form:label path="username">Username</form:label></td>
-            <td><form:input path="username"/></td>
-            <td><form:label path="password">Password</form:label></td>
-            <td><form:input path="password"/></td>
-            <td><input type="submit" value="Create user"/></td>
+            <td><form:label path="name">Name</form:label></td>
+            <td><form:input path="name"/></td>
+            <td><input type="submit" value="Create role"/></td>
         </tr>
     </table>
 </form:form>
