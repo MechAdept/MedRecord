@@ -35,21 +35,22 @@ public class User {
 
     @Column(name = "username")
     private String username;
+
     @Column(name = "password")
     private String password;
 
     @Transient
     private String passwordConfirm;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private Set<Ticket> patientTicket;
 
-    @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     private Set<Ticket> doctorTicket;
 
     /**
@@ -196,12 +197,7 @@ public class User {
         }
         User user = (User) o;
         return Objects.equals(id, user.id) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(passwordConfirm, user.passwordConfirm) &&
-                Objects.equals(roles, user.roles) &&
-                Objects.equals(patientTicket, user.patientTicket) &&
-                Objects.equals(doctorTicket, user.doctorTicket);
+                Objects.equals(username, user.username);
     }
 
     @Override

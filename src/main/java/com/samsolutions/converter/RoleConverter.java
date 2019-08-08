@@ -1,11 +1,15 @@
 package com.samsolutions.converter;
 
 import com.samsolutions.dto.RoleDTO;
+import com.samsolutions.dto.UserDTO;
 import com.samsolutions.entity.Role;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Converter for Role.
@@ -16,64 +20,61 @@ import java.util.List;
  * @copyright 2019 SaM
  */
 
+@Component
 public class RoleConverter implements DTOConverter<Role, RoleDTO> {
+
+    @Autowired
+    UserConverter userConverter;
+
     @Override
     public RoleDTO entityToDTO(final Role role) {
         RoleDTO roleDTO = new RoleDTO();
-        BeanUtils.copyProperties(role, roleDTO);
+        roleDTO.setId(role.getId());
+        roleDTO.setName(role.getName());
         return roleDTO;
     }
 
     @Override
-    public Role dtoToEntity(final RoleDTO roleDTO) {
-        Role role = new Role();
-        BeanUtils.copyProperties(roleDTO, role);
-        return role;
+    public Role dtoToEntity(final RoleDTO source) {
+        Role target = new Role();
+        target.setId(source.getId());
+        target.setName(source.getName());
+        Set<UserDTO> DTOSet = new HashSet<>(source.getUsers());
+        target.setUsers(new HashSet<>(userConverter.dtoSetToEntities(DTOSet)));
+        return target;
     }
 
     @Override
-    public List<RoleDTO> entitiesToDtoList(final List<Role> entityList) {
-        List<RoleDTO> roleDTOList = new ArrayList<>();
+    public Set<RoleDTO> entitiesToDtoSet(final Set<Role> entitySet) {
+        Set<RoleDTO> DTOSet = new HashSet<>();
+        if (entitySet != null) {
+            for (Role source : entitySet) {
+                RoleDTO target = entityToDTO(source);
+                DTOSet.add(target);
+            }
+        }
+        return DTOSet;
+    }
+
+    @Override
+    public Set<Role> dtoSetToEntities(final Set<RoleDTO> roleDTOSet) {
+        Set<Role> roleSet = new HashSet<>();
+        if (!(roleDTOSet == null)) {
+            for (RoleDTO source : roleDTOSet) {
+                Role target = dtoToEntity(source);
+                roleSet.add(target);
+            }
+        }
+        return roleSet;
+    }
+
+    @Override
+    public List<RoleDTO> entitiesToDtoList(List<Role> entityList) {
+        List<RoleDTO> DTOList = new ArrayList<>();
         for (Role source : entityList) {
-            RoleDTO target = new RoleDTO();
-            BeanUtils.copyProperties(source, target);
-            roleDTOList.add(target);
+            RoleDTO target = entityToDTO(source);
+            DTOList.add(target);
         }
-        return roleDTOList;
+        return DTOList;
     }
-
-    @Override
-    public List<Role> dtoListToEntities(final List<RoleDTO> roleDTOList) {
-        List<Role> roleList = new ArrayList<>();
-        for (RoleDTO source : roleDTOList) {
-            Role target = new Role();
-            BeanUtils.copyProperties(source, target);
-            roleList.add(target);
-        }
-        return roleList;
-    }
-
-//    @Override
-//    public String DTOToJSON(RoleDTO roleDTO) {
-//        String json = "";
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            json = mapper.writeValueAsString(roleDTO);
-//        } catch (JsonProcessingException e) {
-//            System.out.println("Не удалось конвертировать в JSON"); //TODO: Add logger
-//        }
-//        return json;
-//    }
-//
-//    @Override
-//    public RoleDTO JSONToDTO(String json) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        RoleDTO roleDTO = null;
-//        try {
-//            roleDTO = mapper.readValue(json, RoleDTO.class);
-//        } catch (IOException e) {
-//            System.out.println("Не удалось конвертировать в DTO"); //TODO: Add logger
-//        }
-//        return roleDTO;
-//    }
 }

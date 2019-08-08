@@ -1,6 +1,7 @@
 package com.samsolutions.converter;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Interface for converting operations.
@@ -32,20 +33,18 @@ public interface DTOConverter<A, B> {
     /**
      * Method to convert list of DTOs to list of entities.
      *
-     * @param entityList is entityList.
+     * @param entitySet is entityList.
      * @return corresponding list of DTOs.
      */
-    List<B> entitiesToDtoList(List<A> entityList);
+    Set<B> entitiesToDtoSet(Set<A> entitySet);
 
     /**
      * Method to convert list of DTOs to list of entities.
      *
-     * @param dtoList is dtoList.
+     * @param dtoSet is dtoList.
      * @return corresponding list of entities.
      */
-    List<A> dtoListToEntities(List<B> dtoList);
+    Set<A> dtoSetToEntities(Set<B> dtoSet);
 
-//    String DTOToJSON(B dto); //TODO: Do I need these methods?
-//
-//    B JSONToDTO(String json);//TODO: Do I need these methods?
+    List<B> entitiesToDtoList(List<A> entityList);
 }

@@ -1,9 +1,13 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.RoleDTO;
+import com.samsolutions.entity.Role;
+import com.samsolutions.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Role service determine methods for working with role table.
@@ -15,6 +19,7 @@ import java.util.List;
  */
 
 @Service
+@Transactional
 public interface RoleService {
     /**
      * Method for create role.
@@ -29,6 +34,7 @@ public interface RoleService {
      * @param id id of desired role.
      * @return RoleDTO.
      */
+    @Transactional(readOnly = true)
     RoleDTO findRoleById(Long id);
 
     /**
@@ -36,14 +42,8 @@ public interface RoleService {
      *
      * @return List<RoleDTO>.
      */
+    @Transactional(readOnly = true)
     List<RoleDTO> getRoles();
-
-    /**
-     * Method for update role.
-     *
-     * @param role RoleDTO with parameters to be set.
-     */
-    void update(RoleDTO role);
 
     /**
      * Method for delete role by id.
@@ -51,4 +51,6 @@ public interface RoleService {
      * @param id id of desired role.
      */
     void deleteRole(Long id);
+
+    Set<Role> getRolesEntityByUserId(User user);
 }

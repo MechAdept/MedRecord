@@ -89,7 +89,7 @@ public class UserController {
     @RequestMapping(value = "/adminpanel/user/update", method = RequestMethod.POST)
     public String update(@ModelAttribute final UserDTO userDTO) {
         userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-        userService.update(userDTO);
+        userService.save(userDTO);
         return "redirect: /adminpanel/user";
     }
 

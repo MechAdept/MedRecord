@@ -1,6 +1,5 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.DTOConverter;
 import com.samsolutions.converter.VisitConverter;
 import com.samsolutions.dto.VisitDTO;
 import com.samsolutions.entity.Visit;
@@ -26,30 +25,27 @@ public class VisitServiceImpl implements VisitService {
     @Autowired
     private VisitRepository visitRepository;
 
-    private DTOConverter<Visit, VisitDTO> converter = new VisitConverter();
-
-    @Override
-    public void update(final VisitDTO visitDTO) {
-    }
+    @Autowired
+    private VisitConverter visitConverter;
 
     @Override
     public void save(final VisitDTO visitDTO) {
-        Visit visit = converter.dtoToEntity(visitDTO);
+        Visit visit = visitConverter.dtoToEntity(visitDTO);
         visitRepository.save(visit);
     }
 
     @Override
     public List<VisitDTO> getVisits() {
-        return converter.entitiesToDtoList(visitRepository.findAll());
+        return visitConverter.entitiesToDtoList(visitRepository.findAll());
     }
 
     @Override
     public void deleteVisit(final Long id) {
-        visitRepository.delete(id);
+        visitRepository.deleteById(id);
     }
 
     @Override
     public VisitDTO findVisitById(final Long id) {
-        return converter.entityToDTO(visitRepository.findOne(id));
+        return visitConverter.entityToDTO(visitRepository.getOne(id));
     }
 }

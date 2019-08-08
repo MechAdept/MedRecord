@@ -3,6 +3,7 @@ package com.samsolutions.service;
 import com.samsolutions.dto.UserDTO;
 import com.samsolutions.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  */
 
 @Service
+@Transactional
 public interface UserService {
     /**
      * Method for create user.
@@ -29,6 +31,7 @@ public interface UserService {
      *
      * @return List<UserDTO>.
      */
+    @Transactional(readOnly = true)
     List<UserDTO> getUsers();
 
     /**
@@ -37,6 +40,7 @@ public interface UserService {
      * @param id id of desired user.
      * @return UserDTO.
      */
+    @Transactional(readOnly = true)
     UserDTO findUserById(Long id);
 
     /**
@@ -45,14 +49,8 @@ public interface UserService {
      * @param username username of desired user.
      * @return UserDTO.
      */
+    @Transactional(readOnly = true)
     User findByUsername(String username);
-
-    /**
-     * Method for update user.
-     *
-     * @param userDTO UserDTO with parameters to be set.
-     */
-    void update(UserDTO userDTO);
 
     /**
      * Method for delete user by id.

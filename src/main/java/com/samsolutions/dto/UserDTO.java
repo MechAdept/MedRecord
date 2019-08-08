@@ -1,9 +1,6 @@
 package com.samsolutions.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,20 +14,19 @@ import java.util.Set;
  */
 
 public class UserDTO {
-    @JsonProperty(value = "id")
+
     private Long id;
 
-    @JsonProperty(value = "username")
     private String username;
-    @JsonProperty(value = "password")
+
     private String password;
-    @JsonIgnore
+
     private String passwordConfirm;
-    @JsonProperty(value = "roles")
+
     private Set<RoleDTO> roles;
-    @JsonProperty(value = "patient")
+
     private Set<TicketDTO> patientTicket;
-    @JsonProperty(value = "doctor")
+
     private Set<TicketDTO> doctorTicket;
 
     /**

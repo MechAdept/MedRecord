@@ -1,13 +1,11 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.DTOConverter;
 import com.samsolutions.converter.HealthConverter;
 import com.samsolutions.dto.HealthDTO;
 import com.samsolutions.entity.Health;
 import com.samsolutions.repository.HealthRepository;
 import com.samsolutions.service.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,32 +23,30 @@ import java.util.List;
 @Service("HealthService")
 public class HealthServiceImpl implements HealthService {
     @Autowired
-    @Qualifier("healthRepository")
     private HealthRepository healthRepository;
 
-    private DTOConverter<Health, HealthDTO> converter = new HealthConverter();
+    @Autowired
+    private HealthConverter healthConverter;
 
     @Override
     public HealthDTO findHealthById(final Long id) {
-        return converter.entityToDTO(healthRepository.findOne(id));
-    }
-
-    @Override
-    public void update(final HealthDTO healthDTO) {
+        return healthConverter.entityToDTO(healthRepository.getOne(id));
     }
 
     @Override
     public void save(final HealthDTO healthDTO) {
-        healthRepository.save(converter.dtoToEntity(healthDTO));
+        Health health = healthConverter.dtoToEntity(healthDTO);
+        healthRepository.save(health);
     }
 
     @Override
     public List<HealthDTO> getHealths() {
-        return converter.entitiesToDtoList(healthRepository.findAll());
+        List<HealthDTO> healthDTOSet = healthConverter.entitiesToDtoList(healthRepository.findAll());
+        return healthDTOSet;
     }
 
     @Override
     public void deleteHealth(final Long id) {
-        healthRepository.delete(id);
+        healthRepository.deleteById(id);
     }
 }

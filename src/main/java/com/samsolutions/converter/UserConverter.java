@@ -1,11 +1,16 @@
 package com.samsolutions.converter;
 
+import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.UserDTO;
+import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Converter for User.
@@ -16,64 +21,64 @@ import java.util.List;
  * @copyright 2019 SaM
  */
 
+@Component
 public class UserConverter implements DTOConverter<User, UserDTO> {
+    @Autowired
+    RoleConverter roleConverter;
+
     @Override
     public UserDTO entityToDTO(final User user) {
         UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(user, userDTO);
+        userDTO.setId(user.getId());
+
+        Set<Role> roleSet = user.getRoles();
+
+        userDTO.setRoles(roleConverter.entitiesToDtoSet(roleSet));
+        userDTO.setPassword(user.getPassword());
+        userDTO.setUsername(user.getUsername());
         return userDTO;
     }
 
     @Override
-    public User dtoToEntity(final UserDTO userDTO) {
-        User user = new User();
-        BeanUtils.copyProperties(userDTO, user);
-        return user;
+    public User dtoToEntity(final UserDTO source) {
+        User target = new User();
+        target.setId(source.getId());
+        target.setPassword(source.getPassword());
+        target.setUsername(source.getUsername());
+        if(source.getRoles() != null) {
+            Set<RoleDTO> DTOSet = source.getRoles();
+            target.setRoles(roleConverter.dtoSetToEntities(DTOSet));
+        }
+        return target;
     }
 
     @Override
-    public List<UserDTO> entitiesToDtoList(final List<User> userList) {
-        List<UserDTO> userDTOList = new ArrayList<>();
-        for (User source : userList) {
-            UserDTO target = new UserDTO();
-            BeanUtils.copyProperties(source, target);
-            userDTOList.add(target);
+    public Set<UserDTO> entitiesToDtoSet(final Set<User> userSet) {
+        Set<UserDTO> userDTOSet = new HashSet<>();
+        for (User source : userSet) {
+            UserDTO target = entityToDTO(source);
+            userDTOSet.add(target);
         }
-        return userDTOList;
+        return userDTOSet;
     }
 
     @Override
-    public List<User> dtoListToEntities(final List<UserDTO> userDTOList) {
-        List<User> userList = new ArrayList<>();
-        for (UserDTO source : userDTOList) {
-            User target = new User();
-            BeanUtils.copyProperties(source, target);
-            userList.add(target);
+    public Set<User> dtoSetToEntities(final Set<UserDTO> userDTOSet) {
+        Set<User> userSet = new HashSet<>();
+        for (UserDTO source : userDTOSet) {
+            User target = dtoToEntity(source);
+            userSet.add(target);
         }
-        return userList;
+        return userSet;
     }
 
-//    @Override
-//    public String DTOToJSON(UserDTO userDTO) {
-//        String json = "";
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            json = mapper.writeValueAsString(userDTO);
-//        } catch (JsonProcessingException e) {
-//            System.out.println("Не удалось конвертировать в JSON"); //TODO: Add logger
-//        }
-//        return json;
-//    }
-//
-//    @Override
-//    public UserDTO JSONToDTO(String json) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        UserDTO userDTO = null;
-//        try {
-//            userDTO = mapper.readValue(json, UserDTO.class);
-//        } catch (IOException e) {
-//            System.out.println("Не удалось конвертировать в DTO"); //TODO: Add logger
-//        }
-//        return userDTO;
-//    }
+    @Override
+    public List<UserDTO> entitiesToDtoList(List<User> entityList) {
+        List<UserDTO> DTOList = new ArrayList<>();
+        for (User source : entityList) {
+            UserDTO target = entityToDTO(source);
+            DTOList.add(target);
+        }
+        return DTOList;
+    }
 }

@@ -76,7 +76,7 @@ public class RoleController {
      */
     @RequestMapping(value = "adminpanel/role/update", method = RequestMethod.POST)
     public String update(@ModelAttribute final RoleDTO roleDTO) {
-        roleService.update(roleDTO);
+        roleService.save(roleDTO);
         return "redirect: /adminpanel/role";
     }
 

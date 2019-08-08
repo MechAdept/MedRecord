@@ -1,13 +1,14 @@
 package com.samsolutions.converter;
 
-import com.samsolutions.dto.TicketDTO;
 import com.samsolutions.dto.VisitDTO;
-import com.samsolutions.entity.Ticket;
 import com.samsolutions.entity.Visit;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Converter for Visit.
@@ -18,68 +19,65 @@ import java.util.List;
  * @copyright 2019 SaM
  */
 
+@Component
 public class VisitConverter implements DTOConverter<Visit, VisitDTO> {
-    private DTOConverter<Ticket, TicketDTO> ticketConverter = new TicketConverter();
+
+    @Autowired
+    private TicketConverter ticketConverter;
 
     @Override
-    public VisitDTO entityToDTO(final Visit visit) {
-        VisitDTO visitDTO = new VisitDTO();
-        BeanUtils.copyProperties(visit, visitDTO);
-        return visitDTO;
+    public VisitDTO entityToDTO(final Visit source) {
+        VisitDTO target = new VisitDTO();
+        target.setId(source.getId());
+        target.setDatetime(source.getDatetime());
+        target.setComplaint(source.getComplaint());
+        target.setDiagnosis(source.getDiagnosis());
+        target.setExamination(source.getExamination());
+        target.setTreatment(source.getTreatment());
+        return target;
     }
 
     @Override
-    public Visit dtoToEntity(final VisitDTO visitDTO) {
-        Visit visit = new Visit();
-        BeanUtils.copyProperties(visitDTO, visit);
-        return visit;
+    public Visit dtoToEntity(final VisitDTO source) {
+        Visit target = new Visit();
+        target.setId(source.getId());
+        target.setDatetime(source.getDatetime());
+        target.setComplaint(source.getComplaint());
+        target.setDiagnosis(source.getDiagnosis());
+        target.setExamination(source.getExamination());
+        target.setTreatment(source.getTreatment());
+        target.setTicket(ticketConverter.dtoToEntity(source.getTicket()));
+        return target;
     }
 
     @Override
-    public List<VisitDTO> entitiesToDtoList(final List<Visit> entityList) {
-        List<VisitDTO> visitDTOList = new ArrayList<>();
+    public Set<VisitDTO> entitiesToDtoSet(final Set<Visit> entitySet) {
+        Set<VisitDTO> DTOSet = new HashSet<>();
+        for (Visit source : entitySet) {
+            VisitDTO target = entityToDTO(source);
+            DTOSet.add(target);
+        }
+        return DTOSet;
+    }
+
+    @Override
+    public Set<Visit> dtoSetToEntities(final Set<VisitDTO> DTOSet) {
+        Set<Visit> entitySet = new HashSet<>();
+        for (VisitDTO source : DTOSet) {
+            Visit target = dtoToEntity(source);
+            entitySet.add(target);
+        }
+        return entitySet;
+    }
+
+    @Override
+    public List<VisitDTO> entitiesToDtoList(List<Visit> entityList) {
+        List<VisitDTO> DTOList = new ArrayList<>();
         for (Visit source : entityList) {
-            VisitDTO target = new VisitDTO();
-            BeanUtils.copyProperties(source, target);
-            target.setTicket(ticketConverter.entityToDTO(source.getTicket()));
-            visitDTOList.add(target);
+            VisitDTO target = entityToDTO(source);
+            DTOList.add(target);
         }
-        return visitDTOList;
+        return DTOList;
     }
-
-    @Override
-    public List<Visit> dtoListToEntities(final List<VisitDTO> visitDTOList) {
-        List<Visit> visitList = new ArrayList<>();
-        for (VisitDTO source : visitDTOList) {
-            Visit target = new Visit();
-            BeanUtils.copyProperties(source, target);
-            visitList.add(target);
-        }
-        return visitList;
-    }
-
-//    @Override
-//    public String DTOToJSON(VisitDTO visitDTO) {
-//        String json = "";
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            json = mapper.writeValueAsString(visitDTO);
-//        } catch (JsonProcessingException e) {
-//            System.out.println("Не удалось конвертировать в JSON"); //TODO: Add logger
-//        }
-//        return json;
-//    }
-//
-//    @Override
-//    public VisitDTO JSONToDTO(String json) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        VisitDTO visitDTO = null;
-//        try {
-//            visitDTO = mapper.readValue(json, VisitDTO.class);
-//        } catch (IOException e) {
-//            System.out.println("Не удалось конвертировать в DTO"); //TODO: Add logger
-//        }
-//        return visitDTO;
-//    }
 }
 

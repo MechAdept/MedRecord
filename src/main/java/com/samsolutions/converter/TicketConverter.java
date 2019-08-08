@@ -4,10 +4,13 @@ import com.samsolutions.dto.TicketDTO;
 import com.samsolutions.dto.UserDTO;
 import com.samsolutions.entity.Ticket;
 import com.samsolutions.entity.User;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Converter for Ticket.
@@ -18,69 +21,60 @@ import java.util.List;
  * @copyright 2019 SaM
  */
 
+@Component
 public class TicketConverter implements DTOConverter<Ticket, TicketDTO> {
 
-    private DTOConverter<User, UserDTO> userConverter = new UserConverter();
+    @Autowired
+    private DTOConverter<User, UserDTO> userConverter;
 
     @Override
-    public TicketDTO entityToDTO(final Ticket ticket) {
-        TicketDTO ticketDTO = new TicketDTO();
-        BeanUtils.copyProperties(ticket, ticketDTO);
-        return ticketDTO;
+    public TicketDTO entityToDTO(final Ticket source) {
+        TicketDTO target = new TicketDTO();
+        target.setId(source.getId());
+        target.setDatetime(source.getDatetime());
+        target.setAttendance(source.getAttendance());
+        return target;
     }
 
     @Override
-    public Ticket dtoToEntity(final TicketDTO ticketDTO) {
-        Ticket ticket = new Ticket();
-        BeanUtils.copyProperties(ticketDTO, ticket);
-        return ticket;
+    public Ticket dtoToEntity(final TicketDTO source) {
+        Ticket target = new Ticket();
+        target.setId(source.getId());
+        target.setAttendance(source.getAttendance());
+        target.setDatetime(source.getDatetime());
+        target.setDoctor(userConverter.dtoToEntity(source.getDoctor()));
+        target.setPatient(userConverter.dtoToEntity(source.getPatient()));
+        return target;
     }
 
     @Override
-    public List<TicketDTO> entitiesToDtoList(final List<Ticket> entityList) {
-        List<TicketDTO> ticketDTOList = new ArrayList<>();
+    public Set<TicketDTO> entitiesToDtoSet(final Set<Ticket> entitySet) {
+        Set<TicketDTO> DTOSet = new HashSet<>();
+        for (Ticket source : entitySet) {
+            TicketDTO target = entityToDTO(source);
+            DTOSet.add(target);
+        }
+        return DTOSet;
+    }
+
+    @Override
+    public Set<Ticket> dtoSetToEntities(final Set<TicketDTO> ticketDTOSet) {
+        Set<Ticket> entitySet = new HashSet<>();
+        for (TicketDTO source : ticketDTOSet) {
+            Ticket target = dtoToEntity(source);
+            entitySet.add(target);
+        }
+        return entitySet;
+    }
+
+    @Override
+    public List<TicketDTO> entitiesToDtoList(List<Ticket> entityList) {
+        List<TicketDTO> DTOList = new ArrayList<>();
         for (Ticket source : entityList) {
-            TicketDTO target = new TicketDTO();
-            BeanUtils.copyProperties(source, target);
-            target.setPatient(userConverter.entityToDTO(source.getPatient()));
-            target.setDoctor(userConverter.entityToDTO(source.getDoctor()));
-            ticketDTOList.add(target);
+            TicketDTO target = entityToDTO(source);
+            DTOList.add(target);
         }
-        return ticketDTOList;
+        return DTOList;
     }
 
-    @Override
-    public List<Ticket> dtoListToEntities(final List<TicketDTO> ticketDTOList) {
-        List<Ticket> ticketList = new ArrayList<>();
-        for (TicketDTO source : ticketDTOList) {
-            Ticket target = new Ticket();
-            BeanUtils.copyProperties(source, target);
-            ticketList.add(target);
-        }
-        return ticketList;
-    }
-
-//    @Override
-//    public String DTOToJSON(TicketDTO ticketDTO) {
-//        String json = "";
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            json = mapper.writeValueAsString(ticketDTO);
-//        } catch (JsonProcessingException e) {
-//            System.out.println("Не удалось конвертировать в JSON"); //TODO: Add logger
-//        }
-//        return json;
-//    }
-//
-//    @Override
-//    public TicketDTO JSONToDTO(String json) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        TicketDTO ticketDTO = null;
-//        try {
-//            ticketDTO = mapper.readValue(json, TicketDTO.class);
-//        } catch (IOException e) {
-//            System.out.println("Не удалось конвертировать в DTO"); //TODO: Add logger
-//        }
-//        return ticketDTO;
-//    }
 }

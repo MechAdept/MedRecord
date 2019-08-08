@@ -75,7 +75,7 @@ public class VisitController {
      */
     @RequestMapping(value = "adminpanel/visit/update", method = RequestMethod.POST)
     public String update(@ModelAttribute final VisitDTO visitDTO) {
-        visitService.update(visitDTO);
+        visitService.save(visitDTO);
         return "redirect: /adminpanel/visit";
     }
 

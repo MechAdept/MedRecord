@@ -1,13 +1,14 @@
 package com.samsolutions.converter;
 
 import com.samsolutions.dto.HealthDTO;
-import com.samsolutions.dto.UserDTO;
 import com.samsolutions.entity.Health;
-import com.samsolutions.entity.User;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Converter for Health.
@@ -18,86 +19,59 @@ import java.util.List;
  * @copyright 2019 SaM
  */
 
+@Component
 public class HealthConverter implements DTOConverter<Health, HealthDTO> {
-    private DTOConverter<User, UserDTO> userConverter = new UserConverter();
+
+    @Autowired
+    private UserConverter userConverter;
 
     @Override
-    public HealthDTO entityToDTO(final Health health) {
-        HealthDTO healthDTO = new HealthDTO();
-        BeanUtils.copyProperties(health, healthDTO);
-        return healthDTO;
+    public HealthDTO entityToDTO(final Health source) {
+        HealthDTO target = new HealthDTO();
+        target.setId(source.getId());
+        target.setPatient(userConverter.entityToDTO(source.getPatient()));
+        target.setBirth(source.getBirth());
+        target.setPhoto(source.getPhoto());
+        return target;
     }
 
     @Override
-    public Health dtoToEntity(final HealthDTO healthDTO) {
-        Health health = new Health();
-        BeanUtils.copyProperties(healthDTO, health);
-        return health;
+    public Health dtoToEntity(final HealthDTO source) {
+        Health target = new Health();
+        target.setId(source.getId());
+        target.setPatient(userConverter.dtoToEntity(source.getPatient()));
+        target.setBirth(source.getBirth());
+        target.setPhoto(source.getPhoto());
+        return target;
     }
 
     @Override
-    public List<HealthDTO> entitiesToDtoList(final List<Health> entityList) {
-        List<HealthDTO> healthDTOList = new ArrayList<>();
+    public Set<HealthDTO> entitiesToDtoSet(final Set<Health> entitySet) {
+        Set<HealthDTO> healthDTOSet = new HashSet<>();
+        for (Health source : entitySet) {
+            HealthDTO target = entityToDTO(source);
+            healthDTOSet.add(target);
+        }
+        return healthDTOSet;
+    }
+
+    @Override
+    public Set<Health> dtoSetToEntities(final Set<HealthDTO> healthDTOSet) {
+        Set<Health> healthSet = new HashSet<>();
+        for (HealthDTO source : healthDTOSet) {
+            Health target = dtoToEntity(source);
+            healthSet.add(target);
+        }
+        return healthSet;
+    }
+
+    @Override
+    public List<HealthDTO> entitiesToDtoList(List<Health> entityList) {
+        List<HealthDTO> DTOList = new ArrayList<>();
         for (Health source : entityList) {
-            HealthDTO target = new HealthDTO();
-            BeanUtils.copyProperties(source, target);
-            target.setPatient(userConverter.entityToDTO(source.getPatient()));
-            healthDTOList.add(target);
+            HealthDTO target = entityToDTO(source);
+            DTOList.add(target);
         }
-        return healthDTOList;
-    }
-
-    @Override
-    public List<Health> dtoListToEntities(final List<HealthDTO> healthDTOList) {
-        List<Health> healthList = new ArrayList<>();
-        for (HealthDTO source : healthDTOList) {
-            Health target = new Health();
-            BeanUtils.copyProperties(source, target);
-            healthList.add(target);
-        }
-        return healthList;
-    }
-
-//    @Override
-//    public String DTOToJSON(HealthDTO healthDTO) {
-//        String json = "";
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            json = mapper.writeValueAsString(healthDTO);
-//        } catch (JsonProcessingException e) {
-//            System.out.println("Не удалось конвертировать в JSON"); //TODO: Add logger
-//        }
-//        return json;
-//    }
-//
-//    @Override
-//    public HealthDTO JSONToDTO(String json) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        HealthDTO healthDTO = null;
-//        try {
-//            healthDTO = mapper.readValue(json, HealthDTO.class);
-//        } catch (IOException e) {
-//            System.out.println("Не удалось конвертировать в DTO"); //TODO: Add logger
-//        }
-//        return healthDTO;
-//    }
-
-
-    /**
-     * Returns userConverter.
-     *
-     * @return userConverter.
-     */
-    public DTOConverter<User, UserDTO> getUserConverter() {
-        return userConverter;
-    }
-
-    /**
-     * Sets userConverter.
-     *
-     * @param userConverter converter to be set.
-     */
-    public void setUserConverter(final DTOConverter<User, UserDTO> userConverter) {
-        this.userConverter = userConverter;
+        return DTOList;
     }
 }

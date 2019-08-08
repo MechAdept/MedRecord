@@ -1,7 +1,5 @@
 package com.samsolutions.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -15,19 +13,14 @@ import java.util.Objects;
  */
 
 public class TicketDTO {
-    @JsonProperty(value = "id")
     private Long id;
 
-    @JsonProperty(value = "patient")
     private UserDTO patient;
 
-    @JsonProperty(value = "doctor")
     private UserDTO doctor;
 
-    @JsonProperty(value = "datetime")
     private LocalDateTime datetime;
 
-    @JsonProperty(value = "attendance")
     private Boolean attendance;
 
     /**

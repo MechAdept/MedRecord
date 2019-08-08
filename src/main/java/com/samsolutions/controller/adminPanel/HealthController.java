@@ -78,7 +78,7 @@ public class HealthController {
      */
     @RequestMapping(value = "adminpanel/health/update", method = RequestMethod.POST)
     public String update(@ModelAttribute final HealthDTO healthDTO) {
-        healthService.update(healthDTO);
+        healthService.save(healthDTO);
         return "redirect: /adminpanel/health";
     }
 

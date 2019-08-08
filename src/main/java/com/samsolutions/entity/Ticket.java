@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -32,18 +31,17 @@ public class Ticket {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "patient", referencedColumnName = "id")
+    @JoinColumn(name = "patient")
     private User patient;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "doctor", referencedColumnName = "id")
+    @JoinColumn(name = "doctor")
     private User doctor;
 
     @Column(name = "datetime")
     private LocalDateTime datetime;
 
     @Column(name = "attendance")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean attendance;
 
     /**

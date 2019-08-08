@@ -1,9 +1,9 @@
 package com.samsolutions.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -16,18 +16,15 @@ import java.util.Objects;
  */
 
 public class HealthDTO {
-    @JsonProperty(value = "id")
+
     private Long id;
 
-    @JsonProperty(value = "patient")
     private UserDTO patient;
 
-    @JsonProperty(value = "photo")
     private String photo;
 
-    @DateTimeFormat(pattern = "yyyy-dd-MM")
-    @JsonProperty(value = "birth")
     private LocalDate birth;
+
 
     /**
      * Returns id.
@@ -92,23 +89,20 @@ public class HealthDTO {
         return birth;
     }
 
+    public void setBirth(String birth){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.birth = LocalDate.parse(birth, formatter);
+    }
+
     /**
      * Sets date of birth.
      *
      * @param birth LocaleDate to be set.
      */
+    @ModelAttribute
     public void setBirth(final LocalDate birth) {
         this.birth = birth;
     }
-
-//    public void setBirth(String birth){
-//        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
-//        try {
-//            this.birth = (Date)formatter.parse(birth);
-//        } catch (ParseException e) {
-//            System.out.println("DATE FORMAT EXCEPTION");
-//        } //todo: add logger
-//    }
 
     @Override
     public boolean equals(final Object o) {
@@ -127,6 +121,6 @@ public class HealthDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, patient, photo, birth);
+        return Objects.hash(id, photo, birth);
     }
 }

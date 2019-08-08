@@ -32,14 +32,14 @@ public class Health {
     @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "patient", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient")
+    @OneToOne(cascade = CascadeType.MERGE)
     private User patient;
 
     @Column(name = "photo")
     private String photo;
 
-    @DateTimeFormat(pattern = "yyyy-dd-MM")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "birth")
     private LocalDate birth;
 
@@ -102,7 +102,7 @@ public class Health {
      *
      * @return LocalDate.
      */
-    public LocalDate getLocalDate() {
+    public LocalDate getBirth() {
         return birth;
     }
 
@@ -111,7 +111,7 @@ public class Health {
      *
      * @param birth LocaleDate to be set.
      */
-    public void setLocalDate(final LocalDate birth) {
+    public void setBirth(final LocalDate birth) {
         this.birth = birth;
     }
 

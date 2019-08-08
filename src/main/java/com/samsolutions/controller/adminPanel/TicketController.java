@@ -75,7 +75,7 @@ public class TicketController {
      */
     @RequestMapping(value = "adminpanel/ticket/update", method = RequestMethod.POST)
     public String update(@ModelAttribute final TicketDTO ticketDTO) {
-        ticketService.update(ticketDTO);
+        ticketService.save(ticketDTO);
         return "redirect: /adminpanel/ticket";
     }
 

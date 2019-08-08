@@ -1,13 +1,10 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.DTOConverter;
 import com.samsolutions.converter.TicketConverter;
 import com.samsolutions.dto.TicketDTO;
-import com.samsolutions.entity.Ticket;
 import com.samsolutions.repository.TicketRepository;
 import com.samsolutions.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,19 +21,14 @@ import java.util.List;
 @Service("TicketService")
 public class TicketServiceImpl implements TicketService {
     @Autowired
-    @Qualifier("ticketRepository")
     private TicketRepository ticketRepository;
 
-    private DTOConverter<Ticket, TicketDTO> converter = new TicketConverter();
+    @Autowired
+    TicketConverter converter;
 
     @Override
     public TicketDTO findTicketById(final Long id) {
-        return converter.entityToDTO(ticketRepository.findOne(id));
-    }
-
-    @Override
-    public void update(final TicketDTO ticketDTO) {
-
+        return converter.entityToDTO(ticketRepository.getOne(id));
     }
 
     @Override
@@ -51,6 +43,6 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicket(final Long id) {
-        ticketRepository.delete(id);
+        ticketRepository.deleteById(id);
     }
 }
