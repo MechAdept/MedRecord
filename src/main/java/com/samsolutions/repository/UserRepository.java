@@ -1,8 +1,11 @@
 package com.samsolutions.repository;
 
+import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * The User repository provides ready-made methods for working with user table.
@@ -22,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return User
      */
     User findByUsername(String username);
+
+    List<User> findUsersByRoles(Role role);
 }

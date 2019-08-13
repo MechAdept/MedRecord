@@ -1,9 +1,8 @@
 package com.samsolutions.converter;
 
-import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.UserDTO;
-import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
+import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,13 +29,14 @@ public class UserConverter implements DTOConverter<User, UserDTO> {
     public UserDTO entityToDTO(final User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
-
-        Set<Role> roleSet = user.getRoles();
-
-        userDTO.setRoles(roleConverter.entitiesToDtoSet(roleSet));
         userDTO.setPassword(user.getPassword());
         userDTO.setUsername(user.getUsername());
-        return userDTO;
+        try {
+            userDTO.setRoles(roleConverter.entitiesToDtoSet(user.getRoles()));
+            return userDTO;
+        } catch (LazyInitializationException e) {
+            return userDTO;
+        }
     }
 
     @Override
@@ -45,9 +45,10 @@ public class UserConverter implements DTOConverter<User, UserDTO> {
         target.setId(source.getId());
         target.setPassword(source.getPassword());
         target.setUsername(source.getUsername());
-        if(source.getRoles() != null) {
-            Set<RoleDTO> DTOSet = source.getRoles();
-            target.setRoles(roleConverter.dtoSetToEntities(DTOSet));
+        try{
+            target.setRoles(roleConverter.dtoSetToEntities(source.getRoles()));
+        } catch (NullPointerException ne){
+            return target;
         }
         return target;
     }
@@ -55,21 +56,30 @@ public class UserConverter implements DTOConverter<User, UserDTO> {
     @Override
     public Set<UserDTO> entitiesToDtoSet(final Set<User> userSet) {
         Set<UserDTO> userDTOSet = new HashSet<>();
-        for (User source : userSet) {
-            UserDTO target = entityToDTO(source);
-            userDTOSet.add(target);
+
+        try {
+            for (User source : userSet) {
+                UserDTO target = entityToDTO(source);
+                userDTOSet.add(target);
+            }
+            return userDTOSet;
+        } catch (NullPointerException ne) {
+            return userDTOSet;
         }
-        return userDTOSet;
     }
 
     @Override
     public Set<User> dtoSetToEntities(final Set<UserDTO> userDTOSet) {
         Set<User> userSet = new HashSet<>();
-        for (UserDTO source : userDTOSet) {
-            User target = dtoToEntity(source);
-            userSet.add(target);
+        try {
+            for (UserDTO source : userDTOSet) {
+                User target = dtoToEntity(source);
+                userSet.add(target);
+            }
+            return userSet;
+        } catch (NullPointerException ne) {
+            return userSet;
         }
-        return userSet;
     }
 
     @Override

@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller of crud operations for table "ticket".
@@ -22,6 +21,7 @@ import java.util.List;
  */
 
 @Controller
+@RequestMapping("/adminpanel/ticket")
 public class TicketController {
     @Autowired
     private TicketService ticketService;
@@ -32,24 +32,25 @@ public class TicketController {
      * @param ticketDTO form to create a ticket.
      * @return redirects to main page of "ticket" crud.
      */
-    @RequestMapping(value = "/adminpanel/ticket/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(@ModelAttribute(name = "ticketDTO") final TicketDTO ticketDTO) {
         ticketService.save(ticketDTO);
         return "redirect: /adminpanel/ticket";
     }
 
-    /**
-     * Method to shows records of "ticket" table.
-     *
-     * @param model is model.
-     * @return return main page of "ticket" crud.
-     */
-    @RequestMapping(value = "/adminpanel/ticket", method = RequestMethod.GET)
-    public String read(final Model model) {
-        List<TicketDTO> ticketDTOList = ticketService.getTickets();
-        model.addAttribute("ticketDTOForm", new TicketDTO());
-        model.addAttribute("ticketDTOList", ticketDTOList);
-        return "crud/ticketcrud";
+    @RequestMapping(method = RequestMethod.GET)
+    public String read(final Model model, @RequestParam(value = "pageNo",
+            required = false, defaultValue = "1") Integer pageNo,
+                       @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
+                       @RequestParam(value = "idSort", required = false, defaultValue = "false")
+                               Boolean idSortReverse) {
+        model.addAttribute("DTOList", ticketService.getPage(pageNo - 1, pageSize, idSortReverse));
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("idSort", idSortReverse);
+        model.addAttribute("pageCount", ticketService.getPageCount(pageSize));
+        model.addAttribute("elementsCount", ticketService.getTotalCount());
+        return "adminpanel/ticket/ticketcrud";
     }
 
     /**
@@ -59,12 +60,12 @@ public class TicketController {
      * @param id    is id.
      * @return return main page of "ticket" crud.
      */
-    @RequestMapping(value = "/adminpanel/ticket/update/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable("id") final Long id, final Model model) {
         TicketDTO ticketDTO = ticketService.findTicketById(id);
         model.addAttribute("ticketDTO", ticketDTO);
         model.addAttribute("ticketDTOForm", new TicketDTO());
-        return "crud/update/ticketupdate";
+        return "adminpanel/ticket/ticketupdate";
     }
 
     /**
@@ -73,7 +74,7 @@ public class TicketController {
      * @param ticketDTO form to update a ticket.
      * @return redirects to main page of "ticket" crud.
      */
-    @RequestMapping(value = "adminpanel/ticket/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(@ModelAttribute final TicketDTO ticketDTO) {
         ticketService.save(ticketDTO);
         return "redirect: /adminpanel/ticket";
@@ -85,7 +86,7 @@ public class TicketController {
      * @param id is id.
      * @return redirects to main page of "ticket" crud.
      */
-    @RequestMapping(value = "/adminpanel/ticket/delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable("id") final Long id) {
         ticketService.deleteTicket(id);
         return "redirect: /adminpanel/ticket";

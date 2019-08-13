@@ -6,8 +6,13 @@ import com.samsolutions.entity.Health;
 import com.samsolutions.repository.HealthRepository;
 import com.samsolutions.service.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,12 +46,36 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public List<HealthDTO> getHealths() {
-        List<HealthDTO> healthDTOSet = healthConverter.entitiesToDtoList(healthRepository.findAll());
-        return healthDTOSet;
+        return healthConverter.entitiesToDtoList(healthRepository.findAll(new Sort(Sort.Direction.ASC,"id")));
+    }
+
+    public List<HealthDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse) {
+        Pageable pageable;
+        if (idReverse) {
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
+        } else {
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").ascending());
+        }
+        Page<Health> pagedResult = healthRepository.findAll(pageable);
+        if (pagedResult.hasContent()) {
+            return healthConverter.entitiesToDtoList(pagedResult.getContent());
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override
     public void deleteHealth(final Long id) {
         healthRepository.deleteById(id);
+    }
+
+    @Override
+    public Long getPageCount(Integer pageSize) {
+        return healthRepository.count() / pageSize;
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return healthRepository.count();
     }
 }

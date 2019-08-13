@@ -1,14 +1,22 @@
 package com.samsolutions.service.impl;
 
 import com.samsolutions.converter.RoleConverter;
+import com.samsolutions.converter.UserConverter;
 import com.samsolutions.dto.RoleDTO;
+import com.samsolutions.dto.UserDTO;
 import com.samsolutions.entity.Role;
-import com.samsolutions.entity.User;
 import com.samsolutions.repository.RoleRepository;
 import com.samsolutions.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,12 +31,16 @@ import java.util.Set;
  */
 
 @Service("RoleService")
+@Transactional
 public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
     private RoleConverter roleConverter;
+
+    @Autowired
+    private UserConverter userConverter;
 
     @Override
     public void save(final RoleDTO roleDTO) {
@@ -38,12 +50,37 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDTO findRoleById(final Long id) {
-        return roleConverter.entityToDTO(roleRepository.getOne(id));
+
+        Role role = roleRepository.findById(id).orElse(new Role());
+        return roleConverter.entityToDTO(role);
     }
 
     @Override
-    public List<RoleDTO> getRoles() {
-        return roleConverter.entitiesToDtoList(roleRepository.findAll());
+    public Set<RoleDTO> findRolesById(Long[] rolesId) {
+        Set<RoleDTO> roleDTOSet = Collections.EMPTY_SET;
+        try {
+            for (Long id : rolesId) {
+                roleDTOSet.add((findRoleById(id)));
+            }
+            return roleDTOSet;
+        } catch (NullPointerException ne) {
+            return roleDTOSet;
+        }
+    }
+
+    public List<RoleDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse) {
+        Pageable pageable;
+        if (idReverse) {
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
+        } else {
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").ascending());
+        }
+        Page<Role> pagedResult = roleRepository.findAll(pageable);
+        if (pagedResult.hasContent()) {
+            return roleConverter.entitiesToDtoList(pagedResult.getContent());
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override
@@ -52,7 +89,23 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<Role> getRolesEntityByUserId(User user) {
-        return new HashSet<>(roleRepository.getRolesByUsers(user));
+    public Set<RoleDTO> getRolesByUser(UserDTO userDTO) {
+        return roleConverter.entitiesToDtoSet(new HashSet<>(roleRepository.getRolesByUsers(
+                userConverter.dtoToEntity(userDTO))));
+    }
+
+    @Override
+    public Long getPageCount(Integer pageSize) {
+        return roleRepository.count() / pageSize;
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return roleRepository.count();
+    }
+
+    @Override
+    public List<RoleDTO> findAll() {
+        return roleConverter.entitiesToDtoList(roleRepository.findAll(Sort.by("id").ascending()));
     }
 }

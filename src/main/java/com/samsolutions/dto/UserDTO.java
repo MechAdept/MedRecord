@@ -29,6 +29,15 @@ public class UserDTO {
 
     private Set<TicketDTO> doctorTicket;
 
+    public UserDTO(String username, String password, Set<RoleDTO> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public UserDTO() {
+    }
+
     /**
      * Returns id.
      *

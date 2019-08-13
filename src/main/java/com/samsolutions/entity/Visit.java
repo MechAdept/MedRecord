@@ -46,7 +46,7 @@ public class Visit {
     @Column(name = "treatment")
     private String treatment;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ticket", referencedColumnName = "id")
     private Ticket ticket;
 

@@ -12,50 +12,149 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>RoleCrud</title>
+    <title>Role Crud</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
     </script>
 </head>
-
 <body>
-<a href="/adminpanel/role" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
-<a href="/adminpanel/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Пользователи</a>
-<a href="/adminpanel/ticket" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Талоны</a>
-<a href="/adminpanel/visit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Посещения</a>
-<a href="/adminpanel/health" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Карты здоровья</a>
-<br>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">username</th>
-        <th scope="col">action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${roleDTOSet}" var="role">
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-success" role="button"
+               aria-pressed="true">Роли</a>
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
+               aria-pressed="true">Пользователи</a>
+            <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
+               aria-pressed="true">Талоны</a>
+            <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
+               aria-pressed="true">Посещения</a>
+            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-info" role="button"
+               aria-pressed="true">Карты
+                здоровья</a>
+        </div>
+        <div class="col-xs-6"></div>
+    </div>
+    <div class="row" style="margin-top: 10px">
+        <div class="col-xs-4">
+            <a href="<c:url value="/adminpanel/role/create"/>" class="btn btn-default" role="button"
+               aria-pressed="true">Создать</a>
+        </div>
+        <div class="col-xs-4">
+            <c:if test="${DTOList.size() != 0}">
+                Показаны ${1+((pageNo-1)*pageSize)} - ${DTOList.size()+((pageNo-1)*pageSize)} из ${elementsCount} элементов
+            </c:if>
+            <c:if test="${DTOList.size() == 0}">
+                Здесь пусто
+            </c:if>
+        </div>
+        <div class="col-xs-4">
+            Показывать по
+            <div class="btn-group">
+                <button type="button" class="btn btn-default">${pageSize}</button>
+                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span
+                        class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a href="<c:url value="/adminpanel/role?pageNo=${pageNo}&pageSize=${7}&idSort${idSort}"/>">7</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/adminpanel/role?pageNo=${pageNo}&pageSize=${15}&idSort${idSort}"/>">15</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/adminpanel/role?pageNo=${pageNo}&pageSize=${25}&idSort${idSort}"/>">25</a>
+                    </li>
+                </ul>
+            </div>
+            элементов
+        </div>
+    </div>
+    <div>
+    </div>
+
+    <table class="table">
+        <thead>
         <tr>
-            <th scope="row">${role.id}</th>
-            <th scope="row">${role.name}</th>
-                <%--        <td><input type="text"${role.name}" value="></td>--%>
-            <td><a href="/adminpanel/role/delete/${role.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
-            </td>
-            <td><a href="/adminpanel/role/update/${role.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
-            </td>
+            <th scope="col">
+                <c:if test="${idSort == false}">
+                    <a href="<c:url value="/adminpanel/role?pageNo=${pageNo}&pageSize=${pageSize}&idSort=${true}"/>">id</a>
+                </c:if>
+                <c:if test="${idSort == true}">
+                    <a href="<c:url value="/adminpanel/role?pageNo=${pageNo}&pageSize=${pageSize}&idSort=${false}"/>">id</a>
+                </c:if>
+            </th>
+            <th scope="col">name</th>
+            <th scope="col"></th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
-<form:form method="POST" action="/adminpanel/role/create" modelAttribute="roleDTOForm">
-    <table>
-        <tr>
-            <td><form:label path="name">Name</form:label></td>
-            <td><form:input path="name"/></td>
-            <td><input type="submit" value="Create role"/></td>
-        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${DTOList}" var="role">
+            <tr>
+                <th scope="row">${role.id}</th>
+                <th scope="row">${role.name}</th>
+                <td><a href="/adminpanel/role/details/${role.id}" class="btn btn-link" role="button"
+                       aria-pressed="true">details</a>
+                </td>
+                <td><a href="/adminpanel/role/delete/${role.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+                </td>
+                <td><a href="/adminpanel/role/edit/${role.id}" class="btn btn-link" role="button" aria-pressed="true">edit</a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
     </table>
-</form:form>
+
+    <div class="navbar-fixed-bottom row-fluid">
+        <div class="navbar-inner">
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-xs-4"></div>
+                    <div class="col-xs-4">
+                        <div style="text-align: center">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <c:if test="${pageNo > 1 && DTOList.size() != 0}">
+                                        <a href="<c:url value="/adminpanel/role?pageNo=${pageNo-1}&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                           class="btn btn-outline-primary" role="button"
+                                           aria-pressed="true">Предыдущая</a>
+                                    </c:if>
+                                    <c:if test="${DTOList.size() == 0}">
+                                        <a href="<c:url value="/adminpanel/role?pageNo=1&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                           class="btn btn-outline-primary" role="button"
+                                           aria-pressed="true">Предыдущая</a>
+                                    </c:if>
+                                </div>
+                                <div class="col-xs-4">
+                                    <c:if test="${pageSize < elementsCount}">
+                                        <c:forEach begin="1" end="${pageCount+1}" var="i">
+                                            <c:choose>
+                                                <c:when test="${pageNo eq i}">
+                                                    <td>${i}</td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td>
+                                                        <a href="<c:url value="/adminpanel/role?pageNo=${i}&pageSize=${pageSize}&idSort=${idSort}"/>">${i}</a>
+                                                    </td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </c:if>
+                                </div>
+                                <div class="col-xs-4">
+                                    <c:if test="${(pageSize*pageNo)<elementsCount}">
+                                        <a href="<c:url value="/adminpanel/role?pageNo=${pageNo+1}&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                           class="btn btn-outline-primary" role="button"
+                                           aria-pressed="true">Следующая</a>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

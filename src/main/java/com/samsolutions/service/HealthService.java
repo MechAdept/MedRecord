@@ -2,7 +2,6 @@ package com.samsolutions.service;
 
 import com.samsolutions.dto.HealthDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ import java.util.List;
  */
 
 @Service
-@Transactional
 public interface HealthService {
     /**
      * Method for create health.
@@ -31,7 +29,6 @@ public interface HealthService {
      * @param id id of desired health.
      * @return HealthDTO.
      */
-    @Transactional(readOnly = true)
     HealthDTO findHealthById(Long id);
 
     /**
@@ -39,7 +36,6 @@ public interface HealthService {
      *
      * @return List<HealthDTO>.
      */
-    @Transactional(readOnly = true)
     List<HealthDTO> getHealths();
 
     /**
@@ -48,4 +44,10 @@ public interface HealthService {
      * @param id id of desired health.
      */
     void deleteHealth(Long id);
+
+    List<HealthDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse);
+
+    Long getPageCount(Integer pageSize);
+
+    Long getTotalCount();
 }

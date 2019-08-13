@@ -34,6 +34,7 @@ public class VisitConverter implements DTOConverter<Visit, VisitDTO> {
         target.setDiagnosis(source.getDiagnosis());
         target.setExamination(source.getExamination());
         target.setTreatment(source.getTreatment());
+        target.setTicket(ticketConverter.entityToDTO(source.getTicket()));
         return target;
     }
 

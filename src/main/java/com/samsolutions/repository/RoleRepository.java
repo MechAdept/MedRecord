@@ -19,4 +19,6 @@ import java.util.List;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
     List<Role> getRolesByUsers(User user);
+
+//    Page<Role> findAll(Long id, Pageable pageable);
 }

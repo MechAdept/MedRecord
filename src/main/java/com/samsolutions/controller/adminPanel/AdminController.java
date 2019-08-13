@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
+@RequestMapping("/adminpanel")
 public class AdminController {
 
     /**
@@ -24,9 +25,9 @@ public class AdminController {
      * @param model the model.
      * @return returns the admin panel page.
      */
-    @RequestMapping(value = "/adminpanel", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String adminPanel(final Model model) {
-        return "adminPanel";
+        return "adminpanel/adminPanel";
     }
 
 }

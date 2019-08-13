@@ -6,8 +6,13 @@ import com.samsolutions.entity.Visit;
 import com.samsolutions.repository.VisitRepository;
 import com.samsolutions.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,11 +40,6 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public List<VisitDTO> getVisits() {
-        return visitConverter.entitiesToDtoList(visitRepository.findAll());
-    }
-
-    @Override
     public void deleteVisit(final Long id) {
         visitRepository.deleteById(id);
     }
@@ -47,5 +47,32 @@ public class VisitServiceImpl implements VisitService {
     @Override
     public VisitDTO findVisitById(final Long id) {
         return visitConverter.entityToDTO(visitRepository.getOne(id));
+    }
+
+    @Override
+    public List<VisitDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse) {
+        Pageable pageable;
+        if(idReverse){
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
+        }
+        else {
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").ascending());
+        }
+        Page<Visit> pagedResult = visitRepository.findAll(pageable);
+        if (pagedResult.hasContent()) {
+            return visitConverter.entitiesToDtoList(pagedResult.getContent());
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public Long getPageCount(Integer pageSize) {
+        return visitRepository.count() / pageSize;
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return visitRepository.count();
     }
 }

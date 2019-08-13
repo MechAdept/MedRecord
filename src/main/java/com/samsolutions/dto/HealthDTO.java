@@ -1,5 +1,6 @@
 package com.samsolutions.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class HealthDTO {
 
     private String photo;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate birth;
 
 

@@ -50,7 +50,7 @@ public class RegistrationController {
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(final Model model) {
         model.addAttribute("userForm", new UserDTO());
-        model.addAttribute("roleList", roleService.getRoles());
+        model.addAttribute("roleList", roleService.findAll());
         return "registration";
     }
 
@@ -65,7 +65,7 @@ public class RegistrationController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") final UserDTO userForm,
                                final BindingResult bindingResult, final Model model) {
-        model.addAttribute("roleList", roleService.getRoles());
+        model.addAttribute("roleList", roleService.findAll());
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {

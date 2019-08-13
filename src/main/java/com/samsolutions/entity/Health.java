@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -39,7 +38,6 @@ public class Health {
     @Column(name = "photo")
     private String photo;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "birth")
     private LocalDate birth;
 

@@ -10,98 +10,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
         <%@include file="/resources/css/bootstrap.min.css"%>
-        <%@include file="/resources/css/logic.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
     <title>Ticket Crud</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
-        <%@include file="/resources/js/logic.js"%>
     </script>
-</head>6
+</head>
 <body>
-<a href="<c:url value="/adminpanel/role"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Роли</a>
-<a href="<c:url value="/adminpanel/user"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Пользователи</a>
-<a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Талоны</a>
-<a href="<c:url value="/adminpanel/visit"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Посещения</a>
-<a href="<c:url value="/adminpanel/health"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Карты здоровья</a>
-<br>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">patient</th>
-        <th scope="col">doctor</th>
-        <th scope="col">datetime</th>
-        <th scope="col">attendance</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${ticketDTOSet}" var="ticket">
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
+               aria-pressed="true">Роли</a>
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
+               aria-pressed="true">Пользователи</a>
+            <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-success" role="button"
+               aria-pressed="true">Талоны</a>
+            <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
+               aria-pressed="true">Посещения</a>
+            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-info" role="button"
+               aria-pressed="true">Карты
+                здоровья</a>
+        </div>
+        <div class="col-xs-6"></div>
+    </div>
+    <div class="row" style="margin-top: 10px">
+        <div class="col-xs-4">
+            <a href="<c:url value="/adminpanel/ticket/create"/>" class="btn btn-default" role="button"
+               aria-pressed="true">Создать</a>
+        </div>
+        <div class="col-xs-4">
+            <c:if test="${DTOList.size() != 0}">
+                Показаны ${1+((pageNo-1)*pageSize)} - ${DTOList.size()+((pageNo-1)*pageSize)} из ${elementsCount} элементов
+            </c:if>
+            <c:if test="${DTOList.size() == 0}">
+                Здесь пусто
+            </c:if>
+        </div>
+        <div class="col-xs-4">
+            Показывать по
+            <div class="btn-group">
+                <button type="button" class="btn btn-default">${pageSize}</button>
+                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span
+                        class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${7}&idSort${idSort}"/>">7</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${15}&idSort${idSort}"/>">15</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${25}&idSort${idSort}"/>">25</a>
+                    </li>
+                </ul>
+            </div>
+            элементов
+        </div>
+    </div>
+    <div>
+    </div>
+
+    <table class="table">
+        <thead>
         <tr>
-            <th scope="row">${ticket.id}</th>
-            <th scope="row">${ticket.patient.username}</th>
-            <th scope="row">${ticket.doctor.username}</th>
-            <th scope="row">${ticket.datetime}</th>
-            <th scope="row">${ticket.attendance}</th>
-            <td><a href="/adminpanel/ticket/delete/${ticket.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
-            </td>
-            <td><a href="/adminpanel/ticket/update/${ticket.id}" class="btn btn-link" role="button" aria-pressed="true">update</a>
-            </td>
+            <th scope="col">
+                <c:if test="${idSort == false}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&idSort=${true}"/>">id</a>
+                </c:if>
+                <c:if test="${idSort == true}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&idSort=${false}"/>">id</a>
+                </c:if>
+            </th>
+            <th scope="col">name</th>
+            <th scope="col"></th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <c:forEach items="${DTOList}" var="ticket">
+            <tr>
+                <th scope="row">${ticket.id}</th>
+                <th scope="row">${ticket.datetime}</th>
+                <th scope="row">${ticket.attendance}</th>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">patient</th>
-        <th scope="col">doctor</th>
-        <th scope="col">datetime</th>
-        <th scope="col">attendance</th>
-    </tr>
-    </thead>
-    <tbody>
-    <form:form method="POST" action="/adminpanel/ticket/create" modelAttribute="ticketDTOForm">
-        <tr>
-            <th scope="row"><form:hidden path="id"/></th>
-            <th scope="row">
-                <form:select path="patient">
-                    <form:options items="${userDTOList}" itemValue="id" itemLabel="username"/>
-                </form:select>
-            </th>
-            <th scope="row">
-                <form:select path="doctor">
-                    <form:options items="${userDTOList}" itemValue="id" itemLabel="username"/>
-                </form:select>
-            </th>
-            <th scope="row">
-                <form:input path="datetime" type="datetime-local"/>
-            </th>
-            <th>
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample" value="">
-                    <label class="custom-control-label" for="defaultInline1">null</label>
-                </div>
+                <td><a href="/adminpanel/ticket/details/${ticket.id}" class="btn btn-link" role="button"
+                       aria-pressed="true">details</a>
+                </td>
+                <td><a href="/adminpanel/ticket/delete/${ticket.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+                </td>
+                <td><a href="<c:url value="adminpanel/ticket/edit/${ticket.id}"/>" class="btn btn-link" role="button" aria-pressed="true">edit</a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample" value="0">
-                    <label class="custom-control-label" for="defaultInline2">false</label>
+    <div class="navbar-fixed-bottom row-fluid">
+        <div class="navbar-inner">
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-xs-4"></div>
+                    <div class="col-xs-4">
+                        <div style="text-align: center">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <c:if test="${pageNo > 1 && DTOList.size() != 0}">
+                                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo-1}&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                           class="btn btn-outline-primary" role="button"
+                                           aria-pressed="true">Предыдущая</a>
+                                    </c:if>
+                                    <c:if test="${DTOList.size() == 0}">
+                                        <a href="<c:url value="/adminpanel/ticket?pageNo=1&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                           class="btn btn-outline-primary" role="button"
+                                           aria-pressed="true">Предыдущая</a>
+                                    </c:if>
+                                </div>
+                                <div class="col-xs-4">
+                                    <c:if test="${pageSize < elementsCount}">
+                                        <c:forEach begin="1" end="${pageCount+1}" var="i">
+                                            <c:choose>
+                                                <c:when test="${pageNo eq i}">
+                                                    <td>${i}</td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td>
+                                                        <a href="<c:url value="/adminpanel/ticket?pageNo=${i}&pageSize=${pageSize}&idSort=${idSort}"/>">${i}</a>
+                                                    </td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </c:if>
+                                </div>
+                                <div class="col-xs-4">
+                                    <c:if test="${(pageSize*pageNo)<elementsCount}">
+                                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo+1}&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                           class="btn btn-outline-primary" role="button"
+                                           aria-pressed="true">Следующая</a>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4"></div>
                 </div>
-
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="defaultInline3" name="inlineDefaultRadiosExample" value="1">
-                    <label class="custom-control-label" for="defaultInline3">true</label>
-                </div>
-                <form:radiobutton path="attendance" cssClass="custom-control-input" value="" label="null"/>
-            </th>
-        </tr>
-        <td><input type="submit" value="Create ticket"/></td>
-    </form:form>
-    </tbody>
-</table>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

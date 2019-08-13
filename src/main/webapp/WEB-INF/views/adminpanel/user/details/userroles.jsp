@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Role Crud</title>
+    <title>User Roles Details</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -24,7 +24,7 @@
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
                aria-pressed="true">Роли</a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
                aria-pressed="true">Пользователи</a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
                aria-pressed="true">Талоны</a>
@@ -36,8 +36,42 @@
         </div>
         <div class="col-xs-6"></div>
     </div>
-    </div>
-    <div>
+    <h3>Роли пользователя ${userDTO.username}</h3>
+    <div class="container" style="margin-top: 20px;">
+        <div class="row">
+            <div class="col-xs-2">
+                <label>id</label>
+            </div>
+            <div class="col-xs-2">
+                <label>name</label>
+            </div>
+            <div class="col-xs-2" >
+            </div>
+            <div class="col-xs-3" style="text-align: center">
+                <label>действия</label>
+            </div>
+        </div>
+        <c:forEach items="${roleDTOSet}" var="role">
+            <div class="row">
+                <div class="col-xs-2">
+                    <label>${role.id}</label>
+                </div>
+                <div class="col-xs-2">
+                    <label>${role.name}</label>
+                </div>
+                <div class="col-xs-2" style="text-align: center">
+                </div>
+                <div class="col-xs-3" style="text-align: center">
+                    <td><a href="<c:url value="/adminpanel/user/details/${userDTO.id}/roles/delete/${role.id}"/>" class="btn btn-link" role="button"
+                           aria-pressed="true">delete</a>
+                    </td>
+                    <td><a href="<c:url value="/adminpanel/role/details/${role.id}"/>" class="btn btn-link" role="button"
+                           aria-pressed="true">details</a>
+                    </td>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </c:forEach>
     </div>
     <div class="navbar-fixed-bottom row-fluid">
         <div class="navbar-inner">

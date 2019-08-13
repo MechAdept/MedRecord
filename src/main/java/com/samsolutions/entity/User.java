@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Set;
@@ -27,6 +28,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
+@Transactional
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

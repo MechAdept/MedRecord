@@ -2,7 +2,6 @@ package com.samsolutions.service;
 
 import com.samsolutions.dto.TicketDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ import java.util.List;
  */
 
 @Service
-@Transactional
 public interface TicketService {
     /**
      * Method for create ticket.
@@ -30,7 +28,6 @@ public interface TicketService {
      *
      * @return List<TicketDTO>.
      */
-    @Transactional(readOnly = true)
     List<TicketDTO> getTickets();
 
     /**
@@ -39,7 +36,6 @@ public interface TicketService {
      * @param id id of desired ticket.
      * @return TicketDTO.
      */
-    @Transactional(readOnly = true)
     TicketDTO findTicketById(Long id);
 
     /**
@@ -48,4 +44,10 @@ public interface TicketService {
      * @param id id of desired ticket.
      */
     void deleteTicket(Long id);
+
+    List<TicketDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse);
+
+    Long getPageCount(Integer pageSize);
+
+    Long getTotalCount();
 }

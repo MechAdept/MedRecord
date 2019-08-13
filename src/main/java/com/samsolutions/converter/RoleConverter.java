@@ -1,7 +1,6 @@
 package com.samsolutions.converter;
 
 import com.samsolutions.dto.RoleDTO;
-import com.samsolutions.dto.UserDTO;
 import com.samsolutions.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,33 +38,41 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
         Role target = new Role();
         target.setId(source.getId());
         target.setName(source.getName());
-        Set<UserDTO> DTOSet = new HashSet<>(source.getUsers());
-        target.setUsers(new HashSet<>(userConverter.dtoSetToEntities(DTOSet)));
-        return target;
+        try {
+            target.setUsers(new HashSet<>(userConverter.dtoSetToEntities(source.getUsers())));
+            return target;
+        } catch (NullPointerException ne){
+            return target;
+        }
     }
 
     @Override
     public Set<RoleDTO> entitiesToDtoSet(final Set<Role> entitySet) {
         Set<RoleDTO> DTOSet = new HashSet<>();
-        if (entitySet != null) {
+        try {
             for (Role source : entitySet) {
                 RoleDTO target = entityToDTO(source);
                 DTOSet.add(target);
             }
+            return DTOSet;
+        } catch (NullPointerException ne) {
+            return DTOSet;
         }
-        return DTOSet;
+
     }
 
     @Override
     public Set<Role> dtoSetToEntities(final Set<RoleDTO> roleDTOSet) {
         Set<Role> roleSet = new HashSet<>();
-        if (!(roleDTOSet == null)) {
+        try {
             for (RoleDTO source : roleDTOSet) {
                 Role target = dtoToEntity(source);
                 roleSet.add(target);
             }
+            return roleSet;
+        } catch (NullPointerException ne){
+            return roleSet;
         }
-        return roleSet;
     }
 
     @Override

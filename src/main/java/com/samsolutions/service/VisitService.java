@@ -2,7 +2,6 @@ package com.samsolutions.service;
 
 import com.samsolutions.dto.VisitDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ import java.util.List;
  */
 
 @Service(value = "visitService")
-@Transactional
 public interface VisitService {
     /**
      * Method for create visit.
@@ -26,20 +24,11 @@ public interface VisitService {
     void save(VisitDTO ticketDTO);
 
     /**
-     * Method for getting visits from table.
-     *
-     * @return List<VisitDTO>.
-     */
-    @Transactional(readOnly = true)
-    List<VisitDTO> getVisits();
-
-    /**
      * Method for find visit by id.
      *
      * @param id id of desired visit.
      * @return VisitDTO.
      */
-    @Transactional(readOnly = true)
     VisitDTO findVisitById(Long id);
 
     /**
@@ -48,4 +37,10 @@ public interface VisitService {
      * @param id id of desired visit.
      */
     void deleteVisit(Long id);
+
+    List<VisitDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse);
+
+    Long getPageCount(Integer pageSize);
+
+    Long getTotalCount();
 }

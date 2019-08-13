@@ -33,6 +33,8 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDTO> {
         target.setId(source.getId());
         target.setDatetime(source.getDatetime());
         target.setAttendance(source.getAttendance());
+        target.setPatient(userConverter.entityToDTO(source.getPatient()));
+        target.setDoctor(userConverter.entityToDTO(source.getDoctor()));
         return target;
     }
 
