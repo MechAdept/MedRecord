@@ -19,7 +19,7 @@
     <%@include file="/resources/js/jquery-3.4.1.min.js"%>
     <%@include file="/resources/js/bootstrap.min.js"%>
 </script>
-<a href="/adminpanel" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
+<a href="<c:url value="/adminpanel"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
 <br>
 
 <form:form method="POST" action="/adminpanel/health/update" modelAttribute="healthDTOForm">
@@ -27,7 +27,7 @@
         <form:hidden path="id" value="${healthDTO.id}"/>
         <form:select path="patient">
             <form:option value="">Можете выбрать нового пациента</form:option>
-            <form:options items="${uniqueUsers}" itemValue="id" itemLabel="username"/>
+            <form:options items="${usersWithoutCard}" itemValue="id" itemLabel="username"/>
         </form:select>
         <tr>
             <td><form:label path="birth">Birth</form:label></td>

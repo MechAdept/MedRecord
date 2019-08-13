@@ -92,12 +92,12 @@
             <tr>
                 <th scope="row">${user.id}</th>
                 <th scope="row">${user.username}</th>
-                <td><a href="/adminpanel/user/details/${user.id}" class="btn btn-link" role="button"
+                <td><a href="<c:url value="/adminpanel/user/details/${user.id}"/>" class="btn btn-link" role="button"
                        aria-pressed="true">details</a>
                 </td>
-                <td><a href="/adminpanel/user/delete/${user.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+                <td><a href="<c:url value="/adminpanel/user/delete/${user.id}"/>" class="btn btn-link" role="button" aria-pressed="true">delete</a>
                 </td>
-                <td><a href="/adminpanel/user/edit/${user.id}" class="btn btn-link" role="button" aria-pressed="true">edit</a>
+                <td><a href="<c:url value="/adminpanel/user/edit/${user.id}"/>" class="btn btn-link" role="button" aria-pressed="true">edit</a>
                 </td>
             </tr>
         </c:forEach>

@@ -96,7 +96,7 @@ public class UserController {
      * @return redirects to main page of "user" crud.
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@RequestParam(value = "id", required = true) Long id,
+    public String edit(@RequestParam(value = "id") Long id,
                        @RequestParam(value = "password", required = false) String password,
                        @RequestParam(value = "username", required = false) String username,
                        @RequestParam(value = "roles", required = false) Long[] roles) {
@@ -124,7 +124,7 @@ public class UserController {
     public String details(@PathVariable("id") final Long id, Model model) {
         UserDTO userDTO = userService.findUserById(id);
         model.addAttribute("userDTO", userDTO);
-        return "/adminpanel/user/details/userdetails";
+        return "/adminpanel/user/details/userdet    ails";
     }
 
     @RequestMapping(value = "/details/{id}/roles", method = RequestMethod.GET)
@@ -138,6 +138,6 @@ public class UserController {
     public String detailsRoleDelete(@PathVariable(value = "id") final Long id,
                                     @PathVariable(value = "roleId") final Long roleId) {
         userService.deleteRoleFromUserById(id, roleId);
-        return "redirect: /adminpanel/user/details/" + id + "/roles/";
+        return "redirect: /adminpanel/user/details/" + id + "/roles";
     }
 }

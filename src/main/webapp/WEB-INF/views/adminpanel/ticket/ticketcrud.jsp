@@ -94,10 +94,10 @@
                 <th scope="row">${ticket.datetime}</th>
                 <th scope="row">${ticket.attendance}</th>
 
-                <td><a href="/adminpanel/ticket/details/${ticket.id}" class="btn btn-link" role="button"
+                <td><a href="<c:url value="adminpanel/ticket/details/${ticket.id}"/>" class="btn btn-link" role="button"
                        aria-pressed="true">details</a>
                 </td>
-                <td><a href="/adminpanel/ticket/delete/${ticket.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+                <td><a href="<c:url value="adminpanel/ticket/delete/${ticket.id}"/>" class="btn btn-link" role="button" aria-pressed="true">delete</a>
                 </td>
                 <td><a href="<c:url value="adminpanel/ticket/edit/${ticket.id}"/>" class="btn btn-link" role="button" aria-pressed="true">edit</a>
                 </td>

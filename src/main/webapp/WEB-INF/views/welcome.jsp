@@ -26,7 +26,7 @@
         </form>
         <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
         </h2>
-        <a href="/adminpanel">Админка</a>
+        <a href="<c:url value="/adminpanel"/>">Админка</a>
     </c:if>
 </div>
 </body>

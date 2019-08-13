@@ -92,12 +92,12 @@
             <tr>
                 <th scope="row">${health.id}</th>
                 <th scope="row">${health.patient.username}</th>
-                <td><a href="/adminpanel/health/details/${health.id}" class="btn btn-link" role="button"
+                <td><a href="<c:url value="/adminpanel/ticket/details/${health.id}"/>" class="btn btn-link" role="button"
                        aria-pressed="true">details</a>
                 </td>
-                <td><a href="/adminpanel/health/delete/${health.id}" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+                <td><a href="<c:url value="/adminpanel/ticket/delete/${health.id}"/>" class="btn btn-link" role="button" aria-pressed="true">delete</a>
                 </td>
-                <td><a href="<c:url value="/adminpanel/health/adminpanel/health/edit/${health.id}"/>" class="btn btn-link" role="button" aria-pressed="true">edit</a>
+                <td><a href="<c:url value="/adminpanel/health/edit/${health.id}"/>" class="btn btn-link" role="button" aria-pressed="true">edit</a>
                 </td>
             </tr>
         </c:forEach>
