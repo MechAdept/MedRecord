@@ -26,19 +26,12 @@ public interface UserService {
     void save(UserDTO userDTO);
 
     /**
-     * Method for getting users from table.
-     *
-     * @return List<UserDTO>.
-     */
-    List<UserDTO> getUsers();
-
-    /**
      * Method for find user by id.
      *
      * @param id id of desired user.
      * @return UserDTO.
      */
-    UserDTO findUserById(Long id);
+    UserDTO findById(Long id);
 
     /**
      * Method for find user by username.
@@ -55,15 +48,21 @@ public interface UserService {
      */
     void delete(Long id);
 
-    List<UserDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse);
+    List<UserDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     Long getPageCount(Integer pageSize);
 
     Long getTotalCount();
 
-    UserDTO findUserWithRolesById(Long id);
+    UserDTO findWithRolesById(Long id);
 
     void deleteRoleFromUserById(Long userId, Long RoleId);
 
-    List<UserDTO> findUsersByRole(RoleDTO roleDTO);
+    List<UserDTO> getPageByRole(RoleDTO roleDTO, Integer pageNo, Integer pageSize, Boolean desc, String sort);
+
+    Long pageCountByRole(Integer pageSize, RoleDTO roleDTO);
+
+    Long countByRole(RoleDTO roleDTO);
+
+    List<UserDTO> findWithoutHealth();
 }

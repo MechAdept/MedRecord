@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>User Details</title>
+    <title>Health Details</title>
 </head>
 <body>
 <div class="container">
@@ -20,28 +20,29 @@
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
                aria-pressed="true">Роли</a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
                aria-pressed="true">Пользователи</a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
                aria-pressed="true">Талоны</a>
             <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
                aria-pressed="true">Посещения</a>
-            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-info" role="button"
+            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-success" role="button"
                aria-pressed="true">Карты
                 здоровья</a>
         </div>
         <div class="col-xs-6"></div>
     </div>
-    <h3>Подробно о пользователе</h3>
+    <c:if test="${healthDTO.id != null}">
+    <h3>Подробно о карте пациента ${healthDTO.patient.username}</h3>
     <div class="container" style="margin-top: 20px;">
         <div class="row">
             <div class="col-xs-2">
                 <label>id</label>
             </div>
             <div class="col-xs-2">
-                <label>username</label>
+                <label>name</label>
             </div>
-            <div class="col-xs-3" style="text-align: center">
+            <div class="col-xs-2" style="text-align: center">
                 <label>связанные элементы</label>
             </div>
             <div class="col-xs-3" style="text-align: center">
@@ -50,39 +51,44 @@
         </div>
         <div class="row">
             <div class="col-xs-2">
-                <label>${userDTO.id}</label>
+                <label>${healthDTO.id}</label>
             </div>
             <div class="col-xs-2">
-                <label>${userDTO.username}</label>
+                <label>${healthDTO.patient.id}</label>
             </div>
-            <div class="col-xs-3" style="text-align: center">
-                <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/roles"/>" class="btn-sm btn-primary"
+            <div class="col-xs-2" style="text-align: center">
+                <a href="<c:url value="/adminpanel/health/details/${healthDTO.id}/patient"/>" class="btn-sm btn-primary"
                    role="button"
-                   aria-pressed="true">Роли</a>
-                <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets"/>" class="btn-sm btn-primary"
-                   role="button"
-                   aria-pressed="true">Талоны</a>
-                <c:if test="${userDTO.roles.contains(rolePatient)}">
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/health"/>" class="btn-sm btn-primary"
-                       role="button"
-                       aria-pressed="true">Карта</a>
-                </c:if>
+                   aria-pressed="true">Пациент</a>
             </div>
-            <div class="col-xs-3" style="text-align: center">
-                <a href="<c:url value="/adminpanel/user/delete/${userDTO.id}"/>" class="btn btn-link" role="button"
-                   aria-pressed="true">delete</a>
-                <a href="<c:url value="/adminpanel/user/edit/${userDTO.id}"/>" class="btn btn-link" role="button"
-                   aria-pressed="true">edit</a>
+            <div class="col-xs-3" style="text-align: center"><a
+                    href="<c:url value="/adminpanel/health/delete/${healthDTO.id}"/>" class="btn btn-link" role="button"
+                    aria-pressed="true">delete</a>
+                <a href="<c:url value="/adminpanel/health/edit/${healthDTO.id}"/>"
+                   class="btn btn-link" role="button" aria-pressed="true">edit</a>
             </div>
             <div class="clearfix"></div>
         </div>
     </div>
-    <div class="navbar-fixed-bottom row-fluid">
-        <div class="navbar-inner">
-            <div class="panel-footer">
+    </c:if>
+    <c:if test="${healthDTO.id == null}">
+    <h3> У пользователя ${userDTO.username} нет карты</h3>
+    <div class="row" style="margin-top: 15px">
+        <div class="col-xs-4">
+            <form:form modelAttribute="userDTO">
+                <form:hidden path="id" value="${userDTO.id}"/>
+            </form:form>
+            <a href="<c:url value="/adminpanel/health/create${userDTO.id}"/>" class="btn-lg btn-success" role="button"
+               aria-pressed="true">Создать</a>
+        </div>
+        <div class="clearfix"></div>
+        </c:if>
+        <div class="navbar-fixed-bottom row-fluid">
+            <div class="navbar-inner">
+                <div class="panel-footer">
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>

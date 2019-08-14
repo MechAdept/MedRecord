@@ -45,13 +45,13 @@
             <div class="col-xs-2">
                 <label>name</label>
             </div>
-            <div class="col-xs-2" >
+            <div class="col-xs-2">
             </div>
             <div class="col-xs-3" style="text-align: center">
                 <label>действия</label>
             </div>
         </div>
-        <c:forEach items="${roleDTOSet}" var="role">
+        <c:forEach items="${userDTO.roles}" var="role">
             <div class="row">
                 <div class="col-xs-2">
                     <label>${role.id}</label>
@@ -61,13 +61,13 @@
                 </div>
                 <div class="col-xs-2" style="text-align: center">
                 </div>
-                <div class="col-xs-3" style="text-align: center">
-                    <td><a href="<c:url value="/adminpanel/user/details/${userDTO.id}/roles/delete/${role.id}"/>" class="btn btn-link" role="button"
-                           aria-pressed="true">delete</a>
-                    </td>
-                    <td><a href="<c:url value="/adminpanel/role/details/${role.id}"/>" class="btn btn-link" role="button"
-                           aria-pressed="true">details</a>
-                    </td>
+                <div class="col-xs-3" style="text-align: center"><a
+                        href="<c:url value="/adminpanel/user/details/${userDTO.id}/roles/delete/${role.id}"/>"
+                        class="btn btn-link" role="button"
+                        aria-pressed="true">delete</a>
+                    <a href="<c:url value="/adminpanel/role/details/${role.id}"/>" class="btn btn-link"
+                       role="button"
+                       aria-pressed="true">details</a>
                 </div>
                 <div class="clearfix"></div>
             </div>

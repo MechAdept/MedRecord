@@ -35,18 +35,27 @@ public class HealthController {
      *
      * @return redirects to main page of "health" crud.
      */
-    @RequestMapping(value = "create", method = RequestMethod.POST)
-    public String create(@RequestParam("patient") Long patientID,
-                         @RequestParam(value = "birth") String birth,
-                         @RequestParam(value = "photo") String photo) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String create(@RequestParam("patient") final Long patientId,
+                         @RequestParam("photo") final String photo,
+                         @RequestParam("birth") final String birth) {
         HealthDTO healthDTO = new HealthDTO();
-        healthDTO.setPatient(userService.findUserById(patientID));
+        healthDTO.setPatient(userService.findById(patientId));
         healthDTO.setBirth(birth);
         healthDTO.setPhoto(photo);
         healthService.save(healthDTO);
         return "redirect: /adminpanel/health";
-    } //Todo: Add patient check
+    } //Todo: Add validation
 
+    @RequestMapping(value = "/create{id}", method = RequestMethod.GET)
+    public String create(@PathVariable(value = "id", required = false) Long id, Model model) {
+        model.addAttribute("unregistered", userService.findWithoutHealth());
+        if (id != null) {
+            model.addAttribute("userDTO", userService.findById(id));
+        }
+        model.addAttribute("healthDTOForm", new HealthDTO());
+        return "/adminpanel/health/healthcreate";
+    }
 
     /**
      * Method to shows records of "health" table.
@@ -58,12 +67,13 @@ public class HealthController {
     public String read(final Model model, @RequestParam(value = "pageNo",
             required = false, defaultValue = "1") Integer pageNo,
                        @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                       @RequestParam(value = "idSort", required = false, defaultValue = "false")
-                               Boolean idSortReverse) {
-        model.addAttribute("DTOList", healthService.getPage(pageNo - 1, pageSize, idSortReverse));
+                       @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
+                       @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
+        model.addAttribute("DTOList", healthService.getPage(pageNo - 1, pageSize, desc, sort));
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("pageSize", pageSize);
-        model.addAttribute("idSort", idSortReverse);
+        model.addAttribute("desc", desc);
+        model.addAttribute("sort", sort);
         model.addAttribute("pageCount", healthService.getPageCount(pageSize));
         model.addAttribute("elementsCount", healthService.getTotalCount());
         return "adminpanel/health/healthcrud";
@@ -102,9 +112,21 @@ public class HealthController {
      * @param id is id.
      * @return redirects to main page of "health" crud.
      */
-    @RequestMapping(value = "/adminpanel/health/delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable("id") final Long id) {
         healthService.deleteHealth(id);
-        return "redirect: /adminpanel/health";
+        return "redirect:/adminpanel/health";
+    }
+
+    @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
+    public String details(@PathVariable("id") final Long id, Model model) {
+        model.addAttribute("healthDTO", healthService.findHealthById(id));
+        return "/adminpanel/health/details/healthdetails";
+    }
+
+    @RequestMapping(value = "/details/patient/{id}", method = RequestMethod.GET)
+    public String detailsPatient(@PathVariable("id") final Long id, Model model) {
+        model.addAttribute("userDTO", userService.findById(id));
+        return "/adminpanel/user/details/userdetails";
     }
 }

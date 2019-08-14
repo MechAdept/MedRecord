@@ -21,8 +21,6 @@ public class TicketDTO {
 
     private LocalDateTime datetime;
 
-    private Boolean attendance;
-
     /**
      * Returns id.
      *
@@ -95,24 +93,6 @@ public class TicketDTO {
         this.datetime = datetime;
     }
 
-    /**
-     * Returns attendance.
-     *
-     * @return Boolean.
-     */
-    public Boolean getAttendance() {
-        return attendance;
-    }
-
-    /**
-     * Sets attendance.
-     *
-     * @param attendance Boolean to be set.
-     */
-    public void setAttendance(final Boolean attendance) {
-        this.attendance = attendance;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -125,12 +105,11 @@ public class TicketDTO {
         return Objects.equals(id, ticketDTO.id) &&
                 Objects.equals(patient, ticketDTO.patient) &&
                 Objects.equals(doctor, ticketDTO.doctor) &&
-                Objects.equals(datetime, ticketDTO.datetime) &&
-                Objects.equals(attendance, ticketDTO.attendance);
+                Objects.equals(datetime, ticketDTO.datetime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, patient, doctor, datetime, attendance);
+        return Objects.hash(id, patient, doctor, datetime);
     }
 }

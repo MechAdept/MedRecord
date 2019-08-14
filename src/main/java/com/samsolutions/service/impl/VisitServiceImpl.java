@@ -50,14 +50,8 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public List<VisitDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse) {
-        Pageable pageable;
-        if(idReverse){
-            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        }
-        else {
-            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").ascending());
-        }
+    public List<VisitDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
         Page<Visit> pagedResult = visitRepository.findAll(pageable);
         if (pagedResult.hasContent()) {
             return visitConverter.entitiesToDtoList(pagedResult.getContent());
@@ -74,5 +68,13 @@ public class VisitServiceImpl implements VisitService {
     @Override
     public Long getTotalCount() {
         return visitRepository.count();
+    }
+
+    private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        if (desc) {
+            return PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
+        } else {
+            return PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
+        }
     }
 }

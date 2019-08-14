@@ -40,8 +40,7 @@ public interface RoleService {
      *
      * @return List<RoleDTO>.
      */
-    List<RoleDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse);
-
+    List<RoleDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     Long getPageCount(Integer pageSize);
 
@@ -54,7 +53,9 @@ public interface RoleService {
      */
     void deleteRole(Long id);
 
-    Set<RoleDTO> getRolesByUser(UserDTO userDTO);
+    List<RoleDTO> getRolesByUser(UserDTO userDTO);
 
     List<RoleDTO> findAll();
+
+    RoleDTO findRoleByName(String name);
 }

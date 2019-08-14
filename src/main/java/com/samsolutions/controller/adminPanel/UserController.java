@@ -1,7 +1,9 @@
 package com.samsolutions.controller.adminPanel;
 
 import com.samsolutions.dto.UserDTO;
+import com.samsolutions.service.HealthService;
 import com.samsolutions.service.RoleService;
+import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,12 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private TicketService ticketService;
+
+    @Autowired
+    private HealthService healthService;
+
     /**
      * Method to create a new user.
      *
@@ -43,7 +51,7 @@ public class UserController {
             String username, @RequestParam(value = "roles") Long[] roles) {
         UserDTO userDTO = new UserDTO(username, password, roleService.findRolesById(roles));
         userService.save(userDTO);
-        return "redirect: /adminpanel/user";
+        return "redirect:/adminpanel/user";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -60,15 +68,16 @@ public class UserController {
      * @return return main page of "user" crud.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public String read(final Model model, @RequestParam(value = "pageNo",
-            required = false, defaultValue = "1") Integer pageNo,
+    public String read(final Model model,
+                       @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
                        @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                       @RequestParam(value = "idSort", required = false, defaultValue = "false")
-                               Boolean idSortReverse) {
-        model.addAttribute("DTOList", userService.getPage(pageNo - 1, pageSize, idSortReverse));
+                       @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
+                       @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
+        model.addAttribute("DTOList", userService.getPage(pageNo - 1, pageSize, desc, sort));
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("pageSize", pageSize);
-        model.addAttribute("idSort", idSortReverse);
+        model.addAttribute("desc", desc);
+        model.addAttribute("sort", sort);
         model.addAttribute("pageCount", userService.getPageCount(pageSize));
         model.addAttribute("elementsCount", userService.getTotalCount());
         return "adminpanel/user/usercrud";
@@ -83,7 +92,7 @@ public class UserController {
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
-        UserDTO userDTO = userService.findUserById(id);
+        UserDTO userDTO = userService.findById(id);
         model.addAttribute("userDTOForm", new UserDTO());
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("roleDTOList", new HashSet<>(roleService.findAll()));
@@ -100,7 +109,7 @@ public class UserController {
                        @RequestParam(value = "password", required = false) String password,
                        @RequestParam(value = "username", required = false) String username,
                        @RequestParam(value = "roles", required = false) Long[] roles) {
-        UserDTO userDTO = userService.findUserById(id);
+        UserDTO userDTO = userService.findById(id);
         userDTO.setUsername(username);
         userDTO.setPassword(password);
         userDTO.setRoles(roleService.findRolesById(roles));
@@ -122,22 +131,54 @@ public class UserController {
 
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String details(@PathVariable("id") final Long id, Model model) {
-        UserDTO userDTO = userService.findUserById(id);
+        UserDTO userDTO = userService.findWithRolesById(id);
         model.addAttribute("userDTO", userDTO);
-        return "/adminpanel/user/details/userdet    ails";
+        model.addAttribute("rolePatient", roleService.findRoleByName("ROLE_PATIENT"));
+        return "/adminpanel/user/details/userdetails";
     }
 
     @RequestMapping(value = "/details/{id}/roles", method = RequestMethod.GET)
     public String detailsRole(@PathVariable(value = "id") final Long id, Model model) {
-        model.addAttribute("roleDTOSet", roleService.getRolesByUser(userService.findUserById(id)));
-        model.addAttribute("userDTO", userService.findUserById(id));
+        model.addAttribute("userDTO", userService.findWithRolesById(id));
         return "/adminpanel/user/details/userroles";
     }
 
-    @RequestMapping(value = "/details/{id}/roles/delete/{roleId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/details/{id}/roles/delete/{roleid}", method = RequestMethod.GET)
     public String detailsRoleDelete(@PathVariable(value = "id") final Long id,
-                                    @PathVariable(value = "roleId") final Long roleId) {
+                                    @PathVariable(value = "roleid") final Long roleId) {
         userService.deleteRoleFromUserById(id, roleId);
-        return "redirect: /adminpanel/user/details/" + id + "/roles";
+        return "redirect: /adminpanel/user/details/{" + id + "}/roles";
+    }
+
+    @RequestMapping(value = "/details/{id}/tickets", method = RequestMethod.GET)
+    public String detailsTicket(final Model model, @PathVariable(value = "id") Long id,
+                                @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+                                @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
+                                @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
+                                @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
+        UserDTO userDTO = userService.findById(id);
+        model.addAttribute("DTOList", ticketService.getPageByUser(userDTO, pageNo - 1, pageSize, desc, sort));
+        model.addAttribute("userDTO", userDTO);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("desc", desc);
+        model.addAttribute("sort", sort);
+        model.addAttribute("pageCount", ticketService.getPageCountByUser(pageSize, userDTO));
+        model.addAttribute("elementsCount", ticketService.getTotalCountByUser(userDTO));
+        return "/adminpanel/user/details/usertickets";
+    }
+
+    @RequestMapping(value = "/details/{id}/roles/delete/{roleId}", method = RequestMethod.GET)
+    public String detailsHealth(@PathVariable(value = "id") final Long id,
+                                @PathVariable(value = "roleId") final Long roleId) {
+        userService.deleteRoleFromUserById(id, roleId);
+        return "redirect: /adminpanel/user/details/{" + id + "}/roles";
+    }
+
+    @RequestMapping(value = "/details/{id}/health", method = RequestMethod.GET)
+    public String detailsHealth(@PathVariable(value = "id") final Long id, Model model) {
+        model.addAttribute("healthDTO", healthService.findHealthByPatientId(id));
+        model.addAttribute("userDTO", userService.findById(id));
+        return "/adminpanel/health/details/healthdetails";
     }
 }

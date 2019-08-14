@@ -38,7 +38,7 @@ public interface VisitService {
      */
     void deleteVisit(Long id);
 
-    List<VisitDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse);
+    List<VisitDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     Long getPageCount(Integer pageSize);
 

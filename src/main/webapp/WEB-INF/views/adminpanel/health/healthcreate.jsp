@@ -12,13 +12,13 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Role Create</title>
+    <title>Health Create</title>
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
-            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-success" role="button"
+            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
                aria-pressed="true">Роли</a>
             <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
                aria-pressed="true">Пользователи</a>
@@ -26,27 +26,39 @@
                aria-pressed="true">Талоны</a>
             <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
                aria-pressed="true">Посещения</a>
-            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-info" role="button"
+            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-success" role="button"
                aria-pressed="true">Карты
                 здоровья</a>
         </div>
         <div class="col-xs-6"></div>
     </div>
-    <h3>Создание роли</h3>
+    <h3>Создание карты</h3>
     <div class="container" style="margin-top: 20px;">
-        <form:form method="POST" action="/adminpanel/role/save" modelAttribute="roleDTOForm">
+        <form:form method="POST" action="/adminpanel/health/create" modelAttribute="healthDTOForm">
         <div class="row">
             <div class="col-xs-2">
-                <td><form:label path="name"/>Name</td>
+                <form:label path="patient" />Name
+            </div>
+            <div class="col-xs-1">
+                <form:label path="birth"/>birth
             </div>
             <div class="clearfix"></div>
         </div>
         <div class="row">
             <div class="col-xs-2">
-                <td><form:input path="name"/></td>
+                <form:select path="patient" class="form-control" placeholder="Patient">
+                    <form:options items="${unregistered}" itemValue="id" itemLabel="username"/>
+                </form:select>
+            </div>
+            <div class="col-xs-1">
+                <form:input type="date" path="birth" class="form-control" placeholder="Birth" style="width:6em;"/>
             </div>
             <div class="col-xs-2">
-                <td><input type="submit" value="Create"/></td>
+                <form:input type="text" path="photo" class="form-control"
+                            placeholder="link to photo"/>
+            </div>
+            <div class="col-xs-2">
+                <input type="submit" value="Create"/>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -58,7 +70,6 @@
         <div class="panel-footer">
         </div>
     </div>
-</div>
 </div>
 </body>
 </html>

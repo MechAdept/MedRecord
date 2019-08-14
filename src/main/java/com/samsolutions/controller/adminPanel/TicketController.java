@@ -39,15 +39,16 @@ public class TicketController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String read(final Model model, @RequestParam(value = "pageNo",
-            required = false, defaultValue = "1") Integer pageNo,
-                       @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                       @RequestParam(value = "idSort", required = false, defaultValue = "false")
-                               Boolean idSortReverse) {
-        model.addAttribute("DTOList", ticketService.getPage(pageNo - 1, pageSize, idSortReverse));
+    public String detailsTicket(final Model model,
+                                @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+                                @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
+                                @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
+                                @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
+        model.addAttribute("DTOList", ticketService.getPage(pageNo - 1, pageSize, desc, sort));
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("pageSize", pageSize);
-        model.addAttribute("idSort", idSortReverse);
+        model.addAttribute("desc", desc);
+        model.addAttribute("sort", sort);
         model.addAttribute("pageCount", ticketService.getPageCount(pageSize));
         model.addAttribute("elementsCount", ticketService.getTotalCount());
         return "adminpanel/ticket/ticketcrud";
@@ -90,5 +91,12 @@ public class TicketController {
     public String delete(@PathVariable("id") final Long id) {
         ticketService.deleteTicket(id);
         return "redirect: /adminpanel/ticket";
+    }
+
+    @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
+    public String details(@PathVariable("id") final Long id, Model model) {
+        TicketDTO ticketDTO = ticketService.findTicketById(id);
+        model.addAttribute("ticketDTO", ticketDTO);
+        return "/adminpanel/ticket/details/details";
     }
 }

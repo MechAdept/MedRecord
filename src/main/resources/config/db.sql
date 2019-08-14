@@ -44,7 +44,6 @@ CREATE TABLE `ticket`
     `patient`    int(11)    DEFAULT NULL,
     `doctor`     int(11)    DEFAULT NULL,
     `datetime`   datetime   DEFAULT NULL,
-    `attendance` tinyint(4) DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `fk_ticket_patient.id_idx` (`patient`),
     KEY `fk_ticket_doctor.id_idx` (`doctor`),

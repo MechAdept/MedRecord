@@ -2,10 +2,13 @@ package com.samsolutions.repository;
 
 import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * The User repository provides ready-made methods for working with user table.
@@ -26,5 +29,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     User findByUsername(String username);
 
-    List<User> findUsersByRoles(Role role);
+    Long countUsersByRoles(Role role);
+
+    Page<User> findByRolesIn(Set<Role> roles, Pageable pageable);
+
+    List<User> findAllByHealthIsNull();
 }

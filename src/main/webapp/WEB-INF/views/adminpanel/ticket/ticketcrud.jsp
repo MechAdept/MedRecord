@@ -56,13 +56,13 @@
                 <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span
                         class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${7}&idSort${idSort}"/>">7</a>
+                    <li><a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${7}&desc=${desc}&sort=${sort}"/>">7</a>
                     </li>
                     <li>
-                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${15}&idSort${idSort}"/>">15</a>
+                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${15}&desc=${desc}&sort=${sort}"/>">15</a>
                     </li>
                     <li>
-                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${25}&idSort${idSort}"/>">25</a>
+                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${25}&desc=${desc}&sort=${sort}"/>">25</a>
                     </li>
                 </ul>
             </div>
@@ -76,14 +76,37 @@
         <thead>
         <tr>
             <th scope="col">
-                <c:if test="${idSort == false}">
-                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&idSort=${true}"/>">id</a>
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=id"/>">id</a>
                 </c:if>
-                <c:if test="${idSort == true}">
-                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&idSort=${false}"/>">id</a>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=id"/>">id</a>
                 </c:if>
             </th>
-            <th scope="col">name</th>
+            <th scope="col">
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=doctor"/>">doctor</a>
+                </c:if>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=doctor"/>">doctor</a>
+                </c:if>
+            </th>
+            <th scope="col">
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=patient"/>">patient</a>
+                </c:if>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=patient"/>">patient</a>
+                </c:if>
+            </th>
+            <th scope="col">
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=datetime"/>">datetime</a>
+                </c:if>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=datetime"/>">datetime</a>
+                </c:if>
+            </th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -91,15 +114,16 @@
         <c:forEach items="${DTOList}" var="ticket">
             <tr>
                 <th scope="row">${ticket.id}</th>
+                <th scope="row">${ticket.doctor.username}</th>
+                <th scope="row">${ticket.patient.username}</th>
                 <th scope="row">${ticket.datetime}</th>
-                <th scope="row">${ticket.attendance}</th>
 
-                <td><a href="<c:url value="adminpanel/ticket/details/${ticket.id}"/>" class="btn btn-link" role="button"
+                <td><a href="<c:url value="ticket/details/${ticket.id}"/>" class="btn btn-link" role="button"
                        aria-pressed="true">details</a>
                 </td>
-                <td><a href="<c:url value="adminpanel/ticket/delete/${ticket.id}"/>" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+                <td><a href="<c:url value="ticket/delete/${ticket.id}"/>" class="btn btn-link" role="button" aria-pressed="true">delete</a>
                 </td>
-                <td><a href="<c:url value="adminpanel/ticket/edit/${ticket.id}"/>" class="btn btn-link" role="button" aria-pressed="true">edit</a>
+                <td><a href="<c:url value="ticket/edit/${ticket.id}"/>" class="btn btn-link" role="button" aria-pressed="true">edit</a>
                 </td>
             </tr>
         </c:forEach>
@@ -116,12 +140,12 @@
                             <div class="row">
                                 <div class="col-xs-4">
                                     <c:if test="${pageNo > 1 && DTOList.size() != 0}">
-                                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo-1}&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}"/>"
                                            class="btn btn-outline-primary" role="button"
                                            aria-pressed="true">Предыдущая</a>
                                     </c:if>
                                     <c:if test="${DTOList.size() == 0}">
-                                        <a href="<c:url value="/adminpanel/ticket?pageNo=1&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                        <a href="<c:url value="/adminpanel/ticket?pageNo=1&pageSize=${pageSize}&desc=${desc}"/>"
                                            class="btn btn-outline-primary" role="button"
                                            aria-pressed="true">Предыдущая</a>
                                     </c:if>
@@ -135,7 +159,7 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <td>
-                                                        <a href="<c:url value="/adminpanel/ticket?pageNo=${i}&pageSize=${pageSize}&idSort=${idSort}"/>">${i}</a>
+                                                        <a href="<c:url value="/adminpanel/ticket?pageNo=${i}&pageSize=${pageSize}&desc=${desc}"/>">${i}</a>
                                                     </td>
                                                 </c:otherwise>
                                             </c:choose>
@@ -144,7 +168,7 @@
                                 </div>
                                 <div class="col-xs-4">
                                     <c:if test="${(pageSize*pageNo)<elementsCount}">
-                                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo+1}&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo+1}&pageSize=${pageSize}&desc=${desc}"/>"
                                            class="btn btn-outline-primary" role="button"
                                            aria-pressed="true">Следующая</a>
                                     </c:if>

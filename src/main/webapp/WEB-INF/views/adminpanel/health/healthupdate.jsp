@@ -15,11 +15,8 @@
 </head>
 
 <body>
-<script type="text/javascript">
-    <%@include file="/resources/js/jquery-3.4.1.min.js"%>
-    <%@include file="/resources/js/bootstrap.min.js"%>
-</script>
-<a href="<c:url value="/adminpanel"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
+<a href="<c:url value="/adminpanel"/>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель
+    аминистратора</a>
 <br>
 
 <form:form method="POST" action="/adminpanel/health/update" modelAttribute="healthDTOForm">

@@ -38,8 +38,6 @@
     </div>
     <div class="row" style="margin-top: 10px">
         <div class="col-xs-4">
-            <a href="<c:url value="/adminpanel/visit/create"/>" class="btn btn-default" role="button"
-               aria-pressed="true">Создать</a>
         </div>
         <div class="col-xs-4">
             <c:if test="${DTOList.size() != 0}">
@@ -56,13 +54,14 @@
                 <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span
                         class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${7}&idSort${idSort}"/>">7</a>
+                    <li>
+                        <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${7}&desc=${desc}&sort=${sort}"/>">7</a>
                     </li>
                     <li>
-                        <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${15}&idSort${idSort}"/>">15</a>
+                        <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${15}&desc=${desc}&sort=${sort}"/>">15</a>
                     </li>
                     <li>
-                        <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${25}&idSort${idSort}"/>">25</a>
+                        <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${25}&desc=${desc}&sort=${sort}"/>">25</a>
                     </li>
                 </ul>
             </div>
@@ -76,17 +75,47 @@
         <thead>
         <tr>
             <th scope="col">
-                <c:if test="${idSort == false}">
-                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&idSort=${true}"/>">id</a>
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=id"/>">id</a>
                 </c:if>
-                <c:if test="${idSort == true}">
-                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&idSort=${false}"/>">id</a>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=id"/>">id</a>
                 </c:if>
             </th>
-            <th scope="col">patient</th>
-            <th scope="col">doctor</th>
-            <th scope="col">datetime</th>
-            <th scope="col">ticket id</th>
+            <th scope="col">
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=patient"/>">patient</a>
+                </c:if>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=patient"/>">patient</a>
+                </c:if>
+            </th>
+            <th scope="col">
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=doctor"/>">doctor</a>
+                </c:if>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=doctor"/>">doctor</a>
+                </c:if>
+            </th>
+            <th scope="col">
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=datetime"/>">datetime</a>
+                </c:if>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=datetime"/>">datetime</a>
+                </c:if>
+            </th>
+            <th scope="col">
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=ticket"/>">ticket
+                        id</a>
+                </c:if>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=ticket"/>">ticket
+                        id</a>
+                </c:if>
+            </th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -101,9 +130,11 @@
                 <td><a href="<c:url value="/adminpanel/visit/details/${visit.id}"/>" class="btn btn-link" role="button"
                        aria-pressed="true">details</a>
                 </td>
-                <td><a href="<c:url value="/adminpanel/visit/delete/${visit.id}"/>" class="btn btn-link" role="button" aria-pressed="true">delete</a>
+                <td><a href="<c:url value="/adminpanel/visit/delete/${visit.id}"/>" class="btn btn-link" role="button"
+                       aria-pressed="true">delete</a>
                 </td>
-                <td><a href="<c:url value="/adminpanel/visit/edit/${visit.id}"/>" class="btn btn-link" role="button" aria-pressed="true">edit</a>
+                <td><a href="<c:url value="/adminpanel/visit/edit/${visit.id}"/>" class="btn btn-link" role="button"
+                       aria-pressed="true">edit</a>
                 </td>
             </tr>
         </c:forEach>
@@ -119,13 +150,14 @@
                         <div style="text-align: center">
                             <div class="row">
                                 <div class="col-xs-4">
+
                                     <c:if test="${pageNo > 1 && DTOList.size() != 0}">
-                                        <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo-1}&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                        <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
                                            class="btn btn-outline-primary" role="button"
                                            aria-pressed="true">Предыдущая</a>
                                     </c:if>
-                                    <c:if test="${DTOList.size() == 0}">
-                                        <a href="<c:url value="/adminpanel/visit?pageNo=1&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                    <c:if test="${DTOList.size() == 0 && elementsCount != 0}">
+                                        <a href="<c:url value="/adminpanel/visit?pageNo=1&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
                                            class="btn btn-outline-primary" role="button"
                                            aria-pressed="true">Предыдущая</a>
                                     </c:if>
@@ -139,7 +171,7 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <td>
-                                                        <a href="<c:url value="/adminpanel/visit?pageNo=${i}&pageSize=${pageSize}&idSort=${idSort}"/>">${i}</a>
+                                                        <a href="<c:url value="/adminpanel/visit?pageNo=${i}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>">${i}</a>
                                                     </td>
                                                 </c:otherwise>
                                             </c:choose>
@@ -148,7 +180,7 @@
                                 </div>
                                 <div class="col-xs-4">
                                     <c:if test="${(pageSize*pageNo)<elementsCount}">
-                                        <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo+1}&pageSize=${pageSize}&idSort=${idSort}"/>"
+                                        <a href="<c:url value="/adminpanel/visit?pageNo=${pageNo+1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
                                            class="btn btn-outline-primary" role="button"
                                            aria-pressed="true">Следующая</a>
                                     </c:if>

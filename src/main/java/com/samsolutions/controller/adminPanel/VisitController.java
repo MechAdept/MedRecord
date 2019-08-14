@@ -42,12 +42,13 @@ public class VisitController {
     public String read(final Model model, @RequestParam(value = "pageNo",
             required = false, defaultValue = "1") Integer pageNo,
                        @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                       @RequestParam(value = "idSort", required = false, defaultValue = "false")
-                               Boolean idSortReverse) {
-        model.addAttribute("DTOList", visitService.getPage(pageNo - 1, pageSize, idSortReverse));
+                       @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
+                       @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
+        model.addAttribute("DTOList", visitService.getPage(pageNo - 1, pageSize, desc, sort));
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("pageSize", pageSize);
-        model.addAttribute("idSort", idSortReverse);
+        model.addAttribute("sort", sort);
+        model.addAttribute("desc", desc);
         model.addAttribute("pageCount", visitService.getPageCount(pageSize));
         model.addAttribute("elementsCount", visitService.getTotalCount());
         return "adminpanel/visit/visitcrud";

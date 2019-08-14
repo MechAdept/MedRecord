@@ -32,7 +32,6 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDTO> {
         TicketDTO target = new TicketDTO();
         target.setId(source.getId());
         target.setDatetime(source.getDatetime());
-        target.setAttendance(source.getAttendance());
         target.setPatient(userConverter.entityToDTO(source.getPatient()));
         target.setDoctor(userConverter.entityToDTO(source.getDoctor()));
         return target;
@@ -42,7 +41,6 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDTO> {
     public Ticket dtoToEntity(final TicketDTO source) {
         Ticket target = new Ticket();
         target.setId(source.getId());
-        target.setAttendance(source.getAttendance());
         target.setDatetime(source.getDatetime());
         target.setDoctor(userConverter.dtoToEntity(source.getDoctor()));
         target.setPatient(userConverter.dtoToEntity(source.getPatient()));

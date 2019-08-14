@@ -50,7 +50,7 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
     public Set<RoleDTO> entitiesToDtoSet(final Set<Role> entitySet) {
         Set<RoleDTO> DTOSet = new HashSet<>();
         try {
-            for (Role source : entitySet) {
+                for (Role source : entitySet) {
                 RoleDTO target = entityToDTO(source);
                 DTOSet.add(target);
             }

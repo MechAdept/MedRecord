@@ -1,6 +1,7 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.TicketDTO;
+import com.samsolutions.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,13 +25,6 @@ public interface TicketService {
     void save(TicketDTO ticketDTO);
 
     /**
-     * Method for getting ticket from table.
-     *
-     * @return List<TicketDTO>.
-     */
-    List<TicketDTO> getTickets();
-
-    /**
      * Method for find ticket by id.
      *
      * @param id id of desired ticket.
@@ -45,9 +39,15 @@ public interface TicketService {
      */
     void deleteTicket(Long id);
 
-    List<TicketDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse);
+    List<TicketDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     Long getPageCount(Integer pageSize);
 
     Long getTotalCount();
+
+    Long getPageCountByUser(Integer pageSize, UserDTO userDTO);
+
+    Long getTotalCountByUser(UserDTO userDTO);
+
+    List<TicketDTO> getPageByUser(UserDTO userDTO, Integer pageNo, Integer pageSize, Boolean desc, String sort);
 }

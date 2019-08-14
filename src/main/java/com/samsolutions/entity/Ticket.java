@@ -41,9 +41,6 @@ public class Ticket {
     @Column(name = "datetime")
     private LocalDateTime datetime;
 
-    @Column(name = "attendance")
-    private Boolean attendance;
-
     /**
      * Returns id.
      *
@@ -78,24 +75,6 @@ public class Ticket {
      */
     public void setDatetime(final LocalDateTime datetime) {
         this.datetime = datetime;
-    }
-
-    /**
-     * Returns attendance.
-     *
-     * @return Boolean.
-     */
-    public Boolean getAttendance() {
-        return attendance;
-    }
-
-    /**
-     * Sets attendance.
-     *
-     * @param attendance Boolean to be set.
-     */
-    public void setAttendance(final Boolean attendance) {
-        this.attendance = attendance;
     }
 
     /**
@@ -146,12 +125,11 @@ public class Ticket {
         return Objects.equals(id, ticket.id) &&
                 Objects.equals(patient, ticket.patient) &&
                 Objects.equals(doctor, ticket.doctor) &&
-                Objects.equals(datetime, ticket.datetime) &&
-                Objects.equals(attendance, ticket.attendance);
+                Objects.equals(datetime, ticket.datetime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, patient, doctor, datetime, attendance);
+        return Objects.hash(id, patient, doctor, datetime);
     }
 }

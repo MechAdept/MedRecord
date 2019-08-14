@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +56,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Set<RoleDTO> findRolesById(Long[] rolesId) {
-        Set<RoleDTO> roleDTOSet = Collections.EMPTY_SET;
+        Set<RoleDTO> roleDTOSet = new java.util.HashSet<>(Collections.emptySet());
         try {
             for (Long id : rolesId) {
                 roleDTOSet.add((findRoleById(id)));
@@ -68,13 +67,8 @@ public class RoleServiceImpl implements RoleService {
         }
     }
 
-    public List<RoleDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse) {
-        Pageable pageable;
-        if (idReverse) {
-            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        } else {
-            pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").ascending());
-        }
+    public List<RoleDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
         Page<Role> pagedResult = roleRepository.findAll(pageable);
         if (pagedResult.hasContent()) {
             return roleConverter.entitiesToDtoList(pagedResult.getContent());
@@ -89,9 +83,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<RoleDTO> getRolesByUser(UserDTO userDTO) {
-        return roleConverter.entitiesToDtoSet(new HashSet<>(roleRepository.getRolesByUsers(
-                userConverter.dtoToEntity(userDTO))));
+    public List<RoleDTO> getRolesByUser(UserDTO userDTO) {
+        return roleConverter.entitiesToDtoList(roleRepository.getRolesByUsers(
+                userConverter.dtoToEntity(userDTO)));
     }
 
     @Override
@@ -107,5 +101,20 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDTO> findAll() {
         return roleConverter.entitiesToDtoList(roleRepository.findAll(Sort.by("id").ascending()));
+    }
+
+    @Override
+    public RoleDTO findRoleByName(String name) {
+        return roleConverter.entityToDTO(roleRepository.findRoleByName(name));
+    }
+
+    private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Pageable pageable;
+        if (desc) {
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
+        } else {
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
+        }
+        return pageable;
     }
 }

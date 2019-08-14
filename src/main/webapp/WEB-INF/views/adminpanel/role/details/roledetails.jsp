@@ -60,16 +60,15 @@
                 <label>${roleDTO.name}</label>
             </div>
             <div class="col-xs-2" style="text-align: center">
-                <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/roles"/>" class="btn-sm btn-primary" role="button"
-                   aria-pressed="true">Роли</a>
-                <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/tickets"/>" class="btn-sm btn-primary" role="button"
-                   aria-pressed="true">Талоны</a>
+                <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users"/>" class="btn-sm btn-primary"
+                   role="button"
+                   aria-pressed="true">Пользователи</a>
             </div>
-            <div class="col-xs-3" style="text-align: center">
-                <td><a href="<c:url value="/adminpanel/role/delete/${roleDTO.id}"/>" class="btn btn-link" role="button" aria-pressed="true">delete</a>
-                </td>
-                <td><a href="<c:url value="/adminpanel/role/edit/${roleDTO.id}"/>" class="btn btn-link" role="button" aria-pressed="true">edit</a>
-                </td>
+            <div class="col-xs-3" style="text-align: center"><a
+                    href="<c:url value="/adminpanel/role/delete/${roleDTO.id}"/>" class="btn btn-link" role="button"
+                    aria-pressed="true">delete</a>
+                <a href="<c:url value="/adminpanel/role/edit/${roleDTO.id}"/>"
+                   class="btn btn-link" role="button" aria-pressed="true">edit</a>
             </div>
             <div class="clearfix"></div>
         </div>

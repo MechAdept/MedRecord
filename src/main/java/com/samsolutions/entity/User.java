@@ -1,5 +1,6 @@
 package com.samsolutions.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +56,9 @@ public class User {
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     private Set<Ticket> doctorTicket;
+
+    @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Health health;
 
     /**
      * Returns id.
@@ -179,6 +184,14 @@ public class User {
      */
     public void setRoles(final Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Health getHealth() {
+        return health;
+    }
+
+    public void setHealth(Health health) {
+        this.health = health;
     }
 
     @Override

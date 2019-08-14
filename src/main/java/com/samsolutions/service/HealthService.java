@@ -45,9 +45,11 @@ public interface HealthService {
      */
     void deleteHealth(Long id);
 
-    List<HealthDTO> getPage(Integer pageNo, Integer pageSize, Boolean idReverse);
+    List<HealthDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     Long getPageCount(Integer pageSize);
 
     Long getTotalCount();
+
+    HealthDTO findHealthByPatientId(Long id);
 }
