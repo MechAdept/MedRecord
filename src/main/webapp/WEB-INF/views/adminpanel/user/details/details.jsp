@@ -13,6 +13,10 @@
         <%@include file="/resources/css/common.css"%>
     </style>
     <title>User Details</title>
+    <script type="text/javascript">
+        <%@include file="/resources/js/jquery-3.4.1.min.js"%>
+        <%@include file="/resources/js/bootstrap.min.js"%>
+    </script>
 </head>
 <body>
 <div class="container">

@@ -11,14 +11,14 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Ticket update</title>
+    <title>Visit Edit</title>
+    <script type="text/javascript">
+        <%@include file="/resources/js/jquery-3.4.1.min.js"%>
+        <%@include file="/resources/js/bootstrap.min.js"%>
+    </script>
 </head>
 
 <body>
-<script type="text/javascript">
-    <%@include file="/resources/js/jquery-3.4.1.min.js"%>
-    <%@include file="/resources/js/bootstrap.min.js"%>
-</script>
 <a href="/adminpanel" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
 <br>
 

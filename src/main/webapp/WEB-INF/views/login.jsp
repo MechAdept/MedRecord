@@ -3,7 +3,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
+<c:url value="/login" var="login"/>
 
 <html>
 <head>
@@ -17,13 +17,9 @@
 </head>
 
 <body>
-<script type="text/javascript">
-    <%@include file="/resources/js/jquery-3.4.1.min.js"%>
-    <%@include file="/resources/js/bootstrap.min.js"%>
-</script>
 <div class="container">
 
-    <form method="POST" action="login" class="form-signin">
+    <form method="POST" action="${login}" class="form-signin">
         <h2 class="form-heading">Log in</h2>
         <div class="form-group ${error != null ? 'has-error' : ''}">
             <span>${message}</span>

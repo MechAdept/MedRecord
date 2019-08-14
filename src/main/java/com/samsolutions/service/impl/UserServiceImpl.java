@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,7 +56,9 @@ public class UserServiceImpl implements UserService {
     public void save(final UserDTO userDTO) {
         User user = userConverter.dtoToEntity(userDTO);
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        Set<Role> roles = roleConverter.dtoSetToEntities(userDTO.getRoles());
         user.setRoles(roleConverter.dtoSetToEntities(userDTO.getRoles()));
+        roles.add(roleConverter.dtoToEntity(roleService.findRoleByName("ROLE_USER")));
         userRepository.save(user);
     }
 
@@ -128,10 +129,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getPageByRole(RoleDTO roleDTO, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        Pageable pageable = getPageable(pageNo,pageSize, desc, sort);
-        Set<Role> roleSet = new HashSet<>(Collections.emptySet());
-        roleSet.add(roleConverter.dtoToEntity(roleDTO));
-        Page<User> pagedResult = userRepository.findByRolesIn(roleSet, pageable);
+        Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
+        Role role = roleConverter.dtoToEntity(roleDTO);
+        Page<User> pagedResult = userRepository.findByRolesIs(role, pageable);
         if (pagedResult.hasContent()) {
             return userConverter.entitiesToDtoList(pagedResult.getContent());
         } else {
@@ -150,9 +150,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findWithoutHealth() {
-        return userConverter.entitiesToDtoList(userRepository.findAllByHealthIsNull());
+    public List<UserDTO> findPatientsWithoutHealth() {
+        return userConverter.entitiesToDtoList(userRepository.findAllByHealthIsNullAndRolesIs(roleConverter.dtoToEntity(
+                roleService.findRoleByName("ROLE_PATIENT"))));
     }
+
+    @Override
+    public List<UserDTO> getPagePatient(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        RoleDTO roleDTO = roleService.findRoleByName("ROLE_PATIENT");
+        return getPageByRole(roleDTO, pageNo, pageSize, desc, sort);
+    }
+
+//    @Override
+//    public List<UserDTO> getPageDoctor(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+//        RoleDTO roleDTO = roleService.findRoleByName("ROLE_");
+//        return getPageByRole(roleDTO, pageNo,pageSize,desc,sort);
+//    }
 
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         if (desc) {

@@ -55,7 +55,7 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
                 DTOSet.add(target);
             }
             return DTOSet;
-        } catch (NullPointerException ne) {
+        } catch (Exception e) {
             return DTOSet;
         }
 

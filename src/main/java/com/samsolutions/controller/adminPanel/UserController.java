@@ -6,6 +6,7 @@ import com.samsolutions.service.RoleService;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 
 /**
@@ -27,6 +29,7 @@ import java.util.HashSet;
 
 @Controller
 @RequestMapping("/adminpanel/user")
+@Secured("ROLE_ADMIN")
 public class UserController {
 
     @Autowired
@@ -58,7 +61,7 @@ public class UserController {
     public String create(@ModelAttribute final UserDTO userDTO, Model model) {
         model.addAttribute("userDTOForm", new UserDTO());
         model.addAttribute("roleDTOList", roleService.findAll());
-        return "adminpanel/user/usercreate";
+        return "adminpanel/user/create";
     }
 
     /**
@@ -80,7 +83,7 @@ public class UserController {
         model.addAttribute("sort", sort);
         model.addAttribute("pageCount", userService.getPageCount(pageSize));
         model.addAttribute("elementsCount", userService.getTotalCount());
-        return "adminpanel/user/usercrud";
+        return "adminpanel/user/crud";
     }
 
     /**
@@ -96,7 +99,7 @@ public class UserController {
         model.addAttribute("userDTOForm", new UserDTO());
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("roleDTOList", new HashSet<>(roleService.findAll()));
-        return "adminpanel/user/useredit";
+        return "adminpanel/user/edit";
     }
 
     /**
@@ -133,21 +136,21 @@ public class UserController {
     public String details(@PathVariable("id") final Long id, Model model) {
         UserDTO userDTO = userService.findWithRolesById(id);
         model.addAttribute("userDTO", userDTO);
-        model.addAttribute("rolePatient", roleService.findRoleByName("ROLE_PATIENT"));
-        return "/adminpanel/user/details/userdetails";
+        return "/adminpanel/user/details/details";
     }
 
     @RequestMapping(value = "/details/{id}/roles", method = RequestMethod.GET)
     public String detailsRole(@PathVariable(value = "id") final Long id, Model model) {
         model.addAttribute("userDTO", userService.findWithRolesById(id));
-        return "/adminpanel/user/details/userroles";
+        return "/adminpanel/user/details/roles";
     }
 
     @RequestMapping(value = "/details/{id}/roles/delete/{roleid}", method = RequestMethod.GET)
     public String detailsRoleDelete(@PathVariable(value = "id") final Long id,
-                                    @PathVariable(value = "roleid") final Long roleId) {
+                                    @PathVariable(value = "roleid") final Long roleId, Model model) {
         userService.deleteRoleFromUserById(id, roleId);
-        return "redirect: /adminpanel/user/details/{" + id + "}/roles";
+        model.addAttribute("userDTO", userService.findWithRolesById(id));
+        return "adminpanel/user/details/roles";
     }
 
     @RequestMapping(value = "/details/{id}/tickets", method = RequestMethod.GET)
@@ -165,20 +168,16 @@ public class UserController {
         model.addAttribute("sort", sort);
         model.addAttribute("pageCount", ticketService.getPageCountByUser(pageSize, userDTO));
         model.addAttribute("elementsCount", ticketService.getTotalCountByUser(userDTO));
-        return "/adminpanel/user/details/usertickets";
-    }
-
-    @RequestMapping(value = "/details/{id}/roles/delete/{roleId}", method = RequestMethod.GET)
-    public String detailsHealth(@PathVariable(value = "id") final Long id,
-                                @PathVariable(value = "roleId") final Long roleId) {
-        userService.deleteRoleFromUserById(id, roleId);
-        return "redirect: /adminpanel/user/details/{" + id + "}/roles";
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        return "/adminpanel/user/details/tickets";
     }
 
     @RequestMapping(value = "/details/{id}/health", method = RequestMethod.GET)
     public String detailsHealth(@PathVariable(value = "id") final Long id, Model model) {
         model.addAttribute("healthDTO", healthService.findHealthByPatientId(id));
         model.addAttribute("userDTO", userService.findById(id));
-        return "/adminpanel/health/details/healthdetails";
+        return "/adminpanel/health/details/details";
     }
+
+
 }

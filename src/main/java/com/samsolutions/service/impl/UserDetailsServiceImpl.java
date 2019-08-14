@@ -28,6 +28,19 @@ import java.util.Set;
 
 @Service("UserDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+    private enum Roles implements GrantedAuthority{
+        ROLE_USER,
+        ROLE_PATIENT,
+        ROLE_RECEPTIONIST,
+        ROLE_ADMIN,
+        ROLE_DOCTOR;
+
+        public String getAuthority() {
+            return name();
+        }
+    }
+
     @Autowired
     private UserService userService;
 
@@ -37,12 +50,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NESTED)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-
         UserDTO user = userConverter.entityToDTO(userService.findByUsername(username));
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (RoleDTO role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        for(GrantedAuthority a: Roles.values()) {
+            for (RoleDTO role : user.getRoles()) {
+                if (role.getName().equals(a.getAuthority()))
+                    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+            }
         }
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);

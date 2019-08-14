@@ -1,11 +1,15 @@
 package com.samsolutions.controller.adminPanel;
 
 import com.samsolutions.dto.HealthDTO;
+import com.samsolutions.dto.UserDTO;
 import com.samsolutions.service.HealthService;
 import com.samsolutions.service.UserService;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping(value = "/adminpanel/health")
+@Secured("ROLE_ADMIN")
 public class HealthController {
     @Autowired
     private HealthService healthService;
@@ -36,25 +41,27 @@ public class HealthController {
      * @return redirects to main page of "health" crud.
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@RequestParam("patient") final Long patientId,
-                         @RequestParam("photo") final String photo,
-                         @RequestParam("birth") final String birth) {
-        HealthDTO healthDTO = new HealthDTO();
-        healthDTO.setPatient(userService.findById(patientId));
-        healthDTO.setBirth(birth);
-        healthDTO.setPhoto(photo);
-        healthService.save(healthDTO);
+    public String create(@Valid HealthDTO healthDTOForm, BindingResult bindingResult) {
+//        if(bindingResult.hasErrors()){
+//            return "/adminpanel/health/create";
+//        }
+        healthDTOForm.setPatient(userService.findById(healthDTOForm.getPatientId()));
+        healthDTOForm.setBirth(healthDTOForm.getBirthString());
+        healthDTOForm.setPhoto(healthDTOForm.getPhoto());
+        healthService.save(healthDTOForm);
         return "redirect: /adminpanel/health";
     } //Todo: Add validation
 
     @RequestMapping(value = "/create{id}", method = RequestMethod.GET)
     public String create(@PathVariable(value = "id", required = false) Long id, Model model) {
-        model.addAttribute("unregistered", userService.findWithoutHealth());
+        model.addAttribute("unregistered", userService.findPatientsWithoutHealth());
         if (id != null) {
             model.addAttribute("userDTO", userService.findById(id));
         }
-        model.addAttribute("healthDTOForm", new HealthDTO());
-        return "/adminpanel/health/healthcreate";
+        HealthDTO healthDTO = new HealthDTO();
+        healthDTO.setPatient(new UserDTO());
+        model.addAttribute("healthDTOForm", healthDTO);
+        return "/adminpanel/health/create";
     }
 
     /**
@@ -76,7 +83,7 @@ public class HealthController {
         model.addAttribute("sort", sort);
         model.addAttribute("pageCount", healthService.getPageCount(pageSize));
         model.addAttribute("elementsCount", healthService.getTotalCount());
-        return "adminpanel/health/healthcrud";
+        return "adminpanel/health/crud";
     }
 
     /**
@@ -91,7 +98,8 @@ public class HealthController {
         HealthDTO healthDTO = healthService.findHealthById(id);
         model.addAttribute("healthDTO", healthDTO);
         model.addAttribute("healthDTOForm", new HealthDTO());
-        return "adminpanel/health/healthupdate";
+        model.addAttribute("unregistered", userService.findPatientsWithoutHealth());
+        return "adminpanel/health/update";
     }
 
     /**
@@ -121,12 +129,12 @@ public class HealthController {
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String details(@PathVariable("id") final Long id, Model model) {
         model.addAttribute("healthDTO", healthService.findHealthById(id));
-        return "/adminpanel/health/details/healthdetails";
+        return "/adminpanel/health/details/details";
     }
 
     @RequestMapping(value = "/details/patient/{id}", method = RequestMethod.GET)
     public String detailsPatient(@PathVariable("id") final Long id, Model model) {
         model.addAttribute("userDTO", userService.findById(id));
-        return "/adminpanel/user/details/userdetails";
+        return "/adminpanel/user/details/details";
     }
 }

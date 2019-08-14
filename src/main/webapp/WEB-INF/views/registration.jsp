@@ -19,11 +19,6 @@
 </head>
 
 <body>
-<script type="text/javascript">
-    <%@include file="/resources/js/jquery-3.4.1.min.js"%>
-    <%@include file="/resources/js/bootstrap.min.js"%>
-    <%@include file="/resources/js/registration.js"%>
-</script>
 <div class="container">
 
     <form:form method="POST" modelAttribute="userForm" class="form-signin">

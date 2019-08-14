@@ -2,7 +2,6 @@ package com.samsolutions.converter;
 
 import com.samsolutions.dto.UserDTO;
 import com.samsolutions.entity.User;
-import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +33,7 @@ public class UserConverter implements DTOConverter<User, UserDTO> {
         try {
             userDTO.setRoles(roleConverter.entitiesToDtoSet(user.getRoles()));
             return userDTO;
-        } catch (LazyInitializationException e) {
+        } catch (Exception e) {
             return userDTO;
         }
     }

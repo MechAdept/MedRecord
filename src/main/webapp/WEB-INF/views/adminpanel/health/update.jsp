@@ -3,6 +3,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<c:url value="/adminpanel/ticket/update/" var="update"/>
 <html>
 <head>
     <meta charset="utf-8">
@@ -12,6 +13,10 @@
         <%@include file="/resources/css/common.css"%>
     </style>
     <title>Health update</title>
+    <script type="text/javascript">
+        <%@include file="/resources/js/jquery-3.4.1.min.js"%>
+        <%@include file="/resources/js/bootstrap.min.js"%>
+    </script>
 </head>
 
 <body>
@@ -19,12 +24,12 @@
     аминистратора</a>
 <br>
 
-<form:form method="POST" action="/adminpanel/health/update" modelAttribute="healthDTOForm">
+<form:form method="POST" action="${update}" modelAttribute="healthDTOForm">
     <table>
-        <form:hidden path="id" value="${healthDTO.id}"/>
+        <form:hidden path="id" value="${update + healthDTO.id}"/>
         <form:select path="patient">
             <form:option value="">Можете выбрать нового пациента</form:option>
-            <form:options items="${usersWithoutCard}" itemValue="id" itemLabel="username"/>
+            <form:options items="${unregistered}" itemValue="id" itemLabel="username"/>
         </form:select>
         <tr>
             <td><form:label path="birth">Birth</form:label></td>

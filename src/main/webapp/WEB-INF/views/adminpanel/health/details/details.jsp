@@ -13,6 +13,10 @@
         <%@include file="/resources/css/common.css"%>
     </style>
     <title>Health Details</title>
+    <script type="text/javascript">
+        <%@include file="/resources/js/jquery-3.4.1.min.js"%>
+        <%@include file="/resources/js/bootstrap.min.js"%>
+    </script>
 </head>
 <body>
 <div class="container">
@@ -36,11 +40,14 @@
     <h3>Подробно о карте пациента ${healthDTO.patient.username}</h3>
     <div class="container" style="margin-top: 20px;">
         <div class="row">
-            <div class="col-xs-2">
+            <div class="col-xs-1">
                 <label>id</label>
             </div>
             <div class="col-xs-2">
-                <label>name</label>
+                <label>patient</label>
+            </div>
+            <div class="col-xs-2">
+                <label>birth</label>
             </div>
             <div class="col-xs-2" style="text-align: center">
                 <label>связанные элементы</label>
@@ -50,14 +57,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-2">
+            <div class="col-xs-1">
                 <label>${healthDTO.id}</label>
             </div>
             <div class="col-xs-2">
-                <label>${healthDTO.patient.id}</label>
+                <a href="<c:url value="/adminpanel/user/details/${healthDTO.patient.id}"/>" class="btn-sm btn-primary"
+                   role="button"
+                   aria-pressed="true">${healthDTO.patient.username}</a>
+            </div>
+            <div class="col-xs-2">
+                <label>${healthDTO.birth}</label>
             </div>
             <div class="col-xs-2" style="text-align: center">
-                <a href="<c:url value="/adminpanel/health/details/${healthDTO.id}/patient"/>" class="btn-sm btn-primary"
+                <a href="<c:url value="/adminpanel/user/details/${healthDTO.patient.id}"/>" class="btn-sm btn-primary"
                    role="button"
                    aria-pressed="true">Пациент</a>
             </div>

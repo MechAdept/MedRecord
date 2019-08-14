@@ -64,5 +64,9 @@ public interface UserService {
 
     Long countByRole(RoleDTO roleDTO);
 
-    List<UserDTO> findWithoutHealth();
+    List<UserDTO> findPatientsWithoutHealth();
+
+    List<UserDTO> getPagePatient(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+//
+//    List<UserDTO> getPageDoctor(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 }

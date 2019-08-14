@@ -3,6 +3,7 @@ package com.samsolutions.controller.adminPanel;
 import com.samsolutions.dto.TicketDTO;
 import com.samsolutions.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.format.DateTimeFormatter;
 
 /**
  * Controller of crud operations for table "ticket".
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/adminpanel/ticket")
+@Secured("ROLE_ADMIN")
 public class TicketController {
     @Autowired
     private TicketService ticketService;
@@ -35,8 +39,23 @@ public class TicketController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(@ModelAttribute(name = "ticketDTO") final TicketDTO ticketDTO) {
         ticketService.save(ticketDTO);
-        return "redirect: /adminpanel/ticket";
+        return "";
     }
+
+//    @RequestMapping(value = "/create", method = RequestMethod.POST)
+//    public String create(@RequestParam(value = "password") String password, @RequestParam(value = "username")
+//            String username, @RequestParam(value = "roles") Long[] roles) {
+//        UserDTO userDTO = new UserDTO(username, password, roleService.findRolesById(roles));
+//        userService.save(userDTO);
+//        return "redirect:/adminpanel/user";
+//    }
+//
+//    @RequestMapping(value = "/create", method = RequestMethod.GET)
+//    public String create(@Valid TicketDTO ticketDTO, Model model) {
+//        model.addAttribute("ticketDTOForm", new TicketDTO());
+//        model.addAttribute("roleDTOList", roleService.findAll());
+//        return "adminpanel/user/create";
+//    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String detailsTicket(final Model model,
@@ -51,7 +70,8 @@ public class TicketController {
         model.addAttribute("sort", sort);
         model.addAttribute("pageCount", ticketService.getPageCount(pageSize));
         model.addAttribute("elementsCount", ticketService.getTotalCount());
-        return "adminpanel/ticket/ticketcrud";
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        return "adminpanel/ticket/crud";
     }
 
     /**
@@ -66,7 +86,7 @@ public class TicketController {
         TicketDTO ticketDTO = ticketService.findTicketById(id);
         model.addAttribute("ticketDTO", ticketDTO);
         model.addAttribute("ticketDTOForm", new TicketDTO());
-        return "adminpanel/ticket/ticketupdate";
+        return "adminpanel/ticket/update";
     }
 
     /**

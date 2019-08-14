@@ -1,6 +1,7 @@
 package com.samsolutions.dto;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
+import javax.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,17 +24,14 @@ public class HealthDTO {
 
     private String photo;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate birth;
 
-    public HealthDTO() {
-    }
+    @NotNull
+    private Long patientId;
 
-    public HealthDTO(Long id, UserDTO patient, String photo, LocalDate birth) {
-        this.id = id;
-        this.patient = patient;
-        this.photo = photo;
-        this.birth = birth;
-    }
+    @NotNull
+    private String birthString;
 
     /**
      * Returns id.
@@ -98,9 +96,25 @@ public class HealthDTO {
         return birth;
     }
 
-    public void setBirth(String birth){
+    public void setBirth(String birth) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.birth = LocalDate.parse(birth, formatter);
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getBirthString() {
+        return birthString;
+    }
+
+    public void setBirthString(String birthString) {
+        this.birthString = birthString;
     }
 
     /**
@@ -108,7 +122,6 @@ public class HealthDTO {
      *
      * @param birth LocaleDate to be set.
      */
-    @ModelAttribute
     public void setBirth(final LocalDate birth) {
         this.birth = birth;
     }

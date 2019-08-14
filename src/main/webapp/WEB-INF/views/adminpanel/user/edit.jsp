@@ -3,6 +3,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<c:url value="/adminpanel/user/edit" var="edit"/>
 
 <html>
 <head>
@@ -12,7 +13,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>User Crud</title>
+    <title>User Edit</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -36,15 +37,16 @@
         </div>
         <div class="col-xs-6"></div>
     </div>
-    <h3>Создание нового пользователя</h3>
+    <h3>Изменение пользователя</h3>
     <div class="container" style="margin-top: 20px;">
-        <form:form method="POST" action="/adminpanel/user/create" modelAttribute="userDTOForm">
+        <form:form method="POST" action="${edit}" modelAttribute="userDTOForm">
             <div class="row">
                 <div class="col-xs-2">
+                    <form:hidden path="id" value="${userDTO.id}"/>
                     <td><form:label path="username">Username</form:label></td>
                 </div>
                 <div class="col-xs-2">
-                    <td><form:input path="username"/></td>
+                    <td><form:input path="username" value="${userDTO.username}"/></td>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -77,7 +79,6 @@
                 <div class="clearfix"></div>
             </div>
         </form:form>
-
     </div>
     <div class="navbar-fixed-bottom row-fluid">
         <div class="navbar-inner">

@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>User Crud</title>
+    <title>User Roles</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -22,9 +22,9 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
-            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
+            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-success" role="button"
                aria-pressed="true">Роли</a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
                aria-pressed="true">Пользователи</a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
                aria-pressed="true">Талоны</a>
@@ -36,48 +36,42 @@
         </div>
         <div class="col-xs-6"></div>
     </div>
-    <h3>Создание нового пользователя</h3>
+    <h3>Роли пользователя ${userDTO.username}</h3>
     <div class="container" style="margin-top: 20px;">
-        <form:form method="POST" action="/adminpanel/user/create" modelAttribute="userDTOForm">
+        <div class="row">
+            <div class="col-xs-2">
+                <label>id</label>
+            </div>
+            <div class="col-xs-2">
+                <label>name</label>
+            </div>
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-3" style="text-align: center">
+                <label>действия</label>
+            </div>
+        </div>
+        <c:forEach items="${userDTO.roles}" var="role">
             <div class="row">
                 <div class="col-xs-2">
-                    <td><form:label path="username">Username</form:label></td>
+                    <label>${role.id}</label>
                 </div>
                 <div class="col-xs-2">
-                    <td><form:input path="username"/></td>
+                    <label>${role.name}</label>
+                </div>
+                <div class="col-xs-2" style="text-align: center">
+                </div>
+                <div class="col-xs-3" style="text-align: center"><a
+                        href="<c:url value="/adminpanel/user/details/${userDTO.id}/roles/delete/${role.id}"/>"
+                        class="btn btn-link" role="button"
+                        aria-pressed="true">delete</a>
+                    <a href="<c:url value="/adminpanel/role/details/${role.id}"/>" class="btn btn-link"
+                       role="button"
+                       aria-pressed="true">details</a>
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-2">
-                    <td><form:label path="password">Password</form:label></td>
-                </div>
-                <div class="col-xs-2">
-                    <td><form:input path="password"/></td>
-                </div>
-                <div class="col-xs-2">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-2">
-                    <td><form:label path="password">Roles</form:label></td>
-                </div>
-                <div class="col-xs-2">
-                    <form:select path="roles">
-                        <form:options items="${roleDTOList}" itemValue="id" itemLabel="name"/>
-                    </form:select>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-2">
-                    <td><input type="submit" value="Create user"/></td>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </form:form>
-
+        </c:forEach>
     </div>
     <div class="navbar-fixed-bottom row-fluid">
         <div class="navbar-inner">

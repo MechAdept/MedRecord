@@ -3,6 +3,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<c:url value="/adminpanel/role/save" var="save"/>
 
 <html>
 <head>
@@ -12,7 +13,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>User Crud</title>
+    <title>Role Edit</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -22,9 +23,9 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
-            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
+            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-success" role="button"
                aria-pressed="true">Роли</a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
                aria-pressed="true">Пользователи</a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
                aria-pressed="true">Талоны</a>
@@ -36,44 +37,31 @@
         </div>
         <div class="col-xs-6"></div>
     </div>
-    <h3>Изменение пользователя</h3>
+    <h3>Изменение роли</h3>
     <div class="container" style="margin-top: 20px;">
-        <form:form method="POST" action="/adminpanel/user/edit" modelAttribute="userDTOForm">
+        <form:form method="POST" action="${save}" modelAttribute="roleDTOForm">
             <div class="row">
                 <div class="col-xs-2">
-                    <form:hidden path="id" value="${userDTO.id}"/>
-                    <td><form:label path="username">Username</form:label></td>
+                    <form:hidden path="id" value="${roleDTO.id}"/>
+                    <td><form:label path="id">id</form:label></td>
                 </div>
                 <div class="col-xs-2">
-                    <td><form:input path="username" value="${userDTO.username}"/></td>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-2">
-                    <td><form:label path="password">Password</form:label></td>
-                </div>
-                <div class="col-xs-2">
-                    <td><form:input path="password"/></td>
-                </div>
-                <div class="col-xs-2">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-2">
-                    <td><form:label path="password">Roles</form:label></td>
-                </div>
-                <div class="col-xs-2">
-                    <form:select path="roles">
-                        <form:options items="${roleDTOList}" itemValue="id" itemLabel="name"/>
-                    </form:select>
+                    <td><form:label path="name"/>Name</td>
                 </div>
                 <div class="clearfix"></div>
             </div>
             <div class="row">
                 <div class="col-xs-2">
-                    <td><input type="submit" value="Create user"/></td>
+                    <td>${roleDTO.id}</td>
+                </div>
+                <div class="col-xs-2">
+                    <td><form:input path="name" value="${roleDTO.name}"/></td>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-xs-2">
+                    <td><input type="submit" value="Save"/></td>
                 </div>
                 <div class="clearfix"></div>
             </div>

@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Tickets of user</title>
+    <title>User Tickets</title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -24,9 +24,9 @@
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
                aria-pressed="true">Роли</a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
                aria-pressed="true">Пользователи</a>
-            <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
+            <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-success" role="button"
                aria-pressed="true">Талоны</a>
             <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
                aria-pressed="true">Посещения</a>
@@ -115,7 +115,7 @@
                 <th scope="row">${ticket.id}</th>
                 <th scope="row">${ticket.doctor.username}</th>
                 <th scope="row">${ticket.patient.username}</th>
-                <th scope="row">${ticket.datetime}</th>
+                <th scope="row">${ticket.datetime.format(formatter)}</th>
 
                 <td><a href="<c:url value="/adminpanel/ticket/details/${ticket.id}"/>" class="btn btn-link"
                        role="button"

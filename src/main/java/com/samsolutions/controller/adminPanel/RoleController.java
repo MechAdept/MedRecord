@@ -4,6 +4,7 @@ import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/adminpanel/role")
+@Secured("ROLE_ADMIN")
 public class RoleController {
 
     @Autowired
@@ -39,7 +41,7 @@ public class RoleController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(Model model) {
         model.addAttribute("roleDTOForm", new RoleDTO());
-        return "adminpanel/role/rolecreate";
+        return "adminpanel/role/create";
     }
 
     /**
@@ -61,7 +63,7 @@ public class RoleController {
         model.addAttribute("sort", sort);
         model.addAttribute("pageCount", roleService.getPageCount(pageSize));
         model.addAttribute("elementsCount", roleService.getTotalCount());
-        return "adminpanel/role/rolecrud";
+        return "adminpanel/role/crud";
     }
 
     /**
@@ -88,7 +90,7 @@ public class RoleController {
         RoleDTO roleDTO = roleService.findRoleById(id);
         model.addAttribute("roleDTO", roleDTO);
         model.addAttribute("roleDTOForm", new RoleDTO());
-        return "/adminpanel/role/roleedit";
+        return "/adminpanel/role/edit";
     }
 
     /**
@@ -106,7 +108,7 @@ public class RoleController {
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String details(@PathVariable("id") final Long id, Model model) {
         model.addAttribute("roleDTO", roleService.findRoleById(id));
-        return "/adminpanel/role/details/roledetails";
+        return "/adminpanel/role/details/details";
     }
 
     @RequestMapping(value = "/details/{id}/users", method = RequestMethod.GET)
@@ -124,7 +126,7 @@ public class RoleController {
         model.addAttribute("DTOList", userService.getPageByRole(roleDTO, pageNo - 1, pageSize, desc, sort));
         model.addAttribute("elementsCount", userService.countByRole(roleDTO));
         model.addAttribute("pageCount", userService.pageCountByRole(pageSize, roleDTO));
-        return "/adminpanel/role/details/roleusers";
+        return "/adminpanel/role/details/users";
     }
 
     @RequestMapping(value = "/details/{id}/roles/delete/{userId}", method = RequestMethod.GET)

@@ -6,7 +6,6 @@ import com.samsolutions.service.SecurityService;
 import com.samsolutions.service.UserService;
 import com.samsolutions.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,9 +37,6 @@ public class RegistrationController {
     @Autowired
     private UserValidator userValidator;
 
-    @Autowired
-    private MessageSource messageSource;
-
     /**
      * The method of returning to the client's page the registration form and the list of roles.
      *
@@ -65,7 +61,7 @@ public class RegistrationController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") final UserDTO userForm,
                                final BindingResult bindingResult, final Model model) {
-        model.addAttribute("roleList", roleService.findAll());
+        model.addAttribute("ROLE_PATIENT", roleService.findRoleByName("ROLE_PATIENT"));
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {

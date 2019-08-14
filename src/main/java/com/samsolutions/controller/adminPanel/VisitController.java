@@ -3,6 +3,7 @@ package com.samsolutions.controller.adminPanel;
 import com.samsolutions.dto.VisitDTO;
 import com.samsolutions.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/adminpanel/visit")
+@Secured("ROLE_ADMIN")
 public class VisitController {
     @Autowired
     private VisitService visitService;
@@ -51,7 +53,7 @@ public class VisitController {
         model.addAttribute("desc", desc);
         model.addAttribute("pageCount", visitService.getPageCount(pageSize));
         model.addAttribute("elementsCount", visitService.getTotalCount());
-        return "adminpanel/visit/visitcrud";
+        return "adminpanel/visit/crud";
     }
 
     /**
@@ -66,7 +68,7 @@ public class VisitController {
         VisitDTO visitDTO = visitService.findVisitById(id);
         model.addAttribute("visitDTO", visitDTO);
         model.addAttribute("visitDTOForm", new VisitDTO());
-        return "adminpanel/visit/visitedit";
+        return "adminpanel/visit/edit";
     }
 
     /**

@@ -13,10 +13,6 @@
         <%@include file="/resources/css/common.css"%>
     </style>
     <title>AdminPanel</title>
-    <script type="text/javascript">
-        <%@include file="/resources/js/jquery-3.4.1.min.js"%>
-        <%@include file="/resources/js/bootstrap.min.js"%>
-    </script>
 </head>
 
 <body>
