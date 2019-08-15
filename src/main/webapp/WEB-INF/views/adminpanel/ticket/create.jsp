@@ -37,14 +37,11 @@
         </div>
         <div class="col-xs-6"></div>
     </div>
-
-    </div>
     <div class="navbar-fixed-bottom row-fluid">
         <div class="navbar-inner">
             <div class="panel-footer">
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>

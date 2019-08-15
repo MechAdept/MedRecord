@@ -38,10 +38,6 @@
     </div>
     <div class="row" style="margin-top: 10px">
         <div class="col-xs-4">
-            <a href="<c:url value="/adminpanel/ticket/create"/>" class="btn btn-default" role="button"
-               aria-pressed="true">Создать</a>
-        </div>
-        <div class="col-xs-4">
             <c:if test="${DTOList.size() != 0}">
                 Показаны ${1+((pageNo-1)*pageSize)} - ${DTOList.size()+((pageNo-1)*pageSize)} из ${elementsCount} элементов
             </c:if>
@@ -122,7 +118,7 @@
                 <td><a href="<c:url value="ticket/details/${ticket.id}"/>" class="btn btn-link" role="button"
                        aria-pressed="true">details</a>
                 </td>
-                <td><a href="<c:url value="ticket/delete/${ticket.id}"/>" class="btn btn-link" role="button"
+                <td><a href="<c:url value="ticket/delete/${ticket.id}/?${pageNo}&${pageSize}&${desc}&${sort}"/>" class="btn btn-link" role="button"
                        aria-pressed="true">delete</a>
                 </td>
                 <td><a href="<c:url value="ticket/edit/${ticket.id}"/>" class="btn btn-link" role="button"

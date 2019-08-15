@@ -29,7 +29,7 @@ import java.util.Set;
 @Service("UserDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private enum Roles implements GrantedAuthority{
+    private enum Roles implements GrantedAuthority {
         ROLE_USER,
         ROLE_PATIENT,
         ROLE_RECEPTIONIST,
@@ -53,10 +53,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserDTO user = userConverter.entityToDTO(userService.findByUsername(username));
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for(GrantedAuthority a: Roles.values()) {
-            for (RoleDTO role : user.getRoles()) {
-                if (role.getName().equals(a.getAuthority()))
-                    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        for (RoleDTO roleDTO : user.getRoles()) {
+            if (roleDTO.getName().equals(Roles.ROLE_ADMIN.getAuthority())) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_ADMIN.getAuthority()));
+            } else if (roleDTO.getName().equals(Roles.ROLE_PATIENT.getAuthority())) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_PATIENT.getAuthority()));
+            } else if (roleDTO.getName().equals(Roles.ROLE_USER.getAuthority())) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_USER.getAuthority()));
+            } else if (roleDTO.getName().equals(Roles.ROLE_RECEPTIONIST.getAuthority())) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_RECEPTIONIST.getAuthority()));
+            } else {
+                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_DOCTOR.getAuthority()));
             }
         }
 

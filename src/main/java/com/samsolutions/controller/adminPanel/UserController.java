@@ -136,6 +136,7 @@ public class UserController {
     public String details(@PathVariable("id") final Long id, Model model) {
         UserDTO userDTO = userService.findWithRolesById(id);
         model.addAttribute("userDTO", userDTO);
+        model.addAttribute("rolePatient", roleService.findRoleByName("ROLE_PATIENT"));
         return "/adminpanel/user/details/details";
     }
 
@@ -154,11 +155,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/details/{id}/tickets", method = RequestMethod.GET)
-    public String detailsTicket(final Model model, @PathVariable(value = "id") Long id,
+    public String detailsTickets(final Model model, @PathVariable(value = "id") Long id,
                                 @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
-                                @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
+                                @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
+                                @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
         UserDTO userDTO = userService.findById(id);
         model.addAttribute("DTOList", ticketService.getPageByUser(userDTO, pageNo - 1, pageSize, desc, sort));
         model.addAttribute("userDTO", userDTO);

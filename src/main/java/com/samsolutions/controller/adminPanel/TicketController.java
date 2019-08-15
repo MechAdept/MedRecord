@@ -36,33 +36,18 @@ public class TicketController {
      * @param ticketDTO form to create a ticket.
      * @return redirects to main page of "ticket" crud.
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute(name = "ticketDTO") final TicketDTO ticketDTO) {
         ticketService.save(ticketDTO);
-        return "";
+        return "/adminpanel/ticket/create";
     }
 
-//    @RequestMapping(value = "/create", method = RequestMethod.POST)
-//    public String create(@RequestParam(value = "password") String password, @RequestParam(value = "username")
-//            String username, @RequestParam(value = "roles") Long[] roles) {
-//        UserDTO userDTO = new UserDTO(username, password, roleService.findRolesById(roles));
-//        userService.save(userDTO);
-//        return "redirect:/adminpanel/user";
-//    }
-//
-//    @RequestMapping(value = "/create", method = RequestMethod.GET)
-//    public String create(@Valid TicketDTO ticketDTO, Model model) {
-//        model.addAttribute("ticketDTOForm", new TicketDTO());
-//        model.addAttribute("roleDTOList", roleService.findAll());
-//        return "adminpanel/user/create";
-//    }
-
     @RequestMapping(method = RequestMethod.GET)
-    public String detailsTicket(final Model model,
+    public String read(final Model model,
                                 @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
-                                @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
+                                @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
+                                @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
         model.addAttribute("DTOList", ticketService.getPage(pageNo - 1, pageSize, desc, sort));
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("pageSize", pageSize);
@@ -71,7 +56,7 @@ public class TicketController {
         model.addAttribute("pageCount", ticketService.getPageCount(pageSize));
         model.addAttribute("elementsCount", ticketService.getTotalCount());
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        return "adminpanel/ticket/crud";
+        return "/adminpanel/ticket/crud";
     }
 
     /**
@@ -81,8 +66,8 @@ public class TicketController {
      * @param id    is id.
      * @return return main page of "ticket" crud.
      */
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-    public String update(@PathVariable("id") final Long id, final Model model) {
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String edit(@PathVariable("id") final Long id, final Model model) {
         TicketDTO ticketDTO = ticketService.findTicketById(id);
         model.addAttribute("ticketDTO", ticketDTO);
         model.addAttribute("ticketDTOForm", new TicketDTO());
@@ -95,8 +80,8 @@ public class TicketController {
      * @param ticketDTO form to update a ticket.
      * @return redirects to main page of "ticket" crud.
      */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(@ModelAttribute final TicketDTO ticketDTO) {
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String edit(@ModelAttribute final TicketDTO ticketDTO) {
         ticketService.save(ticketDTO);
         return "redirect: /adminpanel/ticket";
     }
@@ -108,15 +93,27 @@ public class TicketController {
      * @return redirects to main page of "ticket" crud.
      */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") final Long id) {
+    public String delete(@PathVariable("id") final Long id,
+                         @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                         @RequestParam(value = "pageSize", defaultValue = "15") Integer pageSize,
+                         @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
+                         @RequestParam(value = "sort", defaultValue = "datetime") String sort, Model model) {
+        model.addAttribute("DTOList", ticketService.getPage(pageNo - 1, pageSize, desc, sort));
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("desc", desc);
+        model.addAttribute("sort", sort);
+        model.addAttribute("pageCount", ticketService.getPageCount(pageSize));
+        model.addAttribute("elementsCount", ticketService.getTotalCount());
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         ticketService.deleteTicket(id);
-        return "redirect: /adminpanel/ticket";
+        return "/adminpanel/ticket/crud";
     }
 
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String details(@PathVariable("id") final Long id, Model model) {
-        TicketDTO ticketDTO = ticketService.findTicketById(id);
-        model.addAttribute("ticketDTO", ticketDTO);
+        model.addAttribute("ticketDTO", ticketService.findTicketById(id));
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return "/adminpanel/ticket/details/details";
     }
 }

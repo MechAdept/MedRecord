@@ -110,27 +110,30 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${DTOList}" var="ticket">
-            <tr>
-                <th scope="row">${ticket.id}</th>
-                <th scope="row">${ticket.doctor.username}</th>
-                <th scope="row">${ticket.patient.username}</th>
-                <th scope="row">${ticket.datetime.format(formatter)}</th>
+        <c:if test="${DTOList.size() != 0}">
+            <c:forEach items="${DTOList}" var="ticket">
+                <tr>
+                    <th scope="row">${ticket.id}</th>
+                    <th scope="row">${ticket.doctor.username}</th>
+                    <th scope="row">${ticket.patient.username}</th>
+                    <th scope="row">${ticket.datetime.format(formatter)}</th>
 
-                <td><a href="<c:url value="/adminpanel/ticket/details/${ticket.id}"/>" class="btn btn-link"
-                       role="button"
-                       aria-pressed="true">details</a>
-                </td>
-                <td>
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}"/>"
-                       class="btn btn-link" role="button"
-                       aria-pressed="true">delete</a>
-                </td>
-                <td><a href="<c:url value="adminpanel/ticket/edit/${ticket.id}"/>" class="btn btn-link" role="button"
-                       aria-pressed="true">edit</a>
-                </td>
-            </tr>
-        </c:forEach>
+                    <td><a href="<c:url value="adminpane/ticket/details/${ticket.id}"/>" class="btn btn-link"
+                           role="button"
+                           aria-pressed="true">details</a>
+                    </td>
+                    <td>
+                        <a href="<c:url value="adminpanel/ticket/delete/${ticket.id}?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
+                           class="btn btn-link" role="button"
+                           aria-pressed="true">delete</a>
+                    </td>
+                    <td><a href="<c:url value="adminpanel/ticket/edit/${ticket.id}"/>" class="btn btn-link"
+                           role="button"
+                           aria-pressed="true">edit</a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </c:if>
         </tbody>
     </table>
 

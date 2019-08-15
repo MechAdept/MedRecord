@@ -71,7 +71,7 @@
                 <label>${ticketDTO.doctor.username}</label>
             </div>
             <div class="col-xs-2" style="text-align: center">
-                <label>${ticketDTO.datetime}</label>
+                <label>${ticketDTO.datetime.format(formatter)}</label>
             </div>
             <div class="col-xs-2" style="text-align: center">
                 <a href="<c:url value="/adminpanel/ticket/details/${ticketDTO.id}/visit"/>" class="btn-sm btn-primary"
@@ -82,7 +82,7 @@
                     href="<c:url value="/adminpanel/ticket/delete/${ticketDTO.id}"/>" class="btn btn-danger" role="button"
                     aria-pressed="true">delete</a>
                 <a href="<c:url value="/adminpanel/ticket/edit/${ticketDTO.id}"/>"
-                   class="btn btn-link" role="button" aria-pressed="true">edit</a>
+                   class="btn btn-warning" role="button" aria-pressed="true">edit</a>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -90,52 +90,6 @@
     <div class="navbar-fixed-bottom row-fluid">
         <div class="navbar-inner">
             <div class="panel-footer">
-                <div class="row">
-                    <div class="col-xs-4"></div>
-                    <div class="col-xs-4">
-                        <div style="text-align: center">
-                            <c:if test="${elementsCount != 0}">
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <c:if test="${pageNo > 1 && elementsCount > 0}">
-                                            <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}"/>"
-                                               class="btn btn-outline-primary" role="button"
-                                               aria-pressed="true">Предыдущая</a>
-                                        </c:if>
-                                        <c:if test="${pageCount != 0 && DTOList.size() == 0}">
-                                            <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=1&pageSize=${pageSize}&desc=${desc}"/>"
-                                               class="btn btn-outline-primary" role="button"
-                                               aria-pressed="true">Предыдущая</a>
-                                        </c:if>
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <c:if test="${pageSize < elementsCount}">
-                                            <c:forEach begin="1" end="${pageCount+1}" var="i">
-                                                <c:choose>
-                                                    <c:when test="${pageNo eq i}">
-                                                        <td>${i}</td>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <td>
-                                                            <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${i}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>">${i}</a>
-                                                        </td>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </c:if>
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <c:if test="${(pageSize*pageNo)<elementsCount}">
-                                            <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo+1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
-                                               class="btn btn-outline-primary" role="button"
-                                               aria-pressed="true">Следующая</a>
-                                        </c:if>
-                                    </div>
-                                </div>
-                            </c:if>
-                        </div>
-                    </div>
-                    <div class="col-xs-4"></div>
                 </div>
             </div>
         </div>

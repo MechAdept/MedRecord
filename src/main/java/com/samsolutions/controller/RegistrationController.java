@@ -1,17 +1,22 @@
 package com.samsolutions.controller;
 
+import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.UserDTO;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.SecurityService;
 import com.samsolutions.service.UserService;
 import com.samsolutions.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Set;
 
 /**
  * Controller of operations for login and registration for user.
@@ -55,20 +60,19 @@ public class RegistrationController {
      *
      * @param userForm      is form to create a user.
      * @param bindingResult is checks the object for errors and returns them.
-     * @param model         is model.
      * @return if successful, redirects to the welcome page, otherwise returns the registration page.
      */
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") final UserDTO userForm,
-                               final BindingResult bindingResult, final Model model) {
-        model.addAttribute("ROLE_PATIENT", roleService.findRoleByName("ROLE_PATIENT"));
+                               final BindingResult bindingResult) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "registration";
         }
+        Set<RoleDTO> roleDTOSet = userForm.getRoles();
+        roleDTOSet.add(roleService.findRoleByName("ROLE_PATIENT"));
         userService.save(userForm);
-
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
         return "redirect:/welcome";
     }
@@ -99,6 +103,9 @@ public class RegistrationController {
      *
      * @return return welcome page.
      */
+    @Secured({"ROLE_ADMIN",})
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PATIENT') or hasRole('ROLE_USER') or hasRole('ROLE_DOCTOR')" +
+            " or hasRole('ROLE_RECEPTIONIST')")
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcome() {
         return "welcome";
