@@ -1,5 +1,6 @@
 package com.samsolutions.repository;
 
+import com.samsolutions.entity.Ticket;
 import com.samsolutions.entity.Visit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VisitRepository extends JpaRepository<Visit, Long> {
+
+    Visit findVisitByTicket(Ticket ticket);
 }

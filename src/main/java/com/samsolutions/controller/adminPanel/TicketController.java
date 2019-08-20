@@ -2,8 +2,10 @@ package com.samsolutions.controller.adminPanel;
 
 import com.samsolutions.dto.TicketDTO;
 import com.samsolutions.service.TicketService;
+import com.samsolutions.service.UserService;
+import com.samsolutions.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,10 +27,16 @@ import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/adminpanel/ticket")
-@Secured("ROLE_ADMIN")
+@PreAuthorize("isAuthenticated()")
 public class TicketController {
     @Autowired
     private TicketService ticketService;
+
+    @Autowired
+    private VisitService visitService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * Method to create a new ticket.
@@ -36,25 +44,39 @@ public class TicketController {
      * @param ticketDTO form to create a ticket.
      * @return redirects to main page of "ticket" crud.
      */
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(@ModelAttribute(name = "ticketDTO") final TicketDTO ticketDTO) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String create(@ModelAttribute(name = "ticketDTO") final TicketDTO ticketDTO, Model model) {
         ticketService.save(ticketDTO);
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        model.addAttribute("userDTO", userService.findById(ticketDTO.getPatientId()));
+        return "/adminpanel/ticket/";
+    }
+
+    @RequestMapping(value = "/create/{id}", method = RequestMethod.GET)
+    public String createForPatient(@PathVariable(value = "id", required = false) final Long id,
+                         Model model) {
+        model.addAttribute("patient", userService.findById(id));
+        model.addAttribute("ticketDTOForm", new TicketDTO());
+        model.addAttribute("doctors",userService.findDoctors());
         return "/adminpanel/ticket/create";
     }
 
+//    @RequestMapping(value = "/create/${id}", method = RequestMethod.GET)
+//    public String createForDoctor(@PathVariable(value = "id", required = false) final Long id,
+//                                   Model model) {
+//        model.addAttribute("doctor", userService.findById(id));
+//        model.addAttribute("healthDTOForm", new TicketDTO());
+//        model.addAttribute(userService.findDoctors());
+//        return "/adminpanel/health/create";
+//    }
+
     @RequestMapping(method = RequestMethod.GET)
     public String read(final Model model,
-                                @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
-                                @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
-                                @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
-        model.addAttribute("DTOList", ticketService.getPage(pageNo - 1, pageSize, desc, sort));
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("desc", desc);
-        model.addAttribute("sort", sort);
-        model.addAttribute("pageCount", ticketService.getPageCount(pageSize));
-        model.addAttribute("elementsCount", ticketService.getTotalCount());
+                       @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+                       @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
+                       @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
+                       @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
+        model.mergeAttributes(ticketService.getMapAndPage(pageNo, pageSize, desc, sort));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return "/adminpanel/ticket/crud";
     }
@@ -71,7 +93,9 @@ public class TicketController {
         TicketDTO ticketDTO = ticketService.findTicketById(id);
         model.addAttribute("ticketDTO", ticketDTO);
         model.addAttribute("ticketDTOForm", new TicketDTO());
-        return "adminpanel/ticket/update";
+        model.addAttribute("doctorsDTOList", userService.findDoctors());
+        model.addAttribute("patientsDTOList", userService.findPatients());
+        return "adminpanel/ticket/edit";
     }
 
     /**
@@ -98,15 +122,10 @@ public class TicketController {
                          @RequestParam(value = "pageSize", defaultValue = "15") Integer pageSize,
                          @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
                          @RequestParam(value = "sort", defaultValue = "datetime") String sort, Model model) {
-        model.addAttribute("DTOList", ticketService.getPage(pageNo - 1, pageSize, desc, sort));
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("desc", desc);
-        model.addAttribute("sort", sort);
-        model.addAttribute("pageCount", ticketService.getPageCount(pageSize));
-        model.addAttribute("elementsCount", ticketService.getTotalCount());
-        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         ticketService.deleteTicket(id);
+        model.mergeAttributes(ticketService.getMapAndPage(pageNo, pageSize, desc, sort));
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
         return "/adminpanel/ticket/crud";
     }
 
@@ -116,4 +135,14 @@ public class TicketController {
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return "/adminpanel/ticket/details/details";
     }
+
+    @RequestMapping(value = "/details/{id}/visit", method = RequestMethod.GET)
+    public String detailsVisit(@PathVariable("id") final Long id, Model model) {
+        TicketDTO ticketDTO = ticketService.findTicketById(id);
+        model.addAttribute("ticketDTO", ticketDTO);
+        model.addAttribute("visitDTO", visitService.findByTicket(ticketDTO));
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        return "/adminpanel/visit/details";
+    }
+
 }

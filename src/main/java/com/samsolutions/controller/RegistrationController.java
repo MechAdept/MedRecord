@@ -1,6 +1,5 @@
 package com.samsolutions.controller;
 
-import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.UserDTO;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.SecurityService;
@@ -8,15 +7,15 @@ import com.samsolutions.service.UserService;
 import com.samsolutions.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.Set;
 
 /**
  * Controller of operations for login and registration for user.
@@ -50,6 +49,12 @@ public class RegistrationController {
      */
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(final Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+
+            return ("redirect:/welcome");
+        }
         model.addAttribute("userForm", new UserDTO());
         model.addAttribute("roleList", roleService.findAll());
         return "registration";
@@ -64,15 +69,14 @@ public class RegistrationController {
      */
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") final UserDTO userForm,
-                               final BindingResult bindingResult) {
+                               final BindingResult bindingResult, final Model model) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        Set<RoleDTO> roleDTOSet = userForm.getRoles();
-        roleDTOSet.add(roleService.findRoleByName("ROLE_PATIENT"));
         userService.save(userForm);
+
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
         return "redirect:/welcome";
     }
@@ -103,9 +107,7 @@ public class RegistrationController {
      *
      * @return return welcome page.
      */
-    @Secured({"ROLE_ADMIN",})
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PATIENT') or hasRole('ROLE_USER') or hasRole('ROLE_DOCTOR')" +
-            " or hasRole('ROLE_RECEPTIONIST')")
+    @Secured("IS_AUTHENTICATED_FULLY")
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcome() {
         return "welcome";

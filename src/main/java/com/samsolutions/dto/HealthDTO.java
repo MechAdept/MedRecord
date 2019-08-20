@@ -1,8 +1,5 @@
 package com.samsolutions.dto;
 
-import javax.validation.constraints.NotNull;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -24,13 +21,10 @@ public class HealthDTO {
 
     private String photo;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate birth;
 
-    @NotNull
     private Long patientId;
 
-    @NotNull
     private String birthString;
 
     /**
@@ -100,6 +94,8 @@ public class HealthDTO {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.birth = LocalDate.parse(birth, formatter);
     }
+
+
 
     public Long getPatientId() {
         return patientId;

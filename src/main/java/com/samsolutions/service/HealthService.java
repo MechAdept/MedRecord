@@ -1,6 +1,7 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.HealthDTO;
+import com.samsolutions.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,18 +39,15 @@ public interface HealthService {
      */
     List<HealthDTO> getHealths();
 
-    /**
-     * Method for delete health by id.
-     *
-     * @param id id of desired health.
-     */
-    void deleteHealth(Long id);
-
     List<HealthDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+
+    void deleteHealthByPatient(UserDTO userDTO);
 
     Long getPageCount(Integer pageSize);
 
     Long getTotalCount();
 
     HealthDTO findHealthByPatientId(Long id);
+
+    void deleteHealth(Long id);
 }

@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Ticket details</title>
+    <title><spring:message code="text.title.ticketDetails"/></title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -23,41 +23,47 @@
     <div class="row">
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Роли</a>
+               aria-pressed="true"><spring:message code="button.roles"/></a>
             <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Пользователи</a>
+               aria-pressed="true"><spring:message code="button.users"/></a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-success" role="button"
-               aria-pressed="true">Талоны</a>
-            <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Посещения</a>
-            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Карты
-                здоровья</a>
+               aria-pressed="true"><spring:message code="button.tickets"/></a>
         </div>
-        <div class="col-xs-6"></div>
+        <div class="col-xs-3"></div>
+        <div class="col-xs-3">
+            <div class="row">
+                <a href="?lang=pl">PL</a>
+                <a href="?lang=en">EN</a>
+                <a href="?lang=ru">RU</a>
+            </div>
+            <div class="row">
+                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
+                        code="button.logout"/></a>
+            </div>
+        </div>
     </div>
     <div>
     </div>
-    <h3>Подробно о талоне</h3>
+    <h3><spring:message code="text.header.ticketDetails"/></h3>
     <div class="container" style="margin-top: 20px;">
         <div class="row">
             <div class="col-xs-1" style="text-align: center">
-                <label>id</label>
+                <label><spring:message code="text.label.id"/></label>
             </div>
             <div class="col-xs-1">
-                <label>patient</label>
+                <label><spring:message code="text.label.patient"/></label>
             </div>
             <div class="col-xs-1">
-                <label>doctor</label>
+                <label><spring:message code="text.label.doctor"/></label>
             </div>
             <div class="col-xs-2" style="text-align: center">
-                <label>datetime</label>
+                <label><spring:message code="text.label.datetime"/></label>
             </div>
             <div class="col-xs-2" style="text-align: center">
-                <label>связанные элементы</label>
+                <label><spring:message code="text.label.relatedItems"/></label>
             </div>
             <div class="col-xs-3" style="text-align: center">
-                <label>действия</label>
+                <label><spring:message code="text.label.action"/></label>
             </div>
         </div>
         <div class="row">
@@ -65,10 +71,14 @@
                 <label>${ticketDTO.id}</label>
             </div>
             <div class="col-xs-1">
-                <label>${ticketDTO.patient.username}</label>
+                <a href="<c:url value="/adminpanel/user/details/${ticketDTO.doctor.id}"/>" class="btn-sm btn-primary"
+                   role="button"
+                   aria-pressed="true">${ticketDTO.doctor.username}</a>
             </div>
             <div class="col-xs-1">
-                <label>${ticketDTO.doctor.username}</label>
+                <a href="<c:url value="/adminpanel/user/details/${ticketDTO.patient.id}"/>" class="btn-sm btn-primary"
+                   role="button"
+                   aria-pressed="true">${ticketDTO.patient.username}</a>
             </div>
             <div class="col-xs-2" style="text-align: center">
                 <label>${ticketDTO.datetime.format(formatter)}</label>
@@ -76,20 +86,21 @@
             <div class="col-xs-2" style="text-align: center">
                 <a href="<c:url value="/adminpanel/ticket/details/${ticketDTO.id}/visit"/>" class="btn-sm btn-primary"
                    role="button"
-                   aria-pressed="true">Посещение</a>
+                   aria-pressed="true"><spring:message code="text.header.visit"/></a>
             </div>
             <div class="col-xs-3" style="text-align: center"><a
-                    href="<c:url value="/adminpanel/ticket/delete/${ticketDTO.id}"/>" class="btn btn-danger" role="button"
-                    aria-pressed="true">delete</a>
+                    href="<c:url value="/adminpanel/ticket/delete/${ticketDTO.id}"/>" class="btn-sm btn-danger"
+                    role="button"
+                    aria-pressed="true"><spring:message code="button.delete"/></a>
                 <a href="<c:url value="/adminpanel/ticket/edit/${ticketDTO.id}"/>"
-                   class="btn btn-warning" role="button" aria-pressed="true">edit</a>
+                   class="btn-sm btn-warning" role="button" aria-pressed="true"><spring:message code="button.edit"/></a>
             </div>
             <div class="clearfix"></div>
         </div>
 
-    <div class="navbar-fixed-bottom row-fluid">
-        <div class="navbar-inner">
-            <div class="panel-footer">
+        <div class="navbar-fixed-bottom row-fluid">
+            <div class="navbar-inner">
+                <div class="panel-footer">
                 </div>
             </div>
         </div>

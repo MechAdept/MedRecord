@@ -1,6 +1,9 @@
 package com.samsolutions.dto;
 
 
+import com.samsolutions.service.RoleService;
+
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,6 +31,8 @@ public class UserDTO {
     private Set<TicketDTO> patientTicket;
 
     private Set<TicketDTO> doctorTicket;
+
+    private Long[] rolesId;
 
     public UserDTO(String username, String password, Set<RoleDTO> roles) {
         this.username = username;
@@ -128,6 +133,11 @@ public class UserDTO {
         this.roles = roles;
     }
 
+    public void setRoles(final Long[] roles) {
+        Set<RoleDTO> roleDTOSet = new HashSet<>();
+        RoleService roleService;
+    }
+
     /**
      * Returns tickets of patient.
      *
@@ -162,6 +172,14 @@ public class UserDTO {
      */
     public void setDoctorTicket(final Set<TicketDTO> doctorTicket) {
         this.doctorTicket = doctorTicket;
+    }
+
+    public Long[] getRolesId() {
+        return rolesId;
+    }
+
+    public void setRolesId(Long[] rolesId) {
+        this.rolesId = rolesId;
     }
 
     @Override

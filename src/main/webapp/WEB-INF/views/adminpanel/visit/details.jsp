@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>AdminPanel</title>
+    <title><spring:message code="text.title.visitDetails"/></title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -23,22 +23,25 @@
     <div class="row">
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Роли</a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Пользователи</a>
+               aria-pressed="true"><spring:message code="button.roles"/></a>
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
+               aria-pressed="true"><spring:message code="button.users"/></a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Талоны</a>
-            <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Посещения</a>
-            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Карты
-                здоровья</a>
+               aria-pressed="true"><spring:message code="button.tickets"/></a>
         </div>
         <div class="col-xs-6"></div>
     </div>
-    </div>
-    <div>
-    </div>
+    <c:if test="${visitDTO.id eq null}">
+        <h3><spring:message code="text.header.starVisit"/> ${ticketDTO.id}</h3>
+        <div class="row" style="margin-top: 15px">
+            <div class="col-xs-4">
+                <a href="<c:url value="/adminpanel/visit/create${visitDTO.id}"/>" class="btn-lg btn-success"
+                   role="button"
+                   aria-pressed="true"><spring:message code="button.start"/></a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </c:if>
     <div class="navbar-fixed-bottom row-fluid">
         <div class="navbar-inner">
             <div class="panel-footer">

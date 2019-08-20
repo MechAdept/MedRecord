@@ -13,7 +13,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>User Edit</title>
+    <title><spring:message code="text.title.userEdit"/></title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -24,57 +24,85 @@
     <div class="row">
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Роли</a>
+               aria-pressed="true"><spring:message code="button.roles"/></a>
             <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
-               aria-pressed="true">Пользователи</a>
+               aria-pressed="true"><spring:message code="button.users"/></a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Талоны</a>
-            <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Посещения</a>
-            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Карты
-                здоровья</a>
+               aria-pressed="true"><spring:message code="button.tickets"/></a>
         </div>
-        <div class="col-xs-6"></div>
+        <div class="col-xs-3"></div>
+        <div class="col-xs-3">
+            <div class="row">
+                <a href="?lang=pl">PL</a>
+                <a href="?lang=en">EN</a>
+                <a href="?lang=ru">RU</a>
+            </div>
+            <div class="row">
+                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
+                        code="button.logout"/></a>
+            </div>
+        </div>
     </div>
-    <h3>Изменение пользователя</h3>
+    <h3><spring:message code="text.header.userEdit"/></h3>
     <div class="container" style="margin-top: 20px;">
-        <form:form method="POST" action="${edit}" modelAttribute="userDTOForm">
+        <form:form method="POST" action="${create}" modelAttribute="userDTOForm">
             <div class="row">
                 <div class="col-xs-2">
-                    <form:hidden path="id" value="${userDTO.id}"/>
-                    <td><form:label path="username">Username</form:label></td>
+                    <form:label path="username"><spring:message code="text.label.username"/></form:label>
                 </div>
                 <div class="col-xs-2">
-                    <td><form:input path="username" value="${userDTO.username}"/></td>
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <form:input type="text" path="username" class="form-control" placeholder="Username"
+                                    autofocus="true"/>
+                        <form:errors path="username" cssStyle="color: red"/>
+                    </div>
                 </div>
+
                 <div class="clearfix"></div>
             </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="col-xs-2">
-                    <td><form:label path="password">Password</form:label></td>
+                    <td><form:label path="password"><spring:message code="login.password"/></form:label></td>
                 </div>
                 <div class="col-xs-2">
-                    <td><form:input path="password"/></td>
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <form:input type="password" path="password" class="form-control" placeholder="Password"/>
+                        <form:errors path="password" cssStyle="color: red;"/>
+                    </div>
                 </div>
                 <div class="col-xs-2">
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <div class="row" style="margin-top: 10px;">
+            <div class="row" style="margin-top: 10px">
                 <div class="col-xs-2">
-                    <td><form:label path="password">Roles</form:label></td>
+                    <form:label path="passwordConfirm"/>
                 </div>
                 <div class="col-xs-2">
-                    <form:select path="roles">
-                        <form:options items="${roleDTOList}" itemValue="id" itemLabel="name"/>
-                    </form:select>
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <form:input type="password" path="passwordConfirm" class="form-control"
+                                    placeholder="Confirm your password"/>
+                        <form:errors path="passwordConfirm" cssStyle="color: red"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-xs-2">
+                    <td><form:label path="rolesId"><spring:message code="text.label.roles"/></form:label></td>
+                </div>
+                <div class="col-xs-2">
+                    <div class="form-group">
+                        <form:select path="rolesId" class="form-control" multiple="true">
+                            <form:options items="${roleDTOList}" itemValue="id" itemLabel="name"/>
+                        </form:select>
+                        <form:errors path="rolesId" cssStyle="color: red"/>
+                    </div>
                 </div>
                 <div class="clearfix"></div>
             </div>
             <div class="row">
                 <div class="col-xs-2">
-                    <td><input type="submit" value="Create user"/></td>
+                    <td><input type="submit" value="<spring:message code="button.create"/>"/></td>
                 </div>
                 <div class="clearfix"></div>
             </div>

@@ -11,7 +11,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Visit Edit</title>
+    <title><spring:message code="text.title.visitEdit"/></title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -19,9 +19,7 @@
 </head>
 
 <body>
-<a href="/adminpanel" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
+<a href="/adminpanel" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><spring:message code="text.header.adminPanel"/></a>
 <br>
-
-ТЕХ РАБОТЫ)
 </body>
 </html>

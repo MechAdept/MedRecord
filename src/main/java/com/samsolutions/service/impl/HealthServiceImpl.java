@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.List;
 
 
 @Service("HealthService")
+@Transactional
 public class HealthServiceImpl implements HealthService {
     @Autowired
     private HealthRepository healthRepository;
@@ -44,6 +46,9 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public HealthDTO findHealthById(final Long id) {
+        HealthDTO healthDTO = healthConverter.entityToDTO(healthRepository.findById(id).orElse(new Health()));
+        UserDTO userDTO = userService.findWithRolesById(healthDTO.getPatient().getId());
+        healthDTO.setPatient(userDTO);
         return healthConverter.entityToDTO(healthRepository.findById(id).orElse(new Health()));
     }
 
@@ -69,8 +74,8 @@ public class HealthServiceImpl implements HealthService {
     }
 
     @Override
-    public void deleteHealth(final Long id) {
-        healthRepository.deleteById(id);
+    public void deleteHealthByPatient(UserDTO userDTO) {
+        healthRepository.deleteHealthByPatient(userConverter.dtoToEntity(userDTO));
     }
 
     @Override
@@ -81,7 +86,7 @@ public class HealthServiceImpl implements HealthService {
     @Override
     public Long getTotalCount() {
         return healthRepository.count();
-    }
+    } 
 
     @Override
     public HealthDTO findHealthByPatientId(Long id) {
@@ -91,6 +96,12 @@ public class HealthServiceImpl implements HealthService {
         } catch (NullPointerException ne) {
             return new HealthDTO();
         }
+    }
+
+    @Override
+    public void deleteHealth(Long id) {
+        Health health = healthConverter.dtoToEntity(findHealthById(id));
+        healthRepository.delete(health);
     }
 
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {

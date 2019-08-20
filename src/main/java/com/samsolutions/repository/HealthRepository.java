@@ -18,4 +18,6 @@ import org.springframework.stereotype.Repository;
 public interface HealthRepository extends JpaRepository<Health, Long> {
 
     Health findHealthByPatient(User patient);
+
+    void deleteHealthByPatient(User patient);
 }

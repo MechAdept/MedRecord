@@ -13,64 +13,77 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Health Create</title>
+    <title><spring:message code="text.title.healthCreate"/></title>
+    <script type="text/javascript">
+        <%@include file="/resources/js/jquery-3.4.1.min.js"%>
+        <%@include file="/resources/js/bootstrap.min.js"%>
+    </script>
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Роли</a>
+               aria-pressed="true"><spring:message code="button.roles"/></a>
             <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Пользователи</a>
+               aria-pressed="true"><spring:message code="button.users"/></a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Талоны</a>
-            <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Посещения</a>
-            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-success" role="button"
-               aria-pressed="true">Карты
-                здоровья</a>
+               aria-pressed="true"><spring:message code="button.tickets"/></a>
         </div>
-        <div class="col-xs-6"></div>
+        <div class="col-xs-3"></div>
+        <div class="col-xs-3">
+            <div class="row">
+                <a href="?lang=pl">PL</a>
+                <a href="?lang=en">EN</a>
+                <a href="?lang=ru">RU</a>
+            </div>
+            <div class="row">
+                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
+                        code="button.logout"/></a>
+            </div>
+        </div>
     </div>
-    <h3>Создание карты</h3>
+    <h3><spring:message code="text.header.cardCreate"/></h3>
+    <c:if test="${userDTO.id == null}">
+        <h3><spring:message code="text.header.notPatient"/></h3>
+        null
+    </c:if>
+    <c:if test="${userDTO.id != null}">
     <div class="container" style="margin-top: 20px;">
         <form:form method="POST" action="${create}" modelAttribute="healthDTOForm">
         <div class="row">
-            <div class="col-xs-2" style="text-align: center">
-                <form:label path="patient"/>Patient
+            <div class="col-xs-2">
+                <label><spring:message code="text.label.patient"/></label>
             </div>
-            <div class="col-xs-3">
-                <div class="col-xs-6" style="text-align: center">
-                    <form:label path="birth"/>birth
-                </div>
+            <div class="col-xs-2" style="text-align: left">
+                <label><spring:message code="text.label.birth"/></label>
+            </div>
+            <div class="col-xs-2" style="text-align: left;">
+                <label><spring:message code="text.label.photo"/></label>
             </div>
             <div class="clearfix"></div>
         </div>
         <div class="row">
             <div class="col-xs-2">
-                <form:hidden path="patient" value="${healthDTOForm.patient}"/>
-                <form:select path="patientId" class="form-control" placeholder="Patient">
-                    <form:options items="${unregistered}" itemValue="id" itemLabel="username"/>
-                </form:select>
+                <form:hidden path="patientId" value="${userDTO.id}"/>
+                    ${userDTO.username}
+            </div>
+            <div class="col-xs-2" style="text-align: left;">
+                <form:input path="birthString" type="date"/>
+            </div>
+            <div class="col-xs-2" style="text-align: left;">
+                <form:input path="photo"/>
+                <form:errors path="photo" cssStyle="color: red"/>
             </div>
             <div class="col-xs-2">
-                <div class="col-xs-9">
-                    <form:input type="date" path="birthString" class="form-control" cssStyle="text-align: center; glyph-orientation-vertical: auto" placeholder="Birth"/>
-                </div>
-            </div>
-            <div class="col-xs-2">
-                <form:input type="text" path="photo" class="form-control"
-                            placeholder="link to photo"/>
-            </div>
-            <div class="col-xs-2">
-                <input type="submit" value="Create"/>
+                <input type="submit" value="<spring:message code="button.save"/>"/>
             </div>
             <div class="clearfix"></div>
         </div>
     </div>
     </form:form>
 </div>
+</c:if>
 <div class="navbar-fixed-bottom row-fluid">
     <div class="navbar-inner">
         <div class="panel-footer">

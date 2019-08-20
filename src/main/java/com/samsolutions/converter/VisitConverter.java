@@ -27,14 +27,19 @@ public class VisitConverter implements DTOConverter<Visit, VisitDTO> {
 
     @Override
     public VisitDTO entityToDTO(final Visit source) {
+
         VisitDTO target = new VisitDTO();
-        target.setId(source.getId());
-        target.setDatetime(source.getDatetime());
-        target.setComplaint(source.getComplaint());
-        target.setDiagnosis(source.getDiagnosis());
-        target.setExamination(source.getExamination());
-        target.setTreatment(source.getTreatment());
-        target.setTicket(ticketConverter.entityToDTO(source.getTicket()));
+        try {
+            target.setId(source.getId());
+            target.setDatetime(source.getDatetime());
+            target.setComplaint(source.getComplaint());
+            target.setDiagnosis(source.getDiagnosis());
+            target.setExamination(source.getExamination());
+            target.setTreatment(source.getTreatment());
+            target.setTicket(ticketConverter.entityToDTO(source.getTicket()));
+        } catch (NullPointerException ne){
+            return new VisitDTO();
+        }
         return target;
     }
 

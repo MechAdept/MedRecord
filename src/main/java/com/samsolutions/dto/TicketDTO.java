@@ -17,9 +17,15 @@ public class TicketDTO {
 
     private UserDTO patient;
 
+    private Long patientId;
+
     private UserDTO doctor;
 
+    private Long doctorId;
+
     private LocalDateTime datetime;
+
+    private String datetimeString;
 
     /**
      * Returns id.
@@ -91,6 +97,30 @@ public class TicketDTO {
      */
     public void setDatetime(final LocalDateTime datetime) {
         this.datetime = datetime;
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
+    }
+
+    public Long getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public String getDatetimeString() {
+        return datetimeString;
+    }
+
+    public void setDatetimeString(String datetimeString) {
+
     }
 
     @Override

@@ -19,6 +19,7 @@ import org.springframework.validation.Validator;
 
 @Component
 public class UserValidator implements Validator {
+
     @Autowired
     private UserService userService;
 
@@ -31,22 +32,25 @@ public class UserValidator implements Validator {
     public void validate(final Object o, final Errors errors) {
         UserDTO user = (UserDTO) o;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "notEmpty");
         if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
-            errors.rejectValue("username", "Size.userForm.username");
+            errors.rejectValue("username", "size.userForm.username");
         }
         if (userService.findByUsername(user.getUsername()) != null) {
-            errors.rejectValue("username", "Duplicate.userForm.username");
+            errors.rejectValue("username", "duplicate.userForm.username");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "notEmpty");
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
-            errors.rejectValue("password", "Size.userForm.password");
+            errors.rejectValue("password", "size.userForm.password");
         }
 
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
-            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
+            errors.rejectValue("passwordConfirm", "diff.userForm.passwordConfirm");
         }
 
+//        if(user.getRolesId() == null || user.getRolesId().length == 0){
+//            errors.rejectValue("rolesId", "wrong.userForm.rolesSelect");
+//        }
     }
 }

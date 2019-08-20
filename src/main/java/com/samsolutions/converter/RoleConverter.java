@@ -28,9 +28,13 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
     @Override
     public RoleDTO entityToDTO(final Role role) {
         RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(role.getId());
-        roleDTO.setName(role.getName());
-        return roleDTO;
+        try {
+            roleDTO.setId(role.getId());
+            roleDTO.setName(role.getName());
+            return roleDTO;
+        } catch (NullPointerException ne) {
+            return roleDTO;
+        }
     }
 
     @Override
@@ -41,7 +45,7 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
         try {
             target.setUsers(new HashSet<>(userConverter.dtoSetToEntities(source.getUsers())));
             return target;
-        } catch (NullPointerException ne){
+        } catch (NullPointerException ne) {
             return target;
         }
     }
@@ -50,7 +54,7 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
     public Set<RoleDTO> entitiesToDtoSet(final Set<Role> entitySet) {
         Set<RoleDTO> DTOSet = new HashSet<>();
         try {
-                for (Role source : entitySet) {
+            for (Role source : entitySet) {
                 RoleDTO target = entityToDTO(source);
                 DTOSet.add(target);
             }
@@ -70,7 +74,7 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
                 roleSet.add(target);
             }
             return roleSet;
-        } catch (NullPointerException ne){
+        } catch (NullPointerException ne) {
             return roleSet;
         }
     }

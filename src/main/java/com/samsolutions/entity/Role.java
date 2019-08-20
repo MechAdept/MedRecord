@@ -1,5 +1,6 @@
 package com.samsolutions.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,7 +32,8 @@ public class Role {
 
     @Column(name = "name")
     private String name;
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<User> users;
 
     /**

@@ -3,6 +3,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -10,18 +11,18 @@
     <style>
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
+        <%@include file="/resources/css/500.css"%>
     </style>
-    <title>Ticket update</title>
-    <script type="text/javascript">
-        <%@include file="/resources/js/jquery-3.4.1.min.js"%>
-        <%@include file="/resources/js/bootstrap.min.js"%>
-    </script>
+    <title>500</title>
 </head>
-
 <body>
-<a href="/adminpanel" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Панель аминистратора</a>
-<br>
-
-ТЕХ РАБОТЫ)
+<div class="wrapper">
+    <div class="box">
+        <h1>500</h1>
+        <p>Sorry, it's me, not you.</p>
+        <p>&#58;&#40;</p>
+        <p><a href="/">Let me try again!</a></p>
+    </div>
+</div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.samsolutions.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -40,6 +42,10 @@ public class Ticket {
 
     @Column(name = "datetime")
     private LocalDateTime datetime;
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id",referencedColumnName ="ticket")
+    private Visit visit;
 
     /**
      * Returns id.
@@ -111,6 +117,14 @@ public class Ticket {
      */
     public void setDoctor(final User doctor) {
         this.doctor = doctor;
+    }
+
+    public Visit getVisit() {
+        return visit;
+    }
+
+    public void setVisit(Visit visit) {
+        this.visit = visit;
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.samsolutions.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -31,7 +32,7 @@ public interface RoleService {
      * @param id id of desired role.
      * @return RoleDTO.
      */
-    RoleDTO findRoleById(Long id);
+    RoleDTO findById(Long id);
 
     Set<RoleDTO> findRolesById(Long[] rolesId);
 
@@ -41,10 +42,6 @@ public interface RoleService {
      * @return List<RoleDTO>.
      */
     List<RoleDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
-
-    Long getPageCount(Integer pageSize);
-
-    Long getTotalCount();
 
     /**
      * Method for delete role by id.
@@ -58,4 +55,6 @@ public interface RoleService {
     List<RoleDTO> findAll();
 
     RoleDTO findRoleByName(String name);
+
+    Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 }

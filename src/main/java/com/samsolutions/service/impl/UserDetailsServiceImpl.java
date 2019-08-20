@@ -3,6 +3,7 @@ package com.samsolutions.service.impl;
 import com.samsolutions.converter.UserConverter;
 import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.UserDTO;
+import com.samsolutions.roles.Roles;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,18 +29,6 @@ import java.util.Set;
 
 @Service("UserDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
-
-    private enum Roles implements GrantedAuthority {
-        ROLE_USER,
-        ROLE_PATIENT,
-        ROLE_RECEPTIONIST,
-        ROLE_ADMIN,
-        ROLE_DOCTOR;
-
-        public String getAuthority() {
-            return name();
-        }
-    }
 
     @Autowired
     private UserService userService;

@@ -1,9 +1,8 @@
 package com.samsolutions.service;
 
+import com.samsolutions.dto.TicketDTO;
 import com.samsolutions.dto.VisitDTO;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Visit service determine methods for working with visit table.
@@ -29,18 +28,14 @@ public interface VisitService {
      * @param id id of desired visit.
      * @return VisitDTO.
      */
-    VisitDTO findVisitById(Long id);
+    VisitDTO findById(Long id);
 
     /**
      * Method for delete visit by id.
      *
      * @param id id of desired visit.
      */
-    void deleteVisit(Long id);
+    void delete(Long id);
 
-    List<VisitDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
-
-    Long getPageCount(Integer pageSize);
-
-    Long getTotalCount();
+    VisitDTO findByTicket(TicketDTO ticketDTO);
 }

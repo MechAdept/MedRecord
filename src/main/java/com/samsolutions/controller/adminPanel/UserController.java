@@ -5,10 +5,12 @@ import com.samsolutions.service.HealthService;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
+import com.samsolutions.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +31,11 @@ import java.util.HashSet;
 
 @Controller
 @RequestMapping("/adminpanel/user")
-@Secured("ROLE_ADMIN")
+@PreAuthorize("isAuthenticated()")
 public class UserController {
+
+    @Autowired
+    UserValidator userValidator;
 
     @Autowired
     private UserService userService;
@@ -50,10 +55,14 @@ public class UserController {
      * @return redirects to main page of "user" crud.
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@RequestParam(value = "password") String password, @RequestParam(value = "username")
-            String username, @RequestParam(value = "roles") Long[] roles) {
-        UserDTO userDTO = new UserDTO(username, password, roleService.findRolesById(roles));
-        userService.save(userDTO);
+    public String create(@ModelAttribute("userDTOForm") final UserDTO userDTOForm,
+                         final BindingResult bindingResult, final Model model) {
+        userValidator.validate(userDTOForm, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roleDTOList", roleService.findAll());
+            return "adminpanel/user/create";
+        }
+        userService.save(userDTOForm);
         return "redirect:/adminpanel/user";
     }
 
@@ -76,13 +85,7 @@ public class UserController {
                        @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
                        @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
                        @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
-        model.addAttribute("DTOList", userService.getPage(pageNo - 1, pageSize, desc, sort));
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("desc", desc);
-        model.addAttribute("sort", sort);
-        model.addAttribute("pageCount", userService.getPageCount(pageSize));
-        model.addAttribute("elementsCount", userService.getTotalCount());
+        model.mergeAttributes(userService.getMapAndPage(pageNo, pageSize, desc, sort));
         return "adminpanel/user/crud";
     }
 
@@ -136,7 +139,6 @@ public class UserController {
     public String details(@PathVariable("id") final Long id, Model model) {
         UserDTO userDTO = userService.findWithRolesById(id);
         model.addAttribute("userDTO", userDTO);
-        model.addAttribute("rolePatient", roleService.findRoleByName("ROLE_PATIENT"));
         return "/adminpanel/user/details/details";
     }
 
@@ -156,20 +158,13 @@ public class UserController {
 
     @RequestMapping(value = "/details/{id}/tickets", method = RequestMethod.GET)
     public String detailsTickets(final Model model, @PathVariable(value = "id") Long id,
-                                @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
-                                @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
-                                @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
-        UserDTO userDTO = userService.findById(id);
-        model.addAttribute("DTOList", ticketService.getPageByUser(userDTO, pageNo - 1, pageSize, desc, sort));
-        model.addAttribute("userDTO", userDTO);
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("desc", desc);
-        model.addAttribute("sort", sort);
-        model.addAttribute("pageCount", ticketService.getPageCountByUser(pageSize, userDTO));
-        model.addAttribute("elementsCount", ticketService.getTotalCountByUser(userDTO));
+                                 @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+                                 @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
+                                 @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
+                                 @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
+        model.mergeAttributes(ticketService.getMapAndPageByUser(id, pageNo, pageSize, desc, sort));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        model.addAttribute("userDTO", userService.findById(id));
         return "/adminpanel/user/details/tickets";
     }
 
@@ -177,8 +172,19 @@ public class UserController {
     public String detailsHealth(@PathVariable(value = "id") final Long id, Model model) {
         model.addAttribute("healthDTO", healthService.findHealthByPatientId(id));
         model.addAttribute("userDTO", userService.findById(id));
-        return "/adminpanel/health/details/details";
+        return "adminpanel/health/details";
     }
 
-
+    @RequestMapping(value = "/details/{id}/tickets/delete/{ticketId}", method = RequestMethod.GET)
+    public String detailsTicketsDelete(final Model model, @PathVariable(value = "id") Long id,
+                                       @PathVariable(value = "ticketId") Long ticketId,
+                                       @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+                                       @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
+                                       @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
+                                       @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
+        ticketService.deleteTicket(ticketId);
+        model.mergeAttributes(ticketService.getMapAndPageByUser(id, pageNo, pageSize, desc, sort));
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        return "/adminpanel/user/details/tickets";
+    }
 }

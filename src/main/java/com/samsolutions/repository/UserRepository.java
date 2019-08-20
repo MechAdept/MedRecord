@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * The User repository provides ready-made methods for working with user table.
@@ -33,4 +34,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findByRolesIs(Role roles, Pageable pageable);
 
     List<User> findAllByHealthIsNullAndRolesIs(Role role);
+
+    List<User> getAllByRolesIs(Role role);
+
+    Set<User> findByRolesInOrderById(List<Role> roles);
 }

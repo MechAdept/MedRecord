@@ -57,7 +57,7 @@ public class User {
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     private Set<Ticket> doctorTicket;
 
-    @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Health health;
 
     /**

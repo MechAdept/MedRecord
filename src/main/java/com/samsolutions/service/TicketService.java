@@ -1,10 +1,9 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.TicketDTO;
-import com.samsolutions.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Ticket service determine methods for working with ticket table.
@@ -39,15 +38,7 @@ public interface TicketService {
      */
     void deleteTicket(Long id);
 
-    List<TicketDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+    Map<String,Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
-    Long getPageCount(Integer pageSize);
-
-    Long getTotalCount();
-
-    Long getPageCountByUser(Integer pageSize, UserDTO userDTO);
-
-    Long getTotalCountByUser(UserDTO userDTO);
-
-    List<TicketDTO> getPageByUser(UserDTO userDTO, Integer pageNo, Integer pageSize, Boolean desc, String sort);
+    Map<String,Object> getMapAndPageByUser(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort);
 }

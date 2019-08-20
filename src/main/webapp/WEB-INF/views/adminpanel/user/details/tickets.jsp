@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>User Tickets</title>
+    <title><spring:message code="text.title.userTickets"/></title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -23,87 +23,104 @@
     <div class="row">
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Роли</a>
+               aria-pressed="true"><spring:message code="button.roles"/></a>
             <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Пользователи</a>
+               aria-pressed="true"><spring:message code="button.users"/></a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-success" role="button"
-               aria-pressed="true">Талоны</a>
-            <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Посещения</a>
-            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Карты
-                здоровья</a>
+               aria-pressed="true"><spring:message code="button.tickets"/></a>
         </div>
-        <div class="col-xs-6"></div>
+        <div class="col-xs-3"></div>
+        <div class="col-xs-3">
+            <div class="row">
+                <a href="?lang=pl">PL</a>
+                <a href="?lang=en">EN</a>
+                <a href="?lang=ru">RU</a>
+            </div>
+            <div class="row">
+                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
+                        code="button.logout"/></a>
+            </div>
+        </div>
     </div>
     <div class="row" style="margin-top: 10px">
-        <div class="col-xs-4">
-        </div>
-        <div class="col-xs-4">
-            <c:if test="${DTOList.size() != 0}">
-                Показаны ${1+((pageNo-1)*pageSize)} - ${DTOList.size()+((pageNo-1)*pageSize)} из ${elementsCount} элементов
-            </c:if>
-            <c:if test="${DTOList.size() == 0}">
-                Здесь пусто
-            </c:if>
-        </div>
-        <div class="col-xs-4">
-            Показывать по
-            <div class="btn-group">
-                <button type="button" class="btn btn-default">${pageSize}</button>
-                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span
-                        class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${7}&desc${desc}&sort${sort}"/>">7</a>
-                    </li>
-                    <li>
-                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${15}&desc${desc}&sort${sort}"/>">15</a>
-                    </li>
-                    <li>
-                        <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${25}&desc${desc}&sort${sort}"/>">25</a>
-                    </li>
-                </ul>
+        <div class="row">
+            <div class="col-xs-2">
+                <spring:message code="text.header.ticketForUser"/> ${userDTO.username}
             </div>
-            элементов
+            <div class="col-xs-2">
+                <a href="/adminpanel/ticket/create/${userDTO.id}" type="button" class="btn btn-default"><spring:message
+                        code="button.ticketCreate"/></a>
+            </div>
+            <div class="col-xs-4">
+                <c:if test="${DTOList.size() != 0}">
+                    <spring:message
+                            code="text.info.shown"/> ${1+((pageNo-1)*pageSize)} - ${DTOList.size()+((pageNo-1)*pageSize)}
+                    <spring:message code="text.info.from"/> ${elementsCount} <spring:message code="text.info.items"/>
+                </c:if>
+                <c:if test="${DTOList.size() == 0}">
+                    <spring:message code="text.info.empty"/>
+                </c:if>
+            </div>
+            <div class="col-xs-4">
+                <spring:message code="button.dropdown.show"/>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default">${pageSize}</button>
+                    <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span
+                            class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${7}&desc${desc}&sort${sort}"/>">7</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${15}&desc${desc}&sort${sort}"/>">15</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value="/adminpanel/ticket?pageNo=${pageNo}&pageSize=${25}&desc${desc}&sort${sort}"/>">25</a>
+                        </li>
+                    </ul>
+                </div>
+                <spring:message code="text.info.items"/>
+            </div>
+            <div class="row">
+
+            </div>
         </div>
     </div>
-    <div>
-    </div>
-    <h3>Талоны пользователя ${userDTO.username}</h3>
     <table class="table">
         <thead>
         <tr>
             <th scope="col">
                 <c:if test="${desc == false}">
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=id"/>">id</a>
+                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=id"/>"><spring:message code="text.label.id"/></a>
                 </c:if>
                 <c:if test="${desc == true}">
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=id"/>">id</a>
+                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=id"/>"><spring:message code="text.label.id"/></a>
                 </c:if>
             </th>
             <th scope="col">
                 <c:if test="${desc == false}">
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=doctor"/>">doctor</a>
+                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=doctor"/>"><spring:message code="text.label.doctor"/></a>
                 </c:if>
                 <c:if test="${desc == true}">
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=doctor"/>">doctor</a>
+                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=doctor"/>"><spring:message code="text.label.doctor"/></a>
                 </c:if>
             </th>
             <th scope="col">
                 <c:if test="${desc == false}">
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=patient"/>">patient</a>
+                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=patient"/>"><spring:message
+                            code="text.label.patient"/></a>
                 </c:if>
                 <c:if test="${desc == true}">
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=patient"/>">patient</a>
+                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=patient"/>"><spring:message
+                            code="text.label.patient"/></a>
                 </c:if>
             </th>
             <th scope="col">
                 <c:if test="${desc == false}">
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=datetime"/>">datetime</a>
+                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=datetime"/>"><spring:message code="text.label.datetime"/></a>
                 </c:if>
                 <c:if test="${desc == true}">
-                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=datetime"/>">datetime</a>
+                    <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=datetime"/>"><spring:message code="text.label.datetime"/></a>
                 </c:if>
             </th>
             <th scope="col"></th>
@@ -114,22 +131,34 @@
             <c:forEach items="${DTOList}" var="ticket">
                 <tr>
                     <th scope="row">${ticket.id}</th>
-                    <th scope="row">${ticket.doctor.username}</th>
-                    <th scope="row">${ticket.patient.username}</th>
+                    <th scope="row">
+                        <a href="<c:url value="/adminpanel/user/details/${ticket.doctor.id}"/>"
+                           class="btn-sm btn-primary"
+                           role="button"
+                           aria-pressed="true">${ticket.doctor.username}</a>
+                    </th>
+
+
+                    <th scope="row">
+                        <a href="<c:url value="/adminpanel/user/details/${ticket.patient.id}"/>"
+                           class="btn-sm btn-primary"
+                           role="button"
+                           aria-pressed="true">${ticket.patient.username}</a>
+                    </th>
                     <th scope="row">${ticket.datetime.format(formatter)}</th>
 
-                    <td><a href="<c:url value="adminpane/ticket/details/${ticket.id}"/>" class="btn btn-link"
+                    <td><a href="<c:url value="/adminpanel/ticket/details/${ticket.id}"/>" class="btn-sm btn-primary"
                            role="button"
-                           aria-pressed="true">details</a>
+                           aria-pressed="true"><spring:message code="button.details"/></a>
                     </td>
                     <td>
-                        <a href="<c:url value="adminpanel/ticket/delete/${ticket.id}?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
-                           class="btn btn-link" role="button"
-                           aria-pressed="true">delete</a>
+                        <a href="<c:url value="/adminpanel/ticket/delete/${ticket.id}?pageNo=${pageNo}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
+                           class="btn-sm btn-danger" role="button"
+                           aria-pressed="true"><spring:message code="button.delete"/></a>
                     </td>
-                    <td><a href="<c:url value="adminpanel/ticket/edit/${ticket.id}"/>" class="btn btn-link"
+                    <td><a href="<c:url value="/adminpanel/ticket/edit/${ticket.id}"/>" class="btn-sm btn-warning"
                            role="button"
-                           aria-pressed="true">edit</a>
+                           aria-pressed="true"><spring:message code="button.edit"/></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -150,12 +179,12 @@
                                         <c:if test="${pageNo > 1 && elementsCount > 0}">
                                             <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}"/>"
                                                class="btn btn-outline-primary" role="button"
-                                               aria-pressed="true">Предыдущая</a>
+                                               aria-pressed="true"><spring:message code="button.previously"/></a>
                                         </c:if>
                                         <c:if test="${pageCount != 0 && DTOList.size() == 0}">
                                             <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=1&pageSize=${pageSize}&desc=${desc}"/>"
                                                class="btn btn-outline-primary" role="button"
-                                               aria-pressed="true">Предыдущая</a>
+                                               aria-pressed="true"><spring:message code="button.previously"/></a>
                                         </c:if>
                                     </div>
                                     <div class="col-xs-4">
@@ -178,7 +207,7 @@
                                         <c:if test="${(pageSize*pageNo)<elementsCount}">
                                             <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo+1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
                                                class="btn btn-outline-primary" role="button"
-                                               aria-pressed="true">Следующая</a>
+                                               aria-pressed="true"><spring:message code="button.next"/></a>
                                         </c:if>
                                     </div>
                                 </div>

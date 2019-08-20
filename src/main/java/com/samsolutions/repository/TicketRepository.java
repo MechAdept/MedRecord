@@ -22,4 +22,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     Long countAllByDoctorOrPatient(User doctor, User patient);
 
     Page<Ticket> findByDoctorOrPatientEquals(User doctor, User Patient, Pageable pageable);
+
+//    Page<Ticket> findAllByVisitNotNull();
+//
+//    Page<Ticket> findAllByVisitIsNull();
 }

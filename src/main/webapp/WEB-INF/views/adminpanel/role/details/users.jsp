@@ -12,7 +12,7 @@
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
     </style>
-    <title>Role Users</title>
+    <title><spring:message code="text.title.roleUsers"/></title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
@@ -22,36 +22,44 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
-            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Роли</a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
-               aria-pressed="true">Пользователи</a>
+            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-success" role="button"
+               aria-pressed="true"><spring:message code="button.roles"/></a>
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
+               aria-pressed="true"><spring:message code="button.users"/></a>
             <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Талоны</a>
-            <a href="<c:url value="/adminpanel/visit"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Посещения</a>
-            <a href="<c:url value="/adminpanel/health"/>" class="btn btn-info" role="button"
-               aria-pressed="true">Карты
-                здоровья</a>
+               aria-pressed="true"><spring:message code="button.tickets"/></a>
         </div>
-        <div class="col-xs-6"></div>
+        <div class="col-xs-3"></div>
+        <div class="col-xs-3">
+            <div class="row">
+                <a href="?lang=pl">PL</a>
+                <a href="?lang=en">EN</a>
+                <a href="?lang=ru">RU</a>
+            </div>
+            <div class="row">
+                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
+                        code="button.logout"/></a>
+            </div>
+        </div>
     </div>
-    <h3>Пользователи роли ${roleDTO.name}</h3>
+    <h3><spring:message code="text.header.roleUsers"/> ${roleDTO.name}</h3>
     <div class="row" style="margin-top: 10px">
         <div class="col-xs-4">
             <a href="<c:url value="/adminpanel/user/create"/>" class="btn btn-default" role="button"
-               aria-pressed="true">Создать</a>
+               aria-pressed="true"><spring:message code="button.create"/></a>
         </div>
         <div class="col-xs-4">
             <c:if test="${DTOList.size() != 0}">
-                Показаны ${1+((pageNo-1)*pageSize)} - ${DTOList.size()+((pageNo-1)*pageSize)} из ${elementsCount} элементов
+                <spring:message
+                        code="text.info.shown"/> ${1+((pageNo-1)*pageSize)}-${DTOList.size()+((pageNo-1)*pageSize)}
+                <spring:message code="text.info.from"/> ${elementsCount} <spring:message code="text.info.items"/>
             </c:if>
             <c:if test="${DTOList.size() == 0}">
-                Здесь пусто
+                <spring:message code="text.info.empty"/>
             </c:if>
         </div>
         <div class="col-xs-4">
-            Показывать по
+            <spring:message code="button.dropdown.show"/>
             <div class="btn-group">
                 <button type="button" class="btn btn-default">${pageSize}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span
@@ -67,7 +75,7 @@
                     </li>
                 </ul>
             </div>
-            элементов
+            <spring:message code="text.info.items"/>
         </div>
     </div>
     <div>
@@ -78,18 +86,22 @@
         <tr>
             <th scope="col">
                 <c:if test="${desc == false}">
-                    <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=id"/>">id</a>
+                    <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=id"/>"><spring:message
+                            code="text.label.id"/></a>
                 </c:if>
                 <c:if test="${desc == true}">
-                    <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=id"/>">id</a>
+                    <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=id"/>"><spring:message
+                            code="text.label.id"/></a>
                 </c:if>
             </th>
             <th scope="col">
                 <c:if test="${desc == false}">
-                    <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=username"/>">username</a>
+                    <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=username"/>"><spring:message
+                            code="text.label.username"/></a>
                 </c:if>
                 <c:if test="${desc == true}">
-                    <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=username"/>">username</a>
+                    <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=username"/>"><spring:message
+                            code="text.label.username"/></a>
                 </c:if>
             </th>
             <th scope="col"></th>
@@ -100,15 +112,16 @@
             <tr>
                 <th scope="row">${user.id}</th>
                 <th scope="row">${user.username}</th>
-                <td><a href="<c:url value="/adminpanel/user/details/${user.id}"/>" class="btn btn-link" role="button"
-                       aria-pressed="true">details</a>
+                <td><a href="<c:url value="/adminpanel/user/details/${user.id}"/>" class="btn-sm btn-primary"
+                       role="button"
+                       aria-pressed="true"><spring:message code="button.details"/></a>
                 </td>
-                <td><a href="<c:url value="adminpanel/role/details/${roleDTO.id}/users/delete/${user.id}"/>"
-                       class="btn btn-link" role="button"
-                       aria-pressed="true">delete</a>
+                <td><a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users/delete/${user.id}"/>"
+                       class="btn-sm btn-danger" role="button"
+                       aria-pressed="true"><spring:message code="button.delete"/></a>
                 </td>
-                <td><a href="<c:url value="/adminpanel/user/edit/${user.id}"/>" class="btn btn-link" role="button"
-                       aria-pressed="true">edit</a>
+                <td><a href="<c:url value="/adminpanel/user/edit/${user.id}"/>" class="btn-sm btn-warning" role="button"
+                       aria-pressed="true"><spring:message code="button.edit"/></a>
                 </td>
             </tr>
         </c:forEach>
@@ -127,12 +140,12 @@
                                     <c:if test="${pageNo > 1 && DTOList.size() != 0}">
                                         <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
                                            class="btn btn-outline-primary" role="button"
-                                           aria-pressed="true">Предыдущая</a>
+                                           aria-pressed="true"><spring:message code="button.previously"/></a>
                                     </c:if>
                                     <c:if test="${DTOList.size() == 0 && elementsCount != 0}">
                                         <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=1&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
                                            class="btn btn-outline-primary" role="button"
-                                           aria-pressed="true">Предыдущая</a>
+                                           aria-pressed="true"><spring:message code="button.previously"/></a>
                                     </c:if>
                                 </div>
                                 <div class="col-xs-4">
@@ -155,7 +168,7 @@
                                     <c:if test="${(pageSize*pageNo)<elementsCount}">
                                         <a href="<c:url value="/adminpanel/role/details/${roleDTO.id}/users?pageNo=${pageNo+1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
                                            class="btn btn-outline-primary" role="button"
-                                           aria-pressed="true">Следующая</a>
+                                           aria-pressed="true"><spring:message code="button.next"/></a>
                                     </c:if>
                                 </div>
                             </div>

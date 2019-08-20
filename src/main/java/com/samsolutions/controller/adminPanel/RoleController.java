@@ -4,7 +4,7 @@ import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/adminpanel/role")
-@Secured("ROLE_ADMIN")
+@PreAuthorize("isAuthenticated()")
 public class RoleController {
 
     @Autowired
@@ -56,13 +56,7 @@ public class RoleController {
                        @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
                        @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
                        @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
-        model.addAttribute("DTOList", roleService.getPage(pageNo - 1, pageSize, desc, sort));
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("desc", desc);
-        model.addAttribute("sort", sort);
-        model.addAttribute("pageCount", roleService.getPageCount(pageSize));
-        model.addAttribute("elementsCount", roleService.getTotalCount());
+        model.mergeAttributes(roleService.getMapAndPage(pageNo, pageSize, desc, sort));
         return "adminpanel/role/crud";
     }
 
@@ -87,7 +81,7 @@ public class RoleController {
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
-        RoleDTO roleDTO = roleService.findRoleById(id);
+        RoleDTO roleDTO = roleService.findById(id);
         model.addAttribute("roleDTO", roleDTO);
         model.addAttribute("roleDTOForm", new RoleDTO());
         return "/adminpanel/role/edit";
@@ -107,7 +101,7 @@ public class RoleController {
 
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String details(@PathVariable("id") final Long id, Model model) {
-        model.addAttribute("roleDTO", roleService.findRoleById(id));
+        model.addAttribute("roleDTO", roleService.findById(id));
         return "/adminpanel/role/details/details";
     }
 
@@ -117,15 +111,7 @@ public class RoleController {
                                @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
                                @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
                                @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
-        RoleDTO roleDTO = roleService.findRoleById(id);
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("desc", desc);
-        model.addAttribute("sort", sort);
-        model.addAttribute("roleDTO", roleDTO);
-        model.addAttribute("DTOList", userService.getPageByRole(roleDTO, pageNo - 1, pageSize, desc, sort));
-        model.addAttribute("elementsCount", userService.countByRole(roleDTO));
-        model.addAttribute("pageCount", userService.pageCountByRole(pageSize, roleDTO));
+        model.mergeAttributes(userService.getMapAndPageByRole(id, pageNo, pageSize, desc, sort));
         return "/adminpanel/role/details/users";
     }
 
@@ -135,9 +121,9 @@ public class RoleController {
                                     @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
                                     @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
                                     @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
-                                    @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
+                                    @RequestParam(value = "sort", required = false, defaultValue = "id") String sort, Model model) {
         userService.deleteRoleFromUserById(userId, id);
-        return "redirect: /adminpanel/role/details/" + id + "/users?pageNo=" + pageNo + "&pageSize=" + pageSize +
-                "&desc=" + desc + "&sort=" + sort;
+        model.mergeAttributes(userService.getMapAndPageByRole(id, pageNo, pageSize, desc, sort));
+        return "/adminpanel/role/details/users";
     }
 }

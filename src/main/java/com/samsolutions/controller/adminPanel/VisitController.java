@@ -1,16 +1,18 @@
 package com.samsolutions.controller.adminPanel;
 
+import com.samsolutions.dto.TicketDTO;
 import com.samsolutions.dto.VisitDTO;
+import com.samsolutions.service.TicketService;
+import com.samsolutions.service.UserService;
 import com.samsolutions.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller of crud operations for table "visit".
@@ -23,37 +25,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/adminpanel/visit")
-@Secured("ROLE_ADMIN")
+@PreAuthorize("isAuthenticated()")
 public class VisitController {
     @Autowired
     private VisitService visitService;
 
-    /**
-     * Method to create a new visit.
-     *
-     * @param visitDTO form to create a visit.
-     * @return redirects to main page of "visit" crud.
-     */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute(name = "visitDTO") final VisitDTO visitDTO) {
-        visitService.save(visitDTO);
-        return "redirect: /adminpanel/visit";
-    }
+    @Autowired
+    private UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String read(final Model model, @RequestParam(value = "pageNo",
-            required = false, defaultValue = "1") Integer pageNo,
-                       @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                       @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
-                       @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
-        model.addAttribute("DTOList", visitService.getPage(pageNo - 1, pageSize, desc, sort));
-        model.addAttribute("pageNo", pageNo);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("sort", sort);
-        model.addAttribute("desc", desc);
-        model.addAttribute("pageCount", visitService.getPageCount(pageSize));
-        model.addAttribute("elementsCount", visitService.getTotalCount());
-        return "adminpanel/visit/crud";
+    @Autowired
+    private TicketService ticketService;
+
+    @RequestMapping(value = "/create/{ticketId}", method = RequestMethod.GET)
+    public String create(@PathVariable(value = "ticketId") final Long ticketId, Model model) {
+        TicketDTO ticketDTO = ticketService.findTicketById(ticketId);
+        model.addAttribute("ticketDTO", ticketDTO);
+        model.addAttribute("visitDTOForm", new VisitDTO());
+        return "/adminpanel/visit/create";
     }
 
     /**
@@ -65,7 +53,7 @@ public class VisitController {
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
-        VisitDTO visitDTO = visitService.findVisitById(id);
+        VisitDTO visitDTO = visitService.findById(id);
         model.addAttribute("visitDTO", visitDTO);
         model.addAttribute("visitDTOForm", new VisitDTO());
         return "adminpanel/visit/edit";
@@ -91,7 +79,7 @@ public class VisitController {
      */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable("id") final Long id) {
-        visitService.deleteVisit(id);
+        visitService.delete(id);
         return "redirect: /adminpanel/visit";
     }
 }

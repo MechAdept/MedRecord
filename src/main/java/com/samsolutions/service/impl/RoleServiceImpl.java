@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,7 +50,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDTO findRoleById(final Long id) {
+    public RoleDTO findById(final Long id) {
 
         Role role = roleRepository.findById(id).orElse(new Role());
         return roleConverter.entityToDTO(role);
@@ -59,7 +61,7 @@ public class RoleServiceImpl implements RoleService {
         Set<RoleDTO> roleDTOSet = new java.util.HashSet<>(Collections.emptySet());
         try {
             for (Long id : rolesId) {
-                roleDTOSet.add((findRoleById(id)));
+                roleDTOSet.add((findById(id)));
             }
             return roleDTOSet;
         } catch (NullPointerException ne) {
@@ -89,16 +91,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Long getPageCount(Integer pageSize) {
-        return roleRepository.count() / pageSize;
-    }
-
-    @Override
-    public Long getTotalCount() {
-        return roleRepository.count();
-    }
-
-    @Override
     public List<RoleDTO> findAll() {
         return roleConverter.entitiesToDtoList(roleRepository.findAll(Sort.by("id").ascending()));
     }
@@ -108,13 +100,34 @@ public class RoleServiceImpl implements RoleService {
         return roleConverter.entityToDTO(roleRepository.findRoleByName(name));
     }
 
+    @Override
+    public Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("DTOList", getPage(pageNo, pageSize, desc, sort));
+        map.put("pageNo", pageNo);
+        map.put("pageSize", pageSize);
+        map.put("desc", desc);
+        map.put("sort", sort);
+        map.put("pageCount", getPageCount(pageSize));
+        map.put("elementsCount", getTotalCount());
+        return map;
+    }
+
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable;
         if (desc) {
-            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
+            pageable = PageRequest.of(pageNo-1, pageSize, Sort.by(sort).descending());
         } else {
-            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
+            pageable = PageRequest.of(pageNo-1, pageSize, Sort.by(sort).ascending());
         }
         return pageable;
+    }
+
+    private Long getPageCount(Integer pageSize) {
+        return roleRepository.count() / pageSize;
+    }
+
+    private Long getTotalCount() {
+        return roleRepository.count();
     }
 }

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
-@Secured("ROLE_ADMIN")
 @RequestMapping("/adminpanel")
+@Secured("ROLE_ADMIN")
 public class AdminController {
 
     /**
@@ -25,10 +25,9 @@ public class AdminController {
      *
      * @return returns the admin panel page.
      */
-    @Secured("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.GET)
     public String adminPanel() {
-        return "adminpanel/adminPanel";
+        return "redirect:/adminpanel/user";
     }
 
 }

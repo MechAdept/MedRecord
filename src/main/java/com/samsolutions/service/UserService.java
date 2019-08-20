@@ -1,11 +1,12 @@
 package com.samsolutions.service;
 
-import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.UserDTO;
 import com.samsolutions.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * User service determine methods for working with user table.
@@ -50,23 +51,15 @@ public interface UserService {
 
     List<UserDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
-    Long getPageCount(Integer pageSize);
-
-    Long getTotalCount();
-
     UserDTO findWithRolesById(Long id);
 
     void deleteRoleFromUserById(Long userId, Long RoleId);
 
-    List<UserDTO> getPageByRole(RoleDTO roleDTO, Integer pageNo, Integer pageSize, Boolean desc, String sort);
+    Map<String,Object> getMapAndPageByRole(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
-    Long pageCountByRole(Integer pageSize, RoleDTO roleDTO);
+    Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
-    Long countByRole(RoleDTO roleDTO);
+    Set<UserDTO> findDoctors();
 
-    List<UserDTO> findPatientsWithoutHealth();
-
-    List<UserDTO> getPagePatient(Integer pageNo, Integer pageSize, Boolean desc, String sort);
-//
-//    List<UserDTO> getPageDoctor(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+    List<UserDTO> findPatients();
 }
