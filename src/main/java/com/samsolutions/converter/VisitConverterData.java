@@ -1,6 +1,7 @@
 package com.samsolutions.converter;
 
-import com.samsolutions.dto.VisitDTO;
+import com.samsolutions.converter.fromEntity.DataDTOConverter;
+import com.samsolutions.dto.data.VisitDataDTO;
 import com.samsolutions.entity.Visit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,15 +21,15 @@ import java.util.Set;
  */
 
 @Component
-public class VisitConverter implements DTOConverter<Visit, VisitDTO> {
+public class VisitConverterData implements DataDTOConverter<Visit, VisitDataDTO> {
 
     @Autowired
-    private TicketConverter ticketConverter;
+    private TicketConverterData ticketConverter;
 
     @Override
-    public VisitDTO entityToDTO(final Visit source) {
+    public VisitDataDTO entityToDataDTO(final Visit source) {
 
-        VisitDTO target = new VisitDTO();
+        VisitDataDTO target = new VisitDataDTO();
         try {
             target.setId(source.getId());
             target.setDatetime(source.getDatetime());
@@ -36,15 +37,15 @@ public class VisitConverter implements DTOConverter<Visit, VisitDTO> {
             target.setDiagnosis(source.getDiagnosis());
             target.setExamination(source.getExamination());
             target.setTreatment(source.getTreatment());
-            target.setTicket(ticketConverter.entityToDTO(source.getTicket()));
+            target.setTicket(ticketConverter.entityToDataDTO(source.getTicket()));
         } catch (NullPointerException ne){
-            return new VisitDTO();
+            return new VisitDataDTO();
         }
         return target;
     }
 
     @Override
-    public Visit dtoToEntity(final VisitDTO source) {
+    public Visit formDtoToEntity(final VisitDataDTO source) {
         Visit target = new Visit();
         target.setId(source.getId());
         target.setDatetime(source.getDatetime());
@@ -52,35 +53,35 @@ public class VisitConverter implements DTOConverter<Visit, VisitDTO> {
         target.setDiagnosis(source.getDiagnosis());
         target.setExamination(source.getExamination());
         target.setTreatment(source.getTreatment());
-        target.setTicket(ticketConverter.dtoToEntity(source.getTicket()));
+        target.setTicket(ticketConverter.formDtoToEntity(source.getTicket()));
         return target;
     }
 
     @Override
-    public Set<VisitDTO> entitiesToDtoSet(final Set<Visit> entitySet) {
-        Set<VisitDTO> DTOSet = new HashSet<>();
+    public Set<VisitDataDTO> entitiesToDataDtoSet(final Set<Visit> entitySet) {
+        Set<VisitDataDTO> DTOSet = new HashSet<>();
         for (Visit source : entitySet) {
-            VisitDTO target = entityToDTO(source);
+            VisitDataDTO target = entityToDataDTO(source);
             DTOSet.add(target);
         }
         return DTOSet;
     }
 
     @Override
-    public Set<Visit> dtoSetToEntities(final Set<VisitDTO> DTOSet) {
+    public Set<Visit> formDtoSetToEntities(final Set<VisitDataDTO> DTOSet) {
         Set<Visit> entitySet = new HashSet<>();
-        for (VisitDTO source : DTOSet) {
-            Visit target = dtoToEntity(source);
+        for (VisitDataDTO source : DTOSet) {
+            Visit target = formDtoToEntity(source);
             entitySet.add(target);
         }
         return entitySet;
     }
 
     @Override
-    public List<VisitDTO> entitiesToDtoList(List<Visit> entityList) {
-        List<VisitDTO> DTOList = new ArrayList<>();
+    public List<VisitDataDTO> entitiesToDataDtoList(List<Visit> entityList) {
+        List<VisitDataDTO> DTOList = new ArrayList<>();
         for (Visit source : entityList) {
-            VisitDTO target = entityToDTO(source);
+            VisitDataDTO target = entityToDataDTO(source);
             DTOList.add(target);
         }
         return DTOList;

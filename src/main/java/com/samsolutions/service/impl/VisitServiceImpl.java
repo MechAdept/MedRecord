@@ -1,9 +1,9 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.TicketConverter;
-import com.samsolutions.converter.UserConverter;
-import com.samsolutions.converter.VisitConverter;
-import com.samsolutions.dto.TicketDTO;
+import com.samsolutions.converter.TicketConverterData;
+import com.samsolutions.converter.UserConverterData;
+import com.samsolutions.converter.VisitConverterData;
+import com.samsolutions.dto.data.TicketDataDTO;
 import com.samsolutions.dto.VisitDTO;
 import com.samsolutions.entity.Visit;
 import com.samsolutions.repository.VisitRepository;
@@ -27,17 +27,17 @@ public class VisitServiceImpl implements VisitService {
     private VisitRepository visitRepository;
 
     @Autowired
-    private VisitConverter visitConverter;
+    private VisitConverterData visitConverter;
 
     @Autowired
-    private TicketConverter ticketConverter;
+    private TicketConverterData ticketConverter;
 
     @Autowired
-    UserConverter userConverter;
+    UserConverterData userConverter;
 
     @Override
     public void save(final VisitDTO visitDTO) {
-        Visit visit = visitConverter.dtoToEntity(visitDTO);
+        Visit visit = visitConverter.formDtoToEntity(visitDTO);
         visitRepository.save(visit);
     }
 
@@ -49,11 +49,11 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public VisitDTO findById(final Long id) {
-        return visitConverter.entityToDTO(visitRepository.getOne(id));
+        return visitConverter.entityToDataDTO(visitRepository.getOne(id));
     }
 
     @Override
-    public VisitDTO findByTicket(TicketDTO ticketDTO) {
-        return visitConverter.entityToDTO(visitRepository.findVisitByTicket(ticketConverter.dtoToEntity(ticketDTO)));
+    public VisitDTO findByTicket(TicketDataDTO ticketDataDTO) {
+        return visitConverter.entityToDataDTO(visitRepository.findVisitByTicket(ticketConverter.formDtoToEntity(ticketDataDTO)));
     }
 }

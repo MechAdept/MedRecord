@@ -44,79 +44,39 @@ public class Ticket {
     private LocalDateTime datetime;
 
     @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id",referencedColumnName ="ticket")
+    @JoinColumn(name = "id", referencedColumnName = "ticket")
     private Visit visit;
 
-    /**
-     * Returns id.
-     *
-     * @return Long.
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * Sets id.
-     *
-     * @param id Long to be set.
-     */
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * Returns datetime.
-     *
-     * @return LocalDateTime.
-     */
-    public LocalDateTime getDatetime() {
-        return datetime;
-    }
-
-    /**
-     * Sets datetime.
-     *
-     * @param datetime LocalDateTime to be set.
-     */
-    public void setDatetime(final LocalDateTime datetime) {
-        this.datetime = datetime;
-    }
-
-    /**
-     * Returns patient.
-     *
-     * @return User.
-     */
     public User getPatient() {
         return patient;
     }
 
-    /**
-     * Sets patient.
-     *
-     * @param patient User to be set.
-     */
-    public void setPatient(final User patient) {
+    public void setPatient(User patient) {
         this.patient = patient;
     }
 
-    /**
-     * Returns doctor.
-     *
-     * @return User.
-     */
     public User getDoctor() {
         return doctor;
     }
 
-    /**
-     * Sets doctor.
-     *
-     * @param doctor User to be set.
-     */
-    public void setDoctor(final User doctor) {
+    public void setDoctor(User doctor) {
         this.doctor = doctor;
+    }
+
+    public LocalDateTime getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(LocalDateTime datetime) {
+        this.datetime = datetime;
     }
 
     public Visit getVisit() {
@@ -128,22 +88,19 @@ public class Ticket {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
         return Objects.equals(id, ticket.id) &&
                 Objects.equals(patient, ticket.patient) &&
                 Objects.equals(doctor, ticket.doctor) &&
-                Objects.equals(datetime, ticket.datetime);
+                Objects.equals(datetime, ticket.datetime) &&
+                Objects.equals(visit, ticket.visit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, patient, doctor, datetime);
+        return Objects.hash(id, patient, doctor, datetime, visit);
     }
 }

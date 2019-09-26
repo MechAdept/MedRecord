@@ -32,7 +32,7 @@
         <div class="col-xs-6"></div>
     </div>
     <c:if test="${visitDTO.id eq null}">
-        <h3><spring:message code="text.header.starVisit"/> ${ticketDTO.id}</h3>
+        <h3><spring:message code="text.header.starVisit"/> ${ticketDataDTO.id}</h3>
         <div class="row" style="margin-top: 15px">
             <div class="col-xs-4">
                 <a href="<c:url value="/adminpanel/visit/create${visitDTO.id}"/>" class="btn-lg btn-success"

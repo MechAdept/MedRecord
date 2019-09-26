@@ -1,6 +1,6 @@
 package com.samsolutions.controller;
 
-import com.samsolutions.dto.UserDTO;
+import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.SecurityService;
 import com.samsolutions.service.UserService;

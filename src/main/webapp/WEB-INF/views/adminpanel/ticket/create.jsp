@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <c:url value="/login" var="login"/>
-<c:url value="/adminpanel/health/create" var="create"/>
+<c:url value="/adminpanel/ticket/create" var="create"/>
 
 <html>
 <head>
@@ -51,10 +51,10 @@
                 <label><spring:message code="text.label.doctor"/></label>
             </div>
             <div class="col-xs-2" style="text-align: left">
-                <label><spring:message code="text.label.birth"/></label>
+                <label><spring:message code="text.label.datetime"/></label>
             </div>
             <div class="col-xs-2" style="text-align: left;">
-                <label><spring:message code="text.label.photo"/></label>
+                <label><spring:message code="text.label.action"/></label>
             </div>
             <div class="clearfix"></div>
         </div>

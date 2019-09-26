@@ -1,6 +1,7 @@
 package com.samsolutions.converter;
 
-import com.samsolutions.dto.RoleDTO;
+import com.samsolutions.converter.fromEntity.DataDTOConverter;
+import com.samsolutions.dto.data.RoleDataDTO;
 import com.samsolutions.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,14 +21,14 @@ import java.util.Set;
  */
 
 @Component
-public class RoleConverter implements DTOConverter<Role, RoleDTO> {
+public class RoleConverterData implements DataDTOConverter<Role, RoleDataDTO> {
 
     @Autowired
-    UserConverter userConverter;
+    UserConverterData userConverter;
 
     @Override
-    public RoleDTO entityToDTO(final Role role) {
-        RoleDTO roleDTO = new RoleDTO();
+    public RoleDataDTO entityToDataDTO(final Role role) {
+        RoleDataDTO roleDTO = new RoleDataDTO();
         try {
             roleDTO.setId(role.getId());
             roleDTO.setName(role.getName());
@@ -38,12 +39,12 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
     }
 
     @Override
-    public Role dtoToEntity(final RoleDTO source) {
+    public Role formDtoToEntity(final RoleDataDTO source) {
         Role target = new Role();
         target.setId(source.getId());
         target.setName(source.getName());
         try {
-            target.setUsers(new HashSet<>(userConverter.dtoSetToEntities(source.getUsers())));
+            target.setUsers(new HashSet<>(userConverter.formDtoSetToEntities(source.getUsers())));
             return target;
         } catch (NullPointerException ne) {
             return target;
@@ -51,11 +52,11 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
     }
 
     @Override
-    public Set<RoleDTO> entitiesToDtoSet(final Set<Role> entitySet) {
-        Set<RoleDTO> DTOSet = new HashSet<>();
+    public Set<RoleDataDTO> entitiesToDataDtoSet(final Set<Role> entitySet) {
+        Set<RoleDataDTO> DTOSet = new HashSet<>();
         try {
             for (Role source : entitySet) {
-                RoleDTO target = entityToDTO(source);
+                RoleDataDTO target = entityToDataDTO(source);
                 DTOSet.add(target);
             }
             return DTOSet;
@@ -66,11 +67,11 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
     }
 
     @Override
-    public Set<Role> dtoSetToEntities(final Set<RoleDTO> roleDTOSet) {
+    public Set<Role> formDtoSetToEntities(final Set<RoleDataDTO> roleDTOSet) {
         Set<Role> roleSet = new HashSet<>();
         try {
-            for (RoleDTO source : roleDTOSet) {
-                Role target = dtoToEntity(source);
+            for (RoleDataDTO source : roleDTOSet) {
+                Role target = formDtoToEntity(source);
                 roleSet.add(target);
             }
             return roleSet;
@@ -80,10 +81,10 @@ public class RoleConverter implements DTOConverter<Role, RoleDTO> {
     }
 
     @Override
-    public List<RoleDTO> entitiesToDtoList(List<Role> entityList) {
-        List<RoleDTO> DTOList = new ArrayList<>();
+    public List<RoleDataDTO> entitiesToDataDtoList(List<Role> entityList) {
+        List<RoleDataDTO> DTOList = new ArrayList<>();
         for (Role source : entityList) {
-            RoleDTO target = entityToDTO(source);
+            RoleDataDTO target = entityToDataDTO(source);
             DTOList.add(target);
         }
         return DTOList;

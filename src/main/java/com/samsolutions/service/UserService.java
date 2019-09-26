@@ -1,6 +1,6 @@
 package com.samsolutions.service;
 
-import com.samsolutions.dto.UserDTO;
+import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.entity.User;
 import org.springframework.stereotype.Service;
 

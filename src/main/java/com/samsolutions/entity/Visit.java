@@ -180,25 +180,21 @@ public class Visit {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Visit visit = (Visit) o;
-        return id == visit.id &&
-                Objects.equals(ticket, visit.ticket) &&
+        return Objects.equals(id, visit.id) &&
                 Objects.equals(datetime, visit.datetime) &&
                 Objects.equals(complaint, visit.complaint) &&
                 Objects.equals(examination, visit.examination) &&
                 Objects.equals(diagnosis, visit.diagnosis) &&
-                Objects.equals(treatment, visit.treatment);
+                Objects.equals(treatment, visit.treatment) &&
+                Objects.equals(ticket, visit.ticket);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ticket, datetime, complaint, examination, diagnosis, treatment);
+        return Objects.hash(id, datetime, complaint, examination, diagnosis, treatment, ticket);
     }
 }

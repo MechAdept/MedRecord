@@ -1,9 +1,9 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.RoleConverter;
-import com.samsolutions.converter.UserConverter;
+import com.samsolutions.converter.RoleConverterData;
+import com.samsolutions.converter.UserConverterData;
 import com.samsolutions.dto.RoleDTO;
-import com.samsolutions.dto.UserDTO;
+import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.entity.Role;
 import com.samsolutions.repository.RoleRepository;
 import com.samsolutions.service.RoleService;
@@ -38,14 +38,14 @@ public class RoleServiceImpl implements RoleService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private RoleConverter roleConverter;
+    private RoleConverterData roleConverter;
 
     @Autowired
-    private UserConverter userConverter;
+    private UserConverterData userConverter;
 
     @Override
     public void save(final RoleDTO roleDTO) {
-        Role role = roleConverter.dtoToEntity(roleDTO);
+        Role role = roleConverter.formDtoToEntity(roleDTO);
         roleRepository.save(role);
     }
 
@@ -53,7 +53,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleDTO findById(final Long id) {
 
         Role role = roleRepository.findById(id).orElse(new Role());
-        return roleConverter.entityToDTO(role);
+        return roleConverter.entityToDataDTO(role);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class RoleServiceImpl implements RoleService {
         Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
         Page<Role> pagedResult = roleRepository.findAll(pageable);
         if (pagedResult.hasContent()) {
-            return roleConverter.entitiesToDtoList(pagedResult.getContent());
+            return roleConverter.entitiesToDataDtoList(pagedResult.getContent());
         } else {
             return new ArrayList<>();
         }
@@ -86,18 +86,18 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDTO> getRolesByUser(UserDTO userDTO) {
-        return roleConverter.entitiesToDtoList(roleRepository.getRolesByUsers(
-                userConverter.dtoToEntity(userDTO)));
+        return roleConverter.entitiesToDataDtoList(roleRepository.getRolesByUsers(
+                userConverter.formDtoToEntity(userDTO)));
     }
 
     @Override
     public List<RoleDTO> findAll() {
-        return roleConverter.entitiesToDtoList(roleRepository.findAll(Sort.by("id").ascending()));
+        return roleConverter.entitiesToDataDtoList(roleRepository.findAll(Sort.by("id").ascending()));
     }
 
     @Override
     public RoleDTO findRoleByName(String name) {
-        return roleConverter.entityToDTO(roleRepository.findRoleByName(name));
+        return roleConverter.entityToDataDTO(roleRepository.findRoleByName(name));
     }
 
     @Override

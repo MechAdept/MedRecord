@@ -46,7 +46,7 @@
             </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="col-xs-2">
-                    <td><form:hidden path="ticket" value="${ticketDTO.id}"/></td>
+                    <td><form:hidden path="ticket" value="${ticketDataDTO.id}"/></td>
                 </div>
                 <div class="col-xs-2">
                     <td><form:input path="datetime" type="datetime-local"/></td>

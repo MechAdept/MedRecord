@@ -14,8 +14,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -30,7 +32,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
-@Transactional
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +44,26 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Transient
-    private String passwordConfirm;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "surname")
+    private String surname;
+
+    @Column(name = "patronymic")
+    private String patronymic;
+
+    @Column(name = "telephone")
+    private String telephone;
+
+    @Column(name = "birth")
+    private LocalDateTime birth;
+
+    @Column(name = "sex")
+    private Boolean sex;
+
+    @Column(name = "img")
+    private String img;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
@@ -57,133 +76,112 @@ public class User {
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     private Set<Ticket> doctorTicket;
 
-    @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id", referencedColumnName = "patient")
     private Health health;
 
-    /**
-     * Returns id.
-     *
-     * @return Long.
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * Sets id.
-     *
-     * @param id Long to be set.
-     */
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * Returns username.
-     *
-     * @return String.
-     */
     public String getUsername() {
         return username;
     }
 
-    /**
-     * Sets username.
-     *
-     * @param username String to be set.
-     */
-    public void setUsername(final String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    /**
-     * Returns password.
-     *
-     * @return String.
-     */
     public String getPassword() {
         return password;
     }
 
-    /**
-     * Sets password.
-     *
-     * @param password String to be set.
-     */
-    public void setPassword(final String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    /**
-     * Returns passwordConfirm.
-     *
-     * @return String.
-     */
-    public String getPasswordConfirm() {
-        return passwordConfirm;
+    public String getName() {
+        return name;
     }
 
-    /**
-     * Sets passwordConfirm.
-     *
-     * @param passwordConfirm String to be set.
-     */
-    public void setPasswordConfirm(final String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    /**
-     * Returns tickets of patient.
-     *
-     * @return Set<TicketDTO>.
-     */
-    public Set<Ticket> getPatientTicket() {
-        return patientTicket;
+    public String getSurname() {
+        return surname;
     }
 
-    /**
-     * Sets tickets for patient.
-     *
-     * @param patientTicket Set<TicketDTO> to be set.
-     */
-    public void setPatientTicket(final Set<Ticket> patientTicket) {
-        this.patientTicket = patientTicket;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    /**
-     * Returns tickets of doctor.
-     *
-     * @return Set<TicketDTO>.
-     */
-    public Set<Ticket> getDoctorTicket() {
-        return doctorTicket;
+    public String getPatronymic() {
+        return patronymic;
     }
 
-    /**
-     * Sets tickets for doctor.
-     *
-     * @param doctorTicket Set<RoleDTO> to be set.
-     */
-    public void setDoctorTicket(final Set<Ticket> doctorTicket) {
-        this.doctorTicket = doctorTicket;
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
     }
 
-    /**
-     * Returns roles of user.
-     *
-     * @return Set<Role>.
-     */
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public LocalDateTime getBirth() {
+        return birth;
+    }
+
+    public void setBirth(LocalDateTime birth) {
+        this.birth = birth;
+    }
+
+    public Boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(Boolean sex) {
+        this.sex = sex;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
 
-    /**
-     * Sets roles for user.
-     *
-     * @param roles Set<Role> to be set.
-     */
-    public void setRoles(final Set<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<Ticket> getPatientTicket() {
+        return patientTicket;
+    }
+
+    public void setPatientTicket(Set<Ticket> patientTicket) {
+        this.patientTicket = patientTicket;
+    }
+
+    public Set<Ticket> getDoctorTicket() {
+        return doctorTicket;
+    }
+
+    public void setDoctorTicket(Set<Ticket> doctorTicket) {
+        this.doctorTicket = doctorTicket;
     }
 
     public Health getHealth() {
@@ -195,28 +193,28 @@ public class User {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id) &&
-                Objects.equals(username, user.username);
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(patronymic, user.patronymic) &&
+                Objects.equals(telephone, user.telephone) &&
+                Objects.equals(birth, user.birth) &&
+                Objects.equals(sex, user.sex) &&
+                Objects.equals(img, user.img) &&
+                Objects.equals(roles, user.roles) &&
+                Objects.equals(patientTicket, user.patientTicket) &&
+                Objects.equals(doctorTicket, user.doctorTicket) &&
+                Objects.equals(health, user.health);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username);
+        return Objects.hash(id, username, password, name, surname, patronymic, telephone, birth, sex, img, roles, patientTicket, doctorTicket, health);
     }
 }

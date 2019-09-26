@@ -1,7 +1,7 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.HealthDTO;
-import com.samsolutions.dto.UserDTO;
+import com.samsolutions.dto.data.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

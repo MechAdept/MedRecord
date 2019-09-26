@@ -62,13 +62,13 @@
             </div>
             <div class="row">
                 <div class="col-xs-2">
-                    <form:hidden path="id" value="${ticketDTO.id}"/>
-                    <label>${ticketDTO.id}</label>
+                    <form:hidden path="id" value="${ticketDataDTO.id}"/>
+                    <label>${ticketDataDTO.id}</label>
                 </div>
                 <div class="col-xs-2">
                     <form:select path="patient">
                         <form:options items="${patientsDTOList}" itemValue="id" itemLabel="username"
-                                      value="${ticketDTO.patient.id}"/>
+                                      value="${ticketDataDTO.patient.id}"/>
                     </form:select>
                 </div>
                 <div class="col-xs-2">
@@ -77,7 +77,7 @@
                     </form:select>
                 </div>
                 <div class="col-xs-2">
-                    <form:input path="datetime" value="${ticketDTO.id}"/>
+                    <form:input path="datetime" value="${ticketDataDTO.id}"/>
                 </div>
             </div>
             <div class="row">

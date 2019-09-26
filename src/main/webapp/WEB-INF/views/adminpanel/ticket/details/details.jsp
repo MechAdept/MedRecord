@@ -68,31 +68,31 @@
         </div>
         <div class="row">
             <div class="col-xs-1" style="text-align: center">
-                <label>${ticketDTO.id}</label>
+                <label>${ticketDataDTO.id}</label>
             </div>
             <div class="col-xs-1">
-                <a href="<c:url value="/adminpanel/user/details/${ticketDTO.doctor.id}"/>" class="btn-sm btn-primary"
+                <a href="<c:url value="/adminpanel/user/details/${ticketDataDTO.doctor.id}"/>" class="btn-sm btn-primary"
                    role="button"
-                   aria-pressed="true">${ticketDTO.doctor.username}</a>
+                   aria-pressed="true">${ticketDataDTO.doctor.username}</a>
             </div>
             <div class="col-xs-1">
-                <a href="<c:url value="/adminpanel/user/details/${ticketDTO.patient.id}"/>" class="btn-sm btn-primary"
+                <a href="<c:url value="/adminpanel/user/details/${ticketDataDTO.patient.id}"/>" class="btn-sm btn-primary"
                    role="button"
-                   aria-pressed="true">${ticketDTO.patient.username}</a>
+                   aria-pressed="true">${ticketDataDTO.patient.username}</a>
             </div>
             <div class="col-xs-2" style="text-align: center">
-                <label>${ticketDTO.datetime.format(formatter)}</label>
+                <label>${ticketDataDTO.datetime.format(formatter)}</label>
             </div>
             <div class="col-xs-2" style="text-align: center">
-                <a href="<c:url value="/adminpanel/ticket/details/${ticketDTO.id}/visit"/>" class="btn-sm btn-primary"
+                <a href="<c:url value="/adminpanel/ticket/details/${ticketDataDTO.id}/visit"/>" class="btn-sm btn-primary"
                    role="button"
                    aria-pressed="true"><spring:message code="text.header.visit"/></a>
             </div>
             <div class="col-xs-3" style="text-align: center"><a
-                    href="<c:url value="/adminpanel/ticket/delete/${ticketDTO.id}"/>" class="btn-sm btn-danger"
+                    href="<c:url value="/adminpanel/ticket/delete/${ticketDataDTO.id}"/>" class="btn-sm btn-danger"
                     role="button"
                     aria-pressed="true"><spring:message code="button.delete"/></a>
-                <a href="<c:url value="/adminpanel/ticket/edit/${ticketDTO.id}"/>"
+                <a href="<c:url value="/adminpanel/ticket/edit/${ticketDataDTO.id}"/>"
                    class="btn-sm btn-warning" role="button" aria-pressed="true"><spring:message code="button.edit"/></a>
             </div>
             <div class="clearfix"></div>

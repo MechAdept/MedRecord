@@ -1,9 +1,9 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.TicketConverter;
-import com.samsolutions.converter.UserConverter;
-import com.samsolutions.dto.TicketDTO;
-import com.samsolutions.dto.UserDTO;
+import com.samsolutions.converter.TicketConverterData;
+import com.samsolutions.converter.UserConverterData;
+import com.samsolutions.dto.data.TicketDataDTO;
+import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.entity.Ticket;
 import com.samsolutions.entity.User;
 import com.samsolutions.repository.TicketRepository;
@@ -38,23 +38,23 @@ public class TicketServiceImpl implements TicketService {
     private TicketRepository ticketRepository;
 
     @Autowired
-    TicketConverter ticketConverter;
+    TicketConverterData ticketConverter;
 
     @Autowired
-    UserConverter userConverter;
+    UserConverterData userConverter;
 
     @Autowired
     UserService userService;
 
     @Override
     @Transactional(readOnly = true)
-    public TicketDTO findTicketById(final Long id) {
-        return ticketConverter.entityToDTO(ticketRepository.findById(id).orElse(new Ticket()));
+    public TicketDataDTO findTicketById(final Long id) {
+        return ticketConverter.entityToDataDTO(ticketRepository.findById(id).orElse(new Ticket()));
     }
 
     @Override
-    public void save(final TicketDTO ticketDTO) {
-        ticketRepository.save(ticketConverter.dtoToEntity(ticketDTO));
+    public void save(final TicketDataDTO ticketDataDTO) {
+        ticketRepository.save(ticketConverter.formDtoToEntity(ticketDataDTO));
     }
 
     @Override
@@ -101,22 +101,22 @@ public class TicketServiceImpl implements TicketService {
         return pageable;
     }
 
-    private List<TicketDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+    private List<TicketDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
         Page<Ticket> pagedResult = ticketRepository.findAll(pageable);
         if (pagedResult.hasContent()) {
-            return ticketConverter.entitiesToDtoList(pagedResult.getContent());
+            return ticketConverter.entitiesToDataDtoList(pagedResult.getContent());
         } else {
             return new ArrayList<>();
         }
     }
 
-    private List<TicketDTO> getPageByUser(UserDTO userDTO, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+    private List<TicketDataDTO> getPageByUser(UserDTO userDTO, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
-        User user = userConverter.dtoToEntity(userDTO);
+        User user = userConverter.formDtoToEntity(userDTO);
         Page<Ticket> pagedResult = ticketRepository.findByDoctorOrPatientEquals(user, user, pageable);
         if (pagedResult.hasContent()) {
-            return ticketConverter.entitiesToDtoList(pagedResult.getContent());
+            return ticketConverter.entitiesToDataDtoList(pagedResult.getContent());
         } else {
             return new ArrayList<>();
         }
@@ -135,6 +135,6 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private Long getTotalCountByUser(UserDTO userDTO) {
-        return ticketRepository.countAllByDoctorOrPatient(userConverter.dtoToEntity(userDTO), userConverter.dtoToEntity(userDTO));
+        return ticketRepository.countAllByDoctorOrPatient(userConverter.formDtoToEntity(userDTO), userConverter.formDtoToEntity(userDTO));
     }
 }

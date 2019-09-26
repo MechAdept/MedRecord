@@ -1,6 +1,6 @@
 package com.samsolutions.controller.adminPanel;
 
-import com.samsolutions.dto.TicketDTO;
+import com.samsolutions.dto.data.TicketDataDTO;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
 import com.samsolutions.service.VisitService;
@@ -41,23 +41,23 @@ public class TicketController {
     /**
      * Method to create a new ticket.
      *
-     * @param ticketDTO form to create a ticket.
+     * @param ticketDataDTO form to create a ticket.
      * @return redirects to main page of "ticket" crud.
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute(name = "ticketDTO") final TicketDTO ticketDTO, Model model) {
-        ticketService.save(ticketDTO);
+    public String create(@ModelAttribute(name = "ticketDTO") final TicketDataDTO ticketDataDTO, Model model) {
+        ticketService.save(ticketDataDTO);
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        model.addAttribute("userDTO", userService.findById(ticketDTO.getPatientId()));
+        model.addAttribute("userDTO", userService.findById(ticketDataDTO.getPatient().getId()));
         return "/adminpanel/ticket/";
     }
 
     @RequestMapping(value = "/create/{id}", method = RequestMethod.GET)
     public String createForPatient(@PathVariable(value = "id", required = false) final Long id,
-                         Model model) {
+                                   Model model) {
         model.addAttribute("patient", userService.findById(id));
-        model.addAttribute("ticketDTOForm", new TicketDTO());
-        model.addAttribute("doctors",userService.findDoctors());
+        model.addAttribute("ticketDTOForm", new TicketDataDTO());
+        model.addAttribute("doctors", userService.findDoctors());
         return "/adminpanel/ticket/create";
     }
 
@@ -90,9 +90,9 @@ public class TicketController {
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
-        TicketDTO ticketDTO = ticketService.findTicketById(id);
-        model.addAttribute("ticketDTO", ticketDTO);
-        model.addAttribute("ticketDTOForm", new TicketDTO());
+        TicketDataDTO ticketDataDTO = ticketService.findTicketById(id);
+        model.addAttribute("ticketDTO", ticketDataDTO);
+        model.addAttribute("ticketDTOForm", new TicketDataDTO());
         model.addAttribute("doctorsDTOList", userService.findDoctors());
         model.addAttribute("patientsDTOList", userService.findPatients());
         return "adminpanel/ticket/edit";
@@ -101,12 +101,12 @@ public class TicketController {
     /**
      * Method for update record of "ticket" table.
      *
-     * @param ticketDTO form to update a ticket.
+     * @param ticketDataDTO form to update a ticket.
      * @return redirects to main page of "ticket" crud.
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@ModelAttribute final TicketDTO ticketDTO) {
-        ticketService.save(ticketDTO);
+    public String edit(@ModelAttribute final TicketDataDTO ticketDataDTO) {
+        ticketService.save(ticketDataDTO);
         return "redirect: /adminpanel/ticket";
     }
 
@@ -138,11 +138,10 @@ public class TicketController {
 
     @RequestMapping(value = "/details/{id}/visit", method = RequestMethod.GET)
     public String detailsVisit(@PathVariable("id") final Long id, Model model) {
-        TicketDTO ticketDTO = ticketService.findTicketById(id);
-        model.addAttribute("ticketDTO", ticketDTO);
-        model.addAttribute("visitDTO", visitService.findByTicket(ticketDTO));
+        TicketDataDTO ticketDataDTO = ticketService.findTicketById(id);
+        model.addAttribute("ticketDTO", ticketDataDTO);
+        model.addAttribute("visitDTO", visitService.findByTicket(ticketDataDTO));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return "/adminpanel/visit/details";
     }
-
 }

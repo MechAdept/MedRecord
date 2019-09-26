@@ -1,7 +1,7 @@
 package com.samsolutions.controller.adminPanel;
 
 import com.samsolutions.dto.HealthDTO;
-import com.samsolutions.dto.UserDTO;
+import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.service.HealthService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +93,6 @@ public class HealthController {
         healthDTOForm.setBirth(healthDTOForm.getBirthString());
         healthDTOForm.setPhoto(healthDTOForm.getPhoto());
         healthService.save(healthDTOForm);
-
         UserDTO userDTO = userService.findWithRolesById(healthDTOForm.getPatientId());
         model.addAttribute("userDTO", userDTO);
         return "/adminpanel/user/details/details";

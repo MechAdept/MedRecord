@@ -1,94 +1,61 @@
-package com.samsolutions.entity;
+package com.samsolutions.dto.form;
 
-import javax.persistence.*;
+import com.samsolutions.entity.Health;
 
-/**
- * Health Entity.
- *
- * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
- * @package com.samsolutions.entity
- * @link http ://sam-solutions.com/
- * @copyright 2019 SaM
- */
+import java.util.Objects;
 
-@Entity
-@Table(name = "health")
-public class Health {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class HealthFormDTO {
+
     private Long id;
 
-    @Column(name = "patient")
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "patient", referencedColumnName = "id")
-    private User patient;
+    private Long patientId;
 
-    @Column(name = "height")
     private Long height;
 
-    @Column(name = "weight")
     private Long weight;
 
-    @Column(name = "skin")
     private String skin;
 
-    @Column(name = "race")
     private String race;
 
-    @Column(name = "chest")
     private Long chest;
 
-    @Column(name = "waist")
     private Long waist;
 
-    @Column(name = "hips")
     private Long hips;
 
-    @Column(name = "nervous")
     private String nervous;
 
-    @Column(name = "constitution")
     private String constitution;
 
-    @Column(name = "musculature")
     private String musculature;
 
-    @Column(name = "leye")
     private Float leye;
 
-    @Column(name = "reye")
     private Float reye;
 
-    @Column(name = "blood")
     private String blood;
 
-    @Column(name = "alcohol")
     private Boolean alcohol;
 
-    @Column(name = "smoke")
     private Boolean smoke;
 
-    @Column(name = "drugs")
     private Boolean drugs;
-
-    /**
-     * Returns id.
-     *
-     * @return Long.
-     */
 
     public Long getId() {
         return id;
     }
 
-    /**
-     * Sets id.
-     *
-     * @param id Long to be set.
-     */
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
     }
 
     public Long getHeight() {
@@ -219,13 +186,33 @@ public class Health {
         this.drugs = drugs;
     }
 
-    public User getPatient() {
-        return patient;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HealthFormDTO that = (HealthFormDTO) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(patientId, that.patientId) &&
+                Objects.equals(height, that.height) &&
+                Objects.equals(weight, that.weight) &&
+                Objects.equals(skin, that.skin) &&
+                Objects.equals(race, that.race) &&
+                Objects.equals(chest, that.chest) &&
+                Objects.equals(waist, that.waist) &&
+                Objects.equals(hips, that.hips) &&
+                Objects.equals(nervous, that.nervous) &&
+                Objects.equals(constitution, that.constitution) &&
+                Objects.equals(musculature, that.musculature) &&
+                Objects.equals(leye, that.leye) &&
+                Objects.equals(reye, that.reye) &&
+                Objects.equals(blood, that.blood) &&
+                Objects.equals(alcohol, that.alcohol) &&
+                Objects.equals(smoke, that.smoke) &&
+                Objects.equals(drugs, that.drugs);
     }
 
-    public void setPatient(User patient) {
-        this.patient = patient;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, patientId, height, weight, skin, race, chest, waist, hips, nervous, constitution, musculature, leye, reye, blood, alcohol, smoke, drugs);
     }
-
-
 }

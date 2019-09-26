@@ -1,6 +1,6 @@
 package com.samsolutions.controller.adminPanel;
 
-import com.samsolutions.dto.UserDTO;
+import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.service.HealthService;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.TicketService;

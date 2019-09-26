@@ -1,9 +1,9 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.HealthConverter;
-import com.samsolutions.converter.UserConverter;
+import com.samsolutions.converter.HealthConverterData;
+import com.samsolutions.converter.UserConverterData;
 import com.samsolutions.dto.HealthDTO;
-import com.samsolutions.dto.UserDTO;
+import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.entity.Health;
 import com.samsolutions.repository.HealthRepository;
 import com.samsolutions.service.HealthService;
@@ -36,38 +36,38 @@ public class HealthServiceImpl implements HealthService {
     private HealthRepository healthRepository;
 
     @Autowired
-    private HealthConverter healthConverter;
+    private HealthConverterData healthConverter;
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private UserConverter userConverter;
+    private UserConverterData userConverter;
 
     @Override
     public HealthDTO findHealthById(final Long id) {
-        HealthDTO healthDTO = healthConverter.entityToDTO(healthRepository.findById(id).orElse(new Health()));
+        HealthDTO healthDTO = healthConverter.entityToDataDTO(healthRepository.findById(id).orElse(new Health()));
         UserDTO userDTO = userService.findWithRolesById(healthDTO.getPatient().getId());
         healthDTO.setPatient(userDTO);
-        return healthConverter.entityToDTO(healthRepository.findById(id).orElse(new Health()));
+        return healthConverter.entityToDataDTO(healthRepository.findById(id).orElse(new Health()));
     }
 
     @Override
     public void save(final HealthDTO healthDTO) {
-        Health health = healthConverter.dtoToEntity(healthDTO);
+        Health health = healthConverter.formDtoToEntity(healthDTO);
         healthRepository.save(health);
     }
 
     @Override
     public List<HealthDTO> getHealths() {
-        return healthConverter.entitiesToDtoList(healthRepository.findAll(new Sort(Sort.Direction.ASC, "id")));
+        return healthConverter.entitiesToDataDtoList(healthRepository.findAll(new Sort(Sort.Direction.ASC, "id")));
     }
 
     public List<HealthDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
         Page<Health> pagedResult = healthRepository.findAll(pageable);
         if (pagedResult.hasContent()) {
-            return healthConverter.entitiesToDtoList(pagedResult.getContent());
+            return healthConverter.entitiesToDataDtoList(pagedResult.getContent());
         } else {
             return new ArrayList<>();
         }
@@ -75,7 +75,7 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void deleteHealthByPatient(UserDTO userDTO) {
-        healthRepository.deleteHealthByPatient(userConverter.dtoToEntity(userDTO));
+        healthRepository.deleteHealthByPatient(userConverter.formDtoToEntity(userDTO));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class HealthServiceImpl implements HealthService {
     public HealthDTO findHealthByPatientId(Long id) {
         try {
             UserDTO userDTO = userService.findById(id);
-            return healthConverter.entityToDTO(healthRepository.findHealthByPatient(userConverter.dtoToEntity(userDTO)));
+            return healthConverter.entityToDataDTO(healthRepository.findHealthByPatient(userConverter.formDtoToEntity(userDTO)));
         } catch (NullPointerException ne) {
             return new HealthDTO();
         }
@@ -100,7 +100,7 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void deleteHealth(Long id) {
-        Health health = healthConverter.dtoToEntity(findHealthById(id));
+        Health health = healthConverter.formDtoToEntity(findHealthById(id));
         healthRepository.delete(health);
     }
 

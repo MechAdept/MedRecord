@@ -1,6 +1,6 @@
 package com.samsolutions.controller.adminPanel;
 
-import com.samsolutions.dto.TicketDTO;
+import com.samsolutions.dto.data.TicketDataDTO;
 import com.samsolutions.dto.VisitDTO;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
@@ -38,8 +38,8 @@ public class VisitController {
 
     @RequestMapping(value = "/create/{ticketId}", method = RequestMethod.GET)
     public String create(@PathVariable(value = "ticketId") final Long ticketId, Model model) {
-        TicketDTO ticketDTO = ticketService.findTicketById(ticketId);
-        model.addAttribute("ticketDTO", ticketDTO);
+        TicketDataDTO ticketDataDTO = ticketService.findTicketById(ticketId);
+        model.addAttribute("ticketDTO", ticketDataDTO);
         model.addAttribute("visitDTOForm", new VisitDTO());
         return "/adminpanel/visit/create";
     }

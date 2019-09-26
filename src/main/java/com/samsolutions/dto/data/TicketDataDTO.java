@@ -1,4 +1,4 @@
-package com.samsolutions.dto;
+package com.samsolutions.dto.data;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -7,25 +7,20 @@ import java.util.Objects;
  * DataTransferObject for Ticket entity.
  *
  * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
- * @package com.samsolutions.dto
+ * @package com.samsolutions.server.dto
  * @link http ://sam-solutions.com/
  * @copyright 2019 SaM
  */
 
-public class TicketDTO {
+public class TicketDataDTO {
+
     private Long id;
 
-    private UserDTO patient;
+    private UserDataDTO patient;
 
-    private Long patientId;
-
-    private UserDTO doctor;
-
-    private Long doctorId;
+    private UserDataDTO doctor;
 
     private LocalDateTime datetime;
-
-    private String datetimeString;
 
     /**
      * Returns id.
@@ -50,7 +45,7 @@ public class TicketDTO {
      *
      * @return UserDTO.
      */
-    public UserDTO getPatient() {
+    public UserDataDTO getPatient() {
         return patient;
     }
 
@@ -59,7 +54,7 @@ public class TicketDTO {
      *
      * @param patient UserDTO to be set.
      */
-    public void setPatient(final UserDTO patient) {
+    public void setPatient(final UserDataDTO patient) {
         this.patient = patient;
     }
 
@@ -68,7 +63,7 @@ public class TicketDTO {
      *
      * @return UserDTO.
      */
-    public UserDTO getDoctor() {
+    public UserDataDTO getDoctor() {
         return doctor;
     }
 
@@ -77,7 +72,7 @@ public class TicketDTO {
      *
      * @param doctor UserDTO to be set.
      */
-    public void setDoctor(final UserDTO doctor) {
+    public void setDoctor(final UserDataDTO doctor) {
         this.doctor = doctor;
     }
 
@@ -99,29 +94,6 @@ public class TicketDTO {
         this.datetime = datetime;
     }
 
-    public Long getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
-    }
-
-    public Long getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public String getDatetimeString() {
-        return datetimeString;
-    }
-
-    public void setDatetimeString(String datetimeString) {
-
-    }
 
     @Override
     public boolean equals(final Object o) {
@@ -131,11 +103,11 @@ public class TicketDTO {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TicketDTO ticketDTO = (TicketDTO) o;
-        return Objects.equals(id, ticketDTO.id) &&
-                Objects.equals(patient, ticketDTO.patient) &&
-                Objects.equals(doctor, ticketDTO.doctor) &&
-                Objects.equals(datetime, ticketDTO.datetime);
+        TicketDataDTO ticketDataDTO = (TicketDataDTO) o;
+        return Objects.equals(id, ticketDataDTO.id) &&
+                Objects.equals(patient, ticketDataDTO.patient) &&
+                Objects.equals(doctor, ticketDataDTO.doctor) &&
+                Objects.equals(datetime, ticketDataDTO.datetime);
     }
 
     @Override

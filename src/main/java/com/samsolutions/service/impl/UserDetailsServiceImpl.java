@@ -1,8 +1,8 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.UserConverter;
+import com.samsolutions.converter.UserConverterData;
 import com.samsolutions.dto.RoleDTO;
-import com.samsolutions.dto.UserDTO;
+import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.roles.Roles;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +34,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserService userService;
 
     @Autowired
-    private UserConverter userConverter;
+    private UserConverterData userConverter;
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NESTED)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        UserDTO user = userConverter.entityToDTO(userService.findByUsername(username));
+        UserDTO user = userConverter.entityToDataDTO(userService.findByUsername(username));
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (RoleDTO roleDTO : user.getRoles()) {
@@ -55,7 +55,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_DOCTOR.getAuthority()));
             }
         }
-
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }

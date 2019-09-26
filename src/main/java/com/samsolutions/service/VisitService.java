@@ -1,6 +1,6 @@
 package com.samsolutions.service;
 
-import com.samsolutions.dto.TicketDTO;
+import com.samsolutions.dto.data.TicketDataDTO;
 import com.samsolutions.dto.VisitDTO;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +37,5 @@ public interface VisitService {
      */
     void delete(Long id);
 
-    VisitDTO findByTicket(TicketDTO ticketDTO);
+    VisitDTO findByTicket(TicketDataDTO ticketDataDTO);
 }
