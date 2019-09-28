@@ -11,6 +11,8 @@ public class UserFormDTO {
 
     private String password;
 
+    private String passwordConfirm;
+
     private String name;
 
     private String surname;
@@ -26,10 +28,6 @@ public class UserFormDTO {
     private String img;
 
     private Long[] rolesId;
-
-    private Long[] patientTicketsId;
-
-    private Long[] doctorTicketsId;
 
     private Long healthId;
 
@@ -55,6 +53,14 @@ public class UserFormDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     public String getName() {
@@ -121,22 +127,6 @@ public class UserFormDTO {
         this.rolesId = rolesId;
     }
 
-    public Long[] getPatientTicketsId() {
-        return patientTicketsId;
-    }
-
-    public void setPatientTicketsId(Long[] patientTicketsId) {
-        this.patientTicketsId = patientTicketsId;
-    }
-
-    public Long[] getDoctorTicketsId() {
-        return doctorTicketsId;
-    }
-
-    public void setDoctorTicketsId(Long[] doctorTicketsId) {
-        this.doctorTicketsId = doctorTicketsId;
-    }
-
     public Long getHealthId() {
         return healthId;
     }
@@ -153,6 +143,7 @@ public class UserFormDTO {
         return Objects.equals(id, that.id) &&
                 Objects.equals(username, that.username) &&
                 Objects.equals(password, that.password) &&
+                Objects.equals(passwordConfirm, that.passwordConfirm) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(surname, that.surname) &&
                 Objects.equals(patronymic, that.patronymic) &&
@@ -161,17 +152,13 @@ public class UserFormDTO {
                 Objects.equals(sex, that.sex) &&
                 Objects.equals(img, that.img) &&
                 Arrays.equals(rolesId, that.rolesId) &&
-                Arrays.equals(patientTicketsId, that.patientTicketsId) &&
-                Arrays.equals(doctorTicketsId, that.doctorTicketsId) &&
                 Objects.equals(healthId, that.healthId);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, username, password, name, surname, patronymic, telephone, birth, sex, img, healthId);
+        int result = Objects.hash(id, username, password, passwordConfirm, name, surname, patronymic, telephone, birth, sex, img, healthId);
         result = 31 * result + Arrays.hashCode(rolesId);
-        result = 31 * result + Arrays.hashCode(patientTicketsId);
-        result = 31 * result + Arrays.hashCode(doctorTicketsId);
         return result;
     }
 }

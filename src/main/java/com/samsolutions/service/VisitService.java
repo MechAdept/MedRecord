@@ -2,6 +2,8 @@ package com.samsolutions.service;
 
 import com.samsolutions.dto.data.TicketDataDTO;
 import com.samsolutions.dto.VisitDTO;
+import com.samsolutions.dto.data.VisitDataDTO;
+import com.samsolutions.dto.form.VisitFormDTO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,9 +20,9 @@ public interface VisitService {
     /**
      * Method for create visit.
      *
-     * @param ticketDTO VisitDTO with parameters to be set.
+     * @param formDTO VisitFormDTO with parameters to be set.
      */
-    void save(VisitDTO ticketDTO);
+    void save(VisitFormDTO formDTO);
 
     /**
      * Method for find visit by id.
@@ -28,7 +30,7 @@ public interface VisitService {
      * @param id id of desired visit.
      * @return VisitDTO.
      */
-    VisitDTO findById(Long id);
+    VisitDataDTO findById(Long id);
 
     /**
      * Method for delete visit by id.
@@ -37,5 +39,5 @@ public interface VisitService {
      */
     void delete(Long id);
 
-    VisitDTO findByTicket(TicketDataDTO ticketDataDTO);
+    VisitDataDTO findByTicket(TicketDataDTO dataDTO);
 }

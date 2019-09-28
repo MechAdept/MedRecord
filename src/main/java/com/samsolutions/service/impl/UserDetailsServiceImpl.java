@@ -1,5 +1,6 @@
 package com.samsolutions.service.impl;
 
+import com.samsolutions.converter.UserConverter;
 import com.samsolutions.converter.UserConverterData;
 import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.data.UserDTO;
@@ -34,12 +35,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserService userService;
 
     @Autowired
-    private UserConverterData userConverter;
+    private UserConverter userConverter;
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NESTED)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        UserDTO user = userConverter.entityToDataDTO(userService.findByUsername(username));
+        UserDTO user = userConverter.entityToDataDto(userService.findByUsername(username));
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (RoleDTO roleDTO : user.getRoles()) {

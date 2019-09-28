@@ -1,12 +1,13 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.TicketConverterData;
-import com.samsolutions.converter.UserConverterData;
+import com.samsolutions.converter.TicketConverter;
+import com.samsolutions.converter.UserConverter;
 import com.samsolutions.dto.data.TicketDataDTO;
-import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.dto.form.TicketFormDTO;
 import com.samsolutions.entity.Ticket;
 import com.samsolutions.entity.User;
 import com.samsolutions.repository.TicketRepository;
+import com.samsolutions.repository.UserRepository;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,23 +39,26 @@ public class TicketServiceImpl implements TicketService {
     private TicketRepository ticketRepository;
 
     @Autowired
-    TicketConverterData ticketConverter;
+    TicketConverter ticketConverter;
 
     @Autowired
-    UserConverterData userConverter;
+    UserConverter userConverter;
 
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     @Transactional(readOnly = true)
     public TicketDataDTO findTicketById(final Long id) {
-        return ticketConverter.entityToDataDTO(ticketRepository.findById(id).orElse(new Ticket()));
+        return ticketConverter.entityToDataDto(ticketRepository.findById(id).orElse(new Ticket()));
     }
 
     @Override
-    public void save(final TicketDataDTO ticketDataDTO) {
-        ticketRepository.save(ticketConverter.formDtoToEntity(ticketDataDTO));
+    public void save(final TicketFormDTO formDTO) {
+        ticketRepository.save(ticketConverter.formDtoToEntity(formDTO));
     }
 
     @Override
@@ -78,25 +82,25 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Map<String, Object> getMapAndPageByUser(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        UserDTO userDTO = userService.findById(id);
+        User user = userRepository.getOne(id);
         Map<String, Object> map = new HashMap<>();
-        map.put("DTOList", getPageByUser(userDTO, pageNo, pageSize, desc, sort));
+        map.put("DTOList", getPageByUser(user, pageNo, pageSize, desc, sort));
         map.put("pageNo", pageNo);
         map.put("pageSize", pageSize);
         map.put("desc", desc);
         map.put("sort", sort);
-        map.put("pageCount", getPageCountByUser(pageSize, userDTO));
-        map.put("elementsCount", getTotalCountByUser(userDTO));
-        map.put("userDTO", userDTO);
+        map.put("pageCount", getPageCountByUser(pageSize, user));
+        map.put("elementsCount", getTotalCountByUser(user));
+        map.put("userDTO", userConverter.entityToDataDto(user));
         return map;
     }
 
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable;
         if (desc) {
-            pageable = PageRequest.of(pageNo-1, pageSize, Sort.by(sort).descending());
+            pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(sort).descending());
         } else {
-            pageable = PageRequest.of(pageNo-1, pageSize, Sort.by(sort).ascending());
+            pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(sort).ascending());
         }
         return pageable;
     }
@@ -111,9 +115,8 @@ public class TicketServiceImpl implements TicketService {
         }
     }
 
-    private List<TicketDataDTO> getPageByUser(UserDTO userDTO, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+    private List<TicketDataDTO> getPageByUser(User user, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
-        User user = userConverter.formDtoToEntity(userDTO);
         Page<Ticket> pagedResult = ticketRepository.findByDoctorOrPatientEquals(user, user, pageable);
         if (pagedResult.hasContent()) {
             return ticketConverter.entitiesToDataDtoList(pagedResult.getContent());
@@ -130,11 +133,11 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.count();
     }
 
-    private Long getPageCountByUser(Integer pageSize, UserDTO userDTO) {
-        return getTotalCountByUser(userDTO) / pageSize;
+    private Long getPageCountByUser(Integer pageSize, User user) {
+        return getTotalCountByUser(user) / pageSize;
     }
 
-    private Long getTotalCountByUser(UserDTO userDTO) {
-        return ticketRepository.countAllByDoctorOrPatient(userConverter.formDtoToEntity(userDTO), userConverter.formDtoToEntity(userDTO));
+    private Long getTotalCountByUser(User user) {
+        return ticketRepository.countAllByDoctorOrPatient(user, user);
     }
 }

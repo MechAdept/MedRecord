@@ -1,11 +1,13 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.HealthConverterData;
-import com.samsolutions.converter.UserConverterData;
-import com.samsolutions.dto.HealthDTO;
-import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.converter.HealthConverter;
+import com.samsolutions.dto.data.HealthDataDTO;
+import com.samsolutions.dto.data.UserDataDTO;
+import com.samsolutions.dto.form.HealthFormDTO;
 import com.samsolutions.entity.Health;
+import com.samsolutions.entity.User;
 import com.samsolutions.repository.HealthRepository;
+import com.samsolutions.repository.UserRepository;
 import com.samsolutions.service.HealthService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,38 +34,39 @@ import java.util.List;
 @Service("HealthService")
 @Transactional
 public class HealthServiceImpl implements HealthService {
+
     @Autowired
     private HealthRepository healthRepository;
 
     @Autowired
-    private HealthConverterData healthConverter;
+    private HealthConverter healthConverter;
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private UserConverterData userConverter;
+    UserRepository userRepository;
 
     @Override
-    public HealthDTO findHealthById(final Long id) {
-        HealthDTO healthDTO = healthConverter.entityToDataDTO(healthRepository.findById(id).orElse(new Health()));
-        UserDTO userDTO = userService.findWithRolesById(healthDTO.getPatient().getId());
-        healthDTO.setPatient(userDTO);
-        return healthConverter.entityToDataDTO(healthRepository.findById(id).orElse(new Health()));
+    public HealthDataDTO findHealthById(final Long id) {
+        HealthDataDTO healthDataDTO = healthConverter.entityToDataDto(healthRepository.findById(id).orElse(new Health()));
+        UserDataDTO userDataDTO = userService.findWithRolesById(healthDataDTO.getPatient().getId());
+        healthDataDTO.setPatient(userDataDTO);
+        return healthConverter.entityToDataDto(healthRepository.findById(id).orElse(new Health()));
     }
 
     @Override
-    public void save(final HealthDTO healthDTO) {
-        Health health = healthConverter.formDtoToEntity(healthDTO);
+    public void save(final HealthFormDTO formDTO) {
+        Health health = healthConverter.formDtoToEntity(formDTO);
         healthRepository.save(health);
     }
 
     @Override
-    public List<HealthDTO> getHealths() {
+    public List<HealthDataDTO> getHealths() {
         return healthConverter.entitiesToDataDtoList(healthRepository.findAll(new Sort(Sort.Direction.ASC, "id")));
     }
 
-    public List<HealthDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+    public List<HealthDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
         Page<Health> pagedResult = healthRepository.findAll(pageable);
         if (pagedResult.hasContent()) {
@@ -74,8 +77,9 @@ public class HealthServiceImpl implements HealthService {
     }
 
     @Override
-    public void deleteHealthByPatient(UserDTO userDTO) {
-        healthRepository.deleteHealthByPatient(userConverter.formDtoToEntity(userDTO));
+    public void deleteHealthByPatient(Long id) {
+        User patient = userRepository.getOne(id);
+        healthRepository.deleteHealthByPatient(patient);
     }
 
     @Override
@@ -86,22 +90,21 @@ public class HealthServiceImpl implements HealthService {
     @Override
     public Long getTotalCount() {
         return healthRepository.count();
-    } 
+    }
 
     @Override
-    public HealthDTO findHealthByPatientId(Long id) {
+    public HealthDataDTO findHealthByPatientId(Long id) {
         try {
-            UserDTO userDTO = userService.findById(id);
-            return healthConverter.entityToDataDTO(healthRepository.findHealthByPatient(userConverter.formDtoToEntity(userDTO)));
+            User patient = userRepository.getOne(id);
+            return healthConverter.entityToDataDto(healthRepository.findHealthByPatient(patient));
         } catch (NullPointerException ne) {
-            return new HealthDTO();
+            return new HealthDataDTO();
         }
     }
 
     @Override
     public void deleteHealth(Long id) {
-        Health health = healthConverter.formDtoToEntity(findHealthById(id));
-        healthRepository.delete(health);
+        healthRepository.deleteById(id);
     }
 
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {

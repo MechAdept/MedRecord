@@ -1,7 +1,12 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.RoleDTO;
+import com.samsolutions.dto.data.RoleDataDTO;
 import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.dto.data.UserDataDTO;
+import com.samsolutions.dto.form.RoleFormDTO;
+import com.samsolutions.dto.form.UserFormDTO;
+import com.samsolutions.entity.Role;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +27,9 @@ public interface RoleService {
     /**
      * Method for create role.
      *
-     * @param role RoleDTO with name to be set.
+     * @param formDTO RoleFormDTO with data to be set.
      */
-    void save(RoleDTO role);
+    void save(RoleFormDTO formDTO);
 
     /**
      * Method for find role by id.
@@ -32,16 +37,16 @@ public interface RoleService {
      * @param id id of desired role.
      * @return RoleDTO.
      */
-    RoleDTO findById(Long id);
+    RoleDataDTO findById(Long id);
 
-    Set<RoleDTO> findRolesById(Long[] rolesId);
+    Set<Role> findRolesById(Long[] ids);
 
     /**
      * Method for getting roles from table.
      *
      * @return List<RoleDTO>.
      */
-    List<RoleDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+    List<RoleDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     /**
      * Method for delete role by id.
@@ -50,11 +55,11 @@ public interface RoleService {
      */
     void deleteRole(Long id);
 
-    List<RoleDTO> getRolesByUser(UserDTO userDTO);
+    List<RoleDataDTO> getRolesByUser(UserFormDTO formDTO);
 
-    List<RoleDTO> findAll();
+    List<RoleDataDTO> findAll();
 
-    RoleDTO findRoleByName(String name);
+    RoleDataDTO findRoleByName(String name);
 
-    Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+    Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort); //todo, optimize
 }

@@ -1,10 +1,14 @@
 package com.samsolutions.service.impl;
 
+import com.samsolutions.converter.TicketConverter;
 import com.samsolutions.converter.TicketConverterData;
+import com.samsolutions.converter.UserConverter;
 import com.samsolutions.converter.UserConverterData;
+import com.samsolutions.converter.VisitConverter;
 import com.samsolutions.converter.VisitConverterData;
 import com.samsolutions.dto.data.TicketDataDTO;
 import com.samsolutions.dto.VisitDTO;
+import com.samsolutions.dto.form.VisitFormDTO;
 import com.samsolutions.entity.Visit;
 import com.samsolutions.repository.VisitRepository;
 import com.samsolutions.service.VisitService;
@@ -27,18 +31,18 @@ public class VisitServiceImpl implements VisitService {
     private VisitRepository visitRepository;
 
     @Autowired
-    private VisitConverterData visitConverter;
+    private VisitConverter visitConverter;
 
     @Autowired
-    private TicketConverterData ticketConverter;
+    private TicketConverter ticketConverter;
 
     @Autowired
-    UserConverterData userConverter;
+    UserConverter userConverter;
 
     @Override
-    public void save(final VisitDTO visitDTO) {
-        Visit visit = visitConverter.formDtoToEntity(visitDTO);
-        visitRepository.save(visit);
+    public void save(final VisitFormDTO source) {
+        Visit target = visitConverter.formDtoToEntity(source);
+        visitRepository.save(target);
     }
 
     @Override
@@ -49,11 +53,11 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public VisitDTO findById(final Long id) {
-        return visitConverter.entityToDataDTO(visitRepository.getOne(id));
+        return visitConverter.entityToDataDto(visitRepository.getOne(id));
     }
 
     @Override
     public VisitDTO findByTicket(TicketDataDTO ticketDataDTO) {
-        return visitConverter.entityToDataDTO(visitRepository.findVisitByTicket(ticketConverter.formDtoToEntity(ticketDataDTO)));
+        return visitConverter.entityToDataDto(visitRepository.findVisitByTicket(ticketConverter.formDtoToEntity(ticketDataDTO)));
     }
 }

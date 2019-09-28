@@ -1,6 +1,6 @@
 package com.samsolutions.validator;
 
-import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,12 +25,12 @@ public class UserValidator implements Validator {
 
     @Override
     public boolean supports(final Class<?> aClass) {
-        return UserDTO.class.equals(aClass);
+        return UserFormDTO.class.equals(aClass);
     }
 
     @Override
     public void validate(final Object o, final Errors errors) {
-        UserDTO user = (UserDTO) o;
+        UserFormDTO user = (UserFormDTO) o;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "notEmpty");
         if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
@@ -48,9 +48,5 @@ public class UserValidator implements Validator {
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "diff.userForm.passwordConfirm");
         }
-
-//        if(user.getRolesId() == null || user.getRolesId().length == 0){
-//            errors.rejectValue("rolesId", "wrong.userForm.rolesSelect");
-//        }
     }
 }

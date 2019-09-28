@@ -1,6 +1,7 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.data.TicketDataDTO;
+import com.samsolutions.dto.form.TicketFormDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -19,9 +20,9 @@ public interface TicketService {
     /**
      * Method for create ticket.
      *
-     * @param ticketDataDTO TicketDTO with parameters to be set.
+     * @param formDTO TicketFormDTO with parameters to be set.
      */
-    void save(TicketDataDTO ticketDataDTO);
+    void save(TicketFormDTO formDTO);
 
     /**
      * Method for find ticket by id.

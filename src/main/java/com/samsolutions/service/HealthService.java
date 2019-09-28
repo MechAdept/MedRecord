@@ -1,7 +1,10 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.HealthDTO;
+import com.samsolutions.dto.data.HealthDataDTO;
 import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.dto.form.HealthFormDTO;
+import com.samsolutions.dto.form.UserFormDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +23,9 @@ public interface HealthService {
     /**
      * Method for create health.
      *
-     * @param healthDTO HealthDTO with parameters to be set.
+     * @param formDTO HealthDTO with parameters to be set.
      */
-    void save(HealthDTO healthDTO);
+    void save(HealthFormDTO formDTO);
 
     /**
      * Method for find health by id.
@@ -30,24 +33,24 @@ public interface HealthService {
      * @param id id of desired health.
      * @return HealthDTO.
      */
-    HealthDTO findHealthById(Long id);
+    HealthDataDTO findHealthById(Long id);
 
     /**
      * Method for getting healths from table.
      *
      * @return List<HealthDTO>.
      */
-    List<HealthDTO> getHealths();
+    List<HealthDataDTO> getHealths();
 
-    List<HealthDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+    List<HealthDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
-    void deleteHealthByPatient(UserDTO userDTO);
+    void deleteHealthByPatient(Long id);
 
     Long getPageCount(Integer pageSize);
 
     Long getTotalCount();
 
-    HealthDTO findHealthByPatientId(Long id);
+    HealthDataDTO findHealthByPatientId(Long id);
 
     void deleteHealth(Long id);
 }

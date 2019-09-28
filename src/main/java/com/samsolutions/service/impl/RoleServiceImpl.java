@@ -1,9 +1,10 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.RoleConverterData;
-import com.samsolutions.converter.UserConverterData;
-import com.samsolutions.dto.RoleDTO;
-import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.converter.RoleConverter;
+import com.samsolutions.converter.UserConverter;
+import com.samsolutions.dto.data.RoleDataDTO;
+import com.samsolutions.dto.form.RoleFormDTO;
+import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.Role;
 import com.samsolutions.repository.RoleRepository;
 import com.samsolutions.service.RoleService;
@@ -15,12 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Implements the methods defined in the role service.
@@ -38,38 +34,33 @@ public class RoleServiceImpl implements RoleService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private RoleConverterData roleConverter;
+    private RoleConverter roleConverter;
 
     @Autowired
-    private UserConverterData userConverter;
+    private UserConverter userConverter;
 
     @Override
-    public void save(final RoleDTO roleDTO) {
-        Role role = roleConverter.formDtoToEntity(roleDTO);
+    public void save(final RoleFormDTO formDTO) {
+        Role role = roleConverter.formDtoToEntity(formDTO);
         roleRepository.save(role);
     }
 
     @Override
-    public RoleDTO findById(final Long id) {
+    public RoleDataDTO findById(final Long id) {
 
         Role role = roleRepository.findById(id).orElse(new Role());
-        return roleConverter.entityToDataDTO(role);
+        return roleConverter.entityToDataDto(role);
     }
 
     @Override
-    public Set<RoleDTO> findRolesById(Long[] rolesId) {
-        Set<RoleDTO> roleDTOSet = new java.util.HashSet<>(Collections.emptySet());
-        try {
-            for (Long id : rolesId) {
-                roleDTOSet.add((findById(id)));
-            }
-            return roleDTOSet;
-        } catch (NullPointerException ne) {
-            return roleDTOSet;
-        }
+    public Set<Role> findRolesById(Long[] ids) {
+        Set<Role> roleSet = new java.util.HashSet<>(Collections.emptySet());
+        List<Long> idsList = Arrays.asList(ids);
+        roleSet.addAll(roleRepository.findRolesByIdIn(idsList));
+        return roleSet;
     }
 
-    public List<RoleDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+    public List<RoleDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
         Page<Role> pagedResult = roleRepository.findAll(pageable);
         if (pagedResult.hasContent()) {
@@ -85,19 +76,19 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleDTO> getRolesByUser(UserDTO userDTO) {
+    public List<RoleDataDTO> getRolesByUser(UserFormDTO formDTO) {
         return roleConverter.entitiesToDataDtoList(roleRepository.getRolesByUsers(
-                userConverter.formDtoToEntity(userDTO)));
+                userConverter.formDtoToEntity(formDTO)));
     }
 
     @Override
-    public List<RoleDTO> findAll() {
+    public List<RoleDataDTO> findAll() {
         return roleConverter.entitiesToDataDtoList(roleRepository.findAll(Sort.by("id").ascending()));
     }
 
     @Override
-    public RoleDTO findRoleByName(String name) {
-        return roleConverter.entityToDataDTO(roleRepository.findRoleByName(name));
+    public RoleDataDTO findRoleByName(String name) {
+        return roleConverter.entityToDataDto(roleRepository.findRoleByName(name));
     }
 
     @Override
@@ -116,9 +107,9 @@ public class RoleServiceImpl implements RoleService {
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable;
         if (desc) {
-            pageable = PageRequest.of(pageNo-1, pageSize, Sort.by(sort).descending());
+            pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(sort).descending());
         } else {
-            pageable = PageRequest.of(pageNo-1, pageSize, Sort.by(sort).ascending());
+            pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(sort).ascending());
         }
         return pageable;
     }

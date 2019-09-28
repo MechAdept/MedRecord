@@ -1,6 +1,8 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.dto.data.UserDataDTO;
+import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,7 @@ public interface UserService {
      *
      * @param userDTO UserDTO with parameters to be set.
      */
-    void save(UserDTO userDTO);
+    void save(UserFormDTO formDTO);
 
     /**
      * Method for find user by id.
@@ -32,7 +34,7 @@ public interface UserService {
      * @param id id of desired user.
      * @return UserDTO.
      */
-    UserDTO findById(Long id);
+    UserDataDTO findById(Long id);
 
     /**
      * Method for find user by username.
@@ -49,9 +51,9 @@ public interface UserService {
      */
     void delete(Long id);
 
-    List<UserDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+    List<UserDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
-    UserDTO findWithRolesById(Long id);
+    UserDataDTO findWithRolesById(Long id);
 
     void deleteRoleFromUserById(Long userId, Long RoleId);
 
@@ -59,7 +61,7 @@ public interface UserService {
 
     Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
-    Set<UserDTO> findDoctors();
+    Set<UserDataDTO> findDoctors();
 
-    List<UserDTO> findPatients();
+    List<UserDataDTO> findPatients(); //todo: why different types?
 }
