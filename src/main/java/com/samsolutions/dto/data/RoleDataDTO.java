@@ -1,5 +1,6 @@
 package com.samsolutions.dto.data;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -11,7 +12,7 @@ public class RoleDataDTO {
 
     private String description;
 
-    private Set<UserDataDTO> users;
+    private List<UserDataDTO> users;
 
     public Long getId() {
         return id;
@@ -37,11 +38,11 @@ public class RoleDataDTO {
         this.description = description;
     }
 
-    public Set<UserDataDTO> getUsers() {
+    public List<UserDataDTO> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<UserDataDTO> users) {
+    public void setUsers(List<UserDataDTO> users) {
         this.users = users;
     }
 

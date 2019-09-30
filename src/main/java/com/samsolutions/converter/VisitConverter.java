@@ -50,16 +50,6 @@ public class VisitConverter implements DTOConverter<Visit, VisitDataDTO, VisitFo
     }
 
     @Override
-    public Set<VisitDataDTO> entitiesToDataDtoSet(Set<Visit> sourceSet) {
-        Set<VisitDataDTO> targetSet = new HashSet<>();
-        for (Visit source : sourceSet) {
-            VisitDataDTO target = entityToDataDto(source);
-            targetSet.add(target);
-        }
-        return targetSet;
-    }
-
-    @Override
     public List<VisitDataDTO> entitiesToDataDtoList(List<Visit> sourceList) {
         List<VisitDataDTO> targetList = new ArrayList<>();
         for (Visit source : sourceList) {
@@ -67,15 +57,5 @@ public class VisitConverter implements DTOConverter<Visit, VisitDataDTO, VisitFo
             targetList.add(target);
         }
         return targetList;
-    }
-
-    @Override
-    public Set<Visit> formDtoSetToEntities(Set<VisitFormDTO> sourceSet) {
-        Set<Visit> targetSet = new HashSet<>();
-        for (VisitFormDTO source : sourceSet) {
-            Visit target = formDtoToEntity(source);
-            targetSet.add(target);
-        }
-        return targetSet;
     }
 }

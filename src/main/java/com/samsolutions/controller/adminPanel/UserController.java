@@ -1,6 +1,7 @@
 package com.samsolutions.controller.adminPanel;
 
-import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.dto.data.UserDataDTO;
+import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.service.HealthService;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.TicketService;
@@ -11,11 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -55,20 +52,20 @@ public class UserController {
      * @return redirects to main page of "user" crud.
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute("userDTOForm") final UserDTO userDTOForm,
+    public String create(@ModelAttribute("userDTOForm") final UserFormDTO userFormDTO,
                          final BindingResult bindingResult, final Model model) {
-        userValidator.validate(userDTOForm, bindingResult);
+        userValidator.validate(userFormDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("roleDTOList", roleService.findAll());
             return "adminpanel/user/create";
         }
-        userService.save(userDTOForm);
+        userService.save(userFormDTO);
         return "redirect:/adminpanel/user";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(@ModelAttribute final UserDTO userDTO, Model model) {
-        model.addAttribute("userDTOForm", new UserDTO());
+    public String create(@ModelAttribute final UserFormDTO userFormDTO, Model model) {
+        model.addAttribute("userFormDTO", new UserFormDTO());
         model.addAttribute("roleDTOList", roleService.findAll());
         return "adminpanel/user/create";
     }
@@ -98,9 +95,8 @@ public class UserController {
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
-        UserDTO userDTO = userService.findById(id);
-        model.addAttribute("userDTOForm", new UserDTO());
-        model.addAttribute("userDTO", userDTO);
+        model.addAttribute("userFormDTO", new UserFormDTO());
+        model.addAttribute("userDataDTO", userService.findById(id));
         model.addAttribute("roleDTOList", new HashSet<>(roleService.findAll()));
         return "adminpanel/user/edit";
     }
@@ -111,17 +107,10 @@ public class UserController {
      * @return redirects to main page of "user" crud.
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@RequestParam(value = "id") Long id,
-                       @RequestParam(value = "password", required = false) String password,
-                       @RequestParam(value = "username", required = false) String username,
-                       @RequestParam(value = "roles", required = false) Long[] roles) {
-        UserDTO userDTO = userService.findById(id);
-        userDTO.setUsername(username);
-        userDTO.setPassword(password);
-        userDTO.setRoles(roleService.findRolesById(roles));
-        userService.save(userDTO);
+    public String edit(@ModelAttribute("userFormDTO") final UserFormDTO userFormDTO, BindingResult bindingResult) {
+        userService.save(userFormDTO);
         return "redirect: /adminpanel/user";
-    }
+    } //todo: redo!!!, and validation
 
     /**
      * Method to delete record from "user" table.
@@ -137,8 +126,8 @@ public class UserController {
 
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String details(@PathVariable("id") final Long id, Model model) {
-        UserDTO userDTO = userService.findWithRolesById(id);
-        model.addAttribute("userDTO", userDTO);
+        UserDataDTO userDataDTO = userService.findWithRolesById(id);
+        model.addAttribute("userDataDTO", userDataDTO);
         return "/adminpanel/user/details/details";
     }
 

@@ -19,9 +19,8 @@ public class Health {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "patient")
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "patient", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name="patient_id")
     private User patient;
 
     @Column(name = "height")

@@ -53,11 +53,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<Role> findRolesById(Long[] ids) {
-        Set<Role> roleSet = new java.util.HashSet<>(Collections.emptySet());
-        List<Long> idsList = Arrays.asList(ids);
-        roleSet.addAll(roleRepository.findRolesByIdIn(idsList));
-        return roleSet;
+    public List<Role> findRolesById(Long[] ids) {
+        return roleRepository.findRolesByIdIn(Arrays.asList(ids));
     }
 
     public List<RoleDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
@@ -76,9 +73,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleDataDTO> getRolesByUser(UserFormDTO formDTO) {
+    public List<RoleDataDTO> getRolesByUser(UserFormDTO userFormDTO) {
         return roleConverter.entitiesToDataDtoList(roleRepository.getRolesByUsers(
-                userConverter.formDtoToEntity(formDTO)));
+                userConverter.formDtoToEntity(userFormDTO)));
     }
 
     @Override

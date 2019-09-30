@@ -47,26 +47,6 @@ public class HealthConverter implements DTOConverter<Health, HealthDataDTO, Heal
     }
 
     @Override
-    public Set<HealthDataDTO> entitiesToDataDtoSet(Set<Health> sourceSet) {
-        Set<HealthDataDTO> HealthDataDTOSet = new HashSet<>();
-        for (Health source : sourceSet) {
-            HealthDataDTO target = entityToDataDto(source);
-            HealthDataDTOSet.add(target);
-        }
-        return HealthDataDTOSet;
-    }
-
-    @Override
-    public Set<Health> formDtoSetToEntities(Set<HealthFormDTO> formDtoSet) {
-        Set<Health> healthSet = new HashSet<>();
-        for (HealthFormDTO source : formDtoSet) {
-            Health target = formDtoToEntity(source);
-            healthSet.add(target);
-        }
-        return healthSet;
-    }
-
-    @Override
     public List<HealthDataDTO> entitiesToDataDtoList(List<Health> entityList) {
         List<HealthDataDTO> DTOList = new ArrayList<>();
         for (Health source : entityList) {

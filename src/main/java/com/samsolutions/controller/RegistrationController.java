@@ -1,6 +1,6 @@
 package com.samsolutions.controller;
 
-import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.SecurityService;
 import com.samsolutions.service.UserService;
@@ -55,7 +55,7 @@ public class RegistrationController {
 
             return ("redirect:/welcome");
         }
-        model.addAttribute("userForm", new UserDTO());
+        model.addAttribute("userFormDTO", new UserFormDTO());
         model.addAttribute("roleList", roleService.findAll());
         return "registration";
     }
@@ -68,7 +68,7 @@ public class RegistrationController {
      * @return if successful, redirects to the welcome page, otherwise returns the registration page.
      */
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") final UserDTO userForm,
+    public String registration(@ModelAttribute("userForm") final UserFormDTO userForm,
                                final BindingResult bindingResult, final Model model) {
         userValidator.validate(userForm, bindingResult);
 

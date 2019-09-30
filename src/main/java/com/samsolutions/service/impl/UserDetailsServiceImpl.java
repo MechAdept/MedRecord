@@ -1,9 +1,8 @@
 package com.samsolutions.service.impl;
 
 import com.samsolutions.converter.UserConverter;
-import com.samsolutions.converter.UserConverterData;
-import com.samsolutions.dto.RoleDTO;
-import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.dto.data.RoleDataDTO;
+import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.roles.Roles;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,22 +39,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NESTED)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        UserDTO user = userConverter.entityToDataDto(userService.findByUsername(username));
+        UserDataDTO userDataDTO = userConverter.entityToDataDto(userService.findByUsername(username));
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (RoleDTO roleDTO : user.getRoles()) {
-            if (roleDTO.getName().equals(Roles.ROLE_ADMIN.getAuthority())) {
+        for (RoleDataDTO roleDataDTO : userDataDTO.getRoles()) {
+            if (roleDataDTO.getName().equals(Roles.ROLE_ADMIN.getAuthority())) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_ADMIN.getAuthority()));
-            } else if (roleDTO.getName().equals(Roles.ROLE_PATIENT.getAuthority())) {
+            } else if (roleDataDTO.getName().equals(Roles.ROLE_PATIENT.getAuthority())) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_PATIENT.getAuthority()));
-            } else if (roleDTO.getName().equals(Roles.ROLE_USER.getAuthority())) {
+            } else if (roleDataDTO.getName().equals(Roles.ROLE_USER.getAuthority())) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_USER.getAuthority()));
-            } else if (roleDTO.getName().equals(Roles.ROLE_RECEPTIONIST.getAuthority())) {
+            } else if (roleDataDTO.getName().equals(Roles.ROLE_RECEPTIONIST.getAuthority())) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_RECEPTIONIST.getAuthority()));
             } else {
                 grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_DOCTOR.getAuthority()));
             }
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(userDataDTO.getUsername(), userDataDTO.getPassword(), grantedAuthorities);
     }
 }

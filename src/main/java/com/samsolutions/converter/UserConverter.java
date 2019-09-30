@@ -4,6 +4,7 @@ import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.User;
 import com.samsolutions.service.RoleService;
+import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,9 +38,9 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
         target.setSex(source.getSex());
         target.setImg(source.getImg());
         try {
-            target.setRoles(roleConverter.entitiesToDataDtoSet(source.getRoles()));
+            target.setRoles(roleConverter.entitiesToDataDtoList(source.getRoles()));
             return target;
-        } catch (NullPointerException ne) {
+        } catch (LazyInitializationException le) {
             return target;
         }
     }
@@ -62,20 +63,6 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
     }
 
     @Override
-    public Set<UserDataDTO> entitiesToDataDtoSet(Set<User> sourceSet) {
-        Set<UserDataDTO> targetSet = new HashSet<>();
-        try {
-            for (User source : sourceSet) {
-                UserDataDTO target = entityToDataDto(source);
-                targetSet.add(target);
-            }
-            return targetSet;
-        } catch (NullPointerException ne) {
-            return targetSet;
-        }
-    }
-
-    @Override
     public List<UserDataDTO> entitiesToDataDtoList(List<User> sourceList) {
         List<UserDataDTO> targetList = new ArrayList<>();
         try {
@@ -84,22 +71,8 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
                 targetList.add(target);
             }
             return targetList;
-        } catch (NullPointerException ne) {
+        } catch (LazyInitializationException le) {
             return targetList;
-        }
-    }
-
-    @Override
-    public Set<User> formDtoSetToEntities(Set<UserFormDTO> sourceSet) {
-        Set<User> targetSet = new HashSet<>();
-        try {
-            for (UserFormDTO source : sourceSet) {
-                User target = formDtoToEntity(source);
-                targetSet.add(target);
-            }
-            return targetSet;
-        } catch (NullPointerException ne) {
-            return targetSet;
         }
     }
 }

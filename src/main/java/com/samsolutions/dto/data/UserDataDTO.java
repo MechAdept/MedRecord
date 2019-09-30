@@ -1,6 +1,7 @@
 package com.samsolutions.dto.data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,15 +27,15 @@ public class UserDataDTO {
 
     private String img;
 
-    private Set<RoleDataDTO> roles;
+    private List<RoleDataDTO> roles;
 
-    private Set<TicketDataDTO> patientTickets;
+    private List<TicketDataDTO> patientTickets;
 
-    private Set<TicketDataDTO> doctorTickets;
+    private List<TicketDataDTO> doctorTickets;
 
     private HealthDataDTO health;
 
-    public UserDataDTO(String username, String password, Set<RoleDataDTO> roles) {
+    public UserDataDTO(String username, String password, List<RoleDataDTO> roles) {
         this.username = username;
         this.password = password;
         this.roles = roles;
@@ -123,28 +124,28 @@ public class UserDataDTO {
         this.img = img;
     }
 
-    public Set<RoleDataDTO> getRoles() {
+    public List<RoleDataDTO> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<RoleDataDTO> roles) {
+    public void setRoles(List<RoleDataDTO> roles) {
         this.roles = roles;
     }
 
-    public Set<TicketDataDTO> getPatientTicket() {
+    public List<TicketDataDTO> getPatientTickets() {
         return patientTickets;
     }
 
-    public void setPatientTicket(Set<TicketDataDTO> patientTicket) {
-        this.patientTickets = patientTicket;
+    public void setPatientTickets(List<TicketDataDTO> patientTickets) {
+        this.patientTickets = patientTickets;
     }
 
-    public Set<TicketDataDTO> getDoctorTicket() {
+    public List<TicketDataDTO> getDoctorTickets() {
         return doctorTickets;
     }
 
-    public void setDoctorTicket(Set<TicketDataDTO> doctorTicket) {
-        this.doctorTickets = doctorTicket;
+    public void setDoctorTickets(List<TicketDataDTO> doctorTickets) {
+        this.doctorTickets = doctorTickets;
     }
 
     public HealthDataDTO getHealth() {

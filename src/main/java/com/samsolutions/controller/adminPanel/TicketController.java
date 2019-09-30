@@ -1,6 +1,7 @@
 package com.samsolutions.controller.adminPanel;
 
 import com.samsolutions.dto.data.TicketDataDTO;
+import com.samsolutions.dto.form.TicketFormDTO;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
 import com.samsolutions.service.VisitService;
@@ -8,11 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
 
@@ -41,14 +38,14 @@ public class TicketController {
     /**
      * Method to create a new ticket.
      *
-     * @param ticketDataDTO form to create a ticket.
+     * @param ticketFormDTO form to create a ticket.
      * @return redirects to main page of "ticket" crud.
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute(name = "ticketDTO") final TicketDataDTO ticketDataDTO, Model model) {
-        ticketService.save(ticketDataDTO);
+    public String create(@ModelAttribute(name = "ticketDTO") final TicketFormDTO ticketFormDTO, Model model) {
+        ticketService.save(ticketFormDTO);
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        model.addAttribute("userDTO", userService.findById(ticketDataDTO.getPatient().getId()));
+        model.addAttribute("userDataDto", userService.findById(ticketFormDTO.getPatientId()));
         return "/adminpanel/ticket/";
     }
 
@@ -101,12 +98,12 @@ public class TicketController {
     /**
      * Method for update record of "ticket" table.
      *
-     * @param ticketDataDTO form to update a ticket.
+     * @param ticketFormDTO form to update a ticket.
      * @return redirects to main page of "ticket" crud.
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@ModelAttribute final TicketDataDTO ticketDataDTO) {
-        ticketService.save(ticketDataDTO);
+    public String edit(@ModelAttribute final TicketFormDTO ticketFormDTO) {
+        ticketService.save(ticketFormDTO);
         return "redirect: /adminpanel/ticket";
     }
 
@@ -140,7 +137,7 @@ public class TicketController {
     public String detailsVisit(@PathVariable("id") final Long id, Model model) {
         TicketDataDTO ticketDataDTO = ticketService.findTicketById(id);
         model.addAttribute("ticketDTO", ticketDataDTO);
-        model.addAttribute("visitDTO", visitService.findByTicket(ticketDataDTO));
+        model.addAttribute("visitDTO", visitService.findByTicket(ticketDataDTO.getId()));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return "/adminpanel/visit/details";
     }

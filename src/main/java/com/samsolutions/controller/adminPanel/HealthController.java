@@ -1,7 +1,8 @@
 package com.samsolutions.controller.adminPanel;
 
-import com.samsolutions.dto.HealthDTO;
-import com.samsolutions.dto.data.UserDTO;
+import com.samsolutions.dto.data.HealthDataDTO;
+import com.samsolutions.dto.data.UserDataDTO;
+import com.samsolutions.dto.form.HealthFormDTO;
 import com.samsolutions.service.HealthService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,29 +40,23 @@ public class HealthController {
      * @return redirects to main page of "health" crud.
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute("healthDTOForm") HealthDTO healthDTOForm, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()){
+    public String create(@ModelAttribute("healthDTOForm") HealthFormDTO healthFormDTO, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             return "adminpanel/health/create";
         }
-        healthDTOForm.setPatient(userService.findWithRolesById(healthDTOForm.getPatientId()));
-        healthDTOForm.setBirth(healthDTOForm.getBirthString());
-        healthDTOForm.setPhoto(healthDTOForm.getPhoto());
-        healthService.save(healthDTOForm);
+        healthService.save(healthFormDTO);
 
-        UserDTO userDTO = userService.findWithRolesById(healthDTOForm.getPatientId());
-        model.addAttribute("userDTO", userDTO);
+        UserDataDTO userDataDTO = userService.findWithRolesById(healthFormDTO.getPatientId());
+        model.addAttribute("userDataDTO", userDataDTO);
         return "/adminpanel/user/details/details";
     }
 
     @RequestMapping(value = "/create/{id}", method = RequestMethod.GET)
     public String create(@PathVariable(value = "id") Long id, Model model) {
         if (id != null) {
-            model.addAttribute("userDTO", userService.findById(id));
+            model.addAttribute("userDataDTO", userService.findById(id));
         }
-
-        HealthDTO healthDTO = new HealthDTO();
-        healthDTO.setPatient(new UserDTO());
-        model.addAttribute("healthDTOForm", healthDTO);
+        model.addAttribute("healthFormDTO", new HealthFormDTO());
         return "/adminpanel/health/create";
     }
 
@@ -74,8 +69,8 @@ public class HealthController {
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
-        HealthDTO healthDTO = healthService.findHealthById(id);
-        model.addAttribute("healthDTO", healthDTO);
+        HealthDataDTO healthDataDTO = healthService.findHealthById(id);
+        model.addAttribute("healthDTO", healthDataDTO);
         return "adminpanel/health/edit";
     }
 
@@ -85,15 +80,12 @@ public class HealthController {
      * @return redirects to main page of "health" crud.
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@ModelAttribute("healthDTOForm") HealthDTO healthDTOForm, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()){
+    public String edit(@ModelAttribute("healthDTOForm") HealthFormDTO healthFormDTO, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             return "adminpanel/health/edit";
         }
-        healthDTOForm.setPatient(userService.findWithRolesById(healthDTOForm.getPatientId()));
-        healthDTOForm.setBirth(healthDTOForm.getBirthString());
-        healthDTOForm.setPhoto(healthDTOForm.getPhoto());
-        healthService.save(healthDTOForm);
-        UserDTO userDTO = userService.findWithRolesById(healthDTOForm.getPatientId());
+        healthService.save(healthFormDTO);
+        UserDataDTO userDTO = userService.findWithRolesById(healthFormDTO.getPatientId());
         model.addAttribute("userDTO", userDTO);
         return "/adminpanel/user/details/details";
     }

@@ -1,10 +1,7 @@
 package com.samsolutions.service;
 
-import com.samsolutions.dto.HealthDTO;
 import com.samsolutions.dto.data.HealthDataDTO;
-import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.dto.form.HealthFormDTO;
-import com.samsolutions.dto.form.UserFormDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,10 +42,6 @@ public interface HealthService {
     List<HealthDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     void deleteHealthByPatient(Long id);
-
-    Long getPageCount(Integer pageSize);
-
-    Long getTotalCount();
 
     HealthDataDTO findHealthByPatientId(Long id);
 

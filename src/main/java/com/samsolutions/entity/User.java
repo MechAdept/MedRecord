@@ -1,26 +1,9 @@
 package com.samsolutions.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * User Entity.
@@ -69,16 +52,15 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
-    private Set<Ticket> patientTicket;
+    private List<Ticket> patientTicket;
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
-    private Set<Ticket> doctorTicket;
+    private List<Ticket> doctorTicket;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id", referencedColumnName = "patient")
+    @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Health health;
 
     public Long getId() {
@@ -161,27 +143,27 @@ public class User {
         this.img = img;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
-    public Set<Ticket> getPatientTicket() {
+    public List<Ticket> getPatientTicket() {
         return patientTicket;
     }
 
-    public void setPatientTicket(Set<Ticket> patientTicket) {
+    public void setPatientTicket(List<Ticket> patientTicket) {
         this.patientTicket = patientTicket;
     }
 
-    public Set<Ticket> getDoctorTicket() {
+    public List<Ticket> getDoctorTicket() {
         return doctorTicket;
     }
 
-    public void setDoctorTicket(Set<Ticket> doctorTicket) {
+    public void setDoctorTicket(List<Ticket> doctorTicket) {
         this.doctorTicket = doctorTicket;
     }
 

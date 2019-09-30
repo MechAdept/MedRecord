@@ -1,9 +1,8 @@
 package com.samsolutions.entity;
 
 import javax.persistence.*;
-
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Role Entity.
@@ -29,7 +28,7 @@ public class Role {
     private String description;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<User> users;
+    private List<User> users;
 
     public Long getId() {
         return id;
@@ -55,11 +54,11 @@ public class Role {
         this.description = description;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 

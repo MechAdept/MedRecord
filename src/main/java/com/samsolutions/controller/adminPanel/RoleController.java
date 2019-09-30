@@ -1,17 +1,14 @@
 package com.samsolutions.controller.adminPanel;
 
-import com.samsolutions.dto.RoleDTO;
+import com.samsolutions.dto.data.RoleDataDTO;
+import com.samsolutions.dto.form.RoleFormDTO;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller of crud operations for table "role".
@@ -40,7 +37,7 @@ public class RoleController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(Model model) {
-        model.addAttribute("roleDTOForm", new RoleDTO());
+        model.addAttribute("roleFormDTO", new RoleFormDTO());
         return "adminpanel/role/create";
     }
 
@@ -63,12 +60,12 @@ public class RoleController {
     /**
      * Method for edit record of "role" table.
      *
-     * @param roleDTO form to edit a role.
+     * @param roleFormDTO form to edit a role.
      * @return redirects to main page of "role" crud.
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(@ModelAttribute final RoleDTO roleDTO) {
-        roleService.save(roleDTO);
+    public String save(@ModelAttribute final RoleFormDTO roleFormDTO) {
+        roleService.save(roleFormDTO);
         return "redirect: /adminpanel/role";
     }
 
@@ -81,9 +78,9 @@ public class RoleController {
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
-        RoleDTO roleDTO = roleService.findById(id);
-        model.addAttribute("roleDTO", roleDTO);
-        model.addAttribute("roleDTOForm", new RoleDTO());
+        RoleDataDTO roleDataDTO = roleService.findById(id);
+        model.addAttribute("roleDataDTO", roleDataDTO);
+        model.addAttribute("roleDTOForm", new RoleFormDTO());
         return "/adminpanel/role/edit";
     }
 

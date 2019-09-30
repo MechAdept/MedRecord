@@ -105,6 +105,8 @@
             <tr>
                 <th scope="row">${user.id}</th>
                 <th scope="row">${user.username}</th>
+                <th scope="row">${user.name}</th>
+                <th scope="row">${user.surname}</th>
                 <td><a href="<c:url value="/adminpanel/user/details/${user.id}"/>" class="btn-sm btn-primary" role="button"
                        aria-pressed="true"><spring:message code="button.details"/></a>
                 </td>

@@ -83,16 +83,6 @@ public class HealthServiceImpl implements HealthService {
     }
 
     @Override
-    public Long getPageCount(Integer pageSize) {
-        return healthRepository.count() / pageSize;
-    }
-
-    @Override
-    public Long getTotalCount() {
-        return healthRepository.count();
-    }
-
-    @Override
     public HealthDataDTO findHealthByPatientId(Long id) {
         try {
             User patient = userRepository.getOne(id);

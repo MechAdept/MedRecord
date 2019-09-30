@@ -1,9 +1,6 @@
 package com.samsolutions.service;
 
-import com.samsolutions.dto.RoleDTO;
 import com.samsolutions.dto.data.RoleDataDTO;
-import com.samsolutions.dto.data.UserDTO;
-import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.dto.form.RoleFormDTO;
 import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.Role;
@@ -11,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Role service determine methods for working with role table.
@@ -39,7 +35,7 @@ public interface RoleService {
      */
     RoleDataDTO findById(Long id);
 
-    Set<Role> findRolesById(Long[] ids);
+    List<Role> findRolesById(Long[] ids);
 
     /**
      * Method for getting roles from table.

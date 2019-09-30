@@ -19,17 +19,17 @@ public class RoleConverter implements DTOConverter<Role, RoleDataDTO, RoleFormDT
     UserConverter userConverter;
 
     @Override
-    public RoleDataDTO entityToDataDto(Role source) {
+    public RoleDataDTO entityToDataDto(final Role source) {
         RoleDataDTO target = new RoleDataDTO();
         target.setId(source.getId());
         target.setName(source.getName());
         target.setDescription(source.getDescription());
-        target.setUsers(userConverter.entitiesToDataDtoSet(source.getUsers()));
+        target.setUsers(userConverter.entitiesToDataDtoList(source.getUsers()));
         return target;
     }
 
     @Override
-    public Role formDtoToEntity(RoleFormDTO source) {
+    public Role formDtoToEntity(final RoleFormDTO source) {
         Role target = new Role();
         target.setId(source.getId());
         target.setName(source.getName());
@@ -43,32 +43,15 @@ public class RoleConverter implements DTOConverter<Role, RoleDataDTO, RoleFormDT
     }
 
     @Override
-    public Set<RoleDataDTO> entitiesToDataDtoSet(Set<Role> sourceSet) {
-        Set<RoleDataDTO> targetSet = new HashSet<>();
-        for (Role source : sourceSet) {
-            RoleDataDTO target = entityToDataDto(source);
-            targetSet.add(target);
-        }
-        return targetSet;
-    }
-
-    @Override
-    public List<RoleDataDTO> entitiesToDataDtoList(List<Role> sourceList) {
+    public List<RoleDataDTO> entitiesToDataDtoList(final List<Role> sourceList) {
         List<RoleDataDTO> targetList = new ArrayList<>();
         for (Role source : sourceList) {
-            RoleDataDTO target = entityToDataDto(source);
+            RoleDataDTO target = new RoleDataDTO();
+            target.setId(source.getId());
+            target.setName(source.getName());
+            target.setDescription(source.getDescription());
             targetList.add(target);
         }
         return targetList;
-    }
-
-    @Override
-    public Set<Role> formDtoSetToEntities(Set<RoleFormDTO> sourceSet) {
-        Set<Role> targetSet = new HashSet<>();
-        for (RoleFormDTO source : sourceSet) {
-            Role target = formDtoToEntity(source);
-            targetSet.add(target);
-        }
-        return targetSet;
     }
 }

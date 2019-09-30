@@ -44,16 +44,6 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDataDTO, Tick
     }
 
     @Override
-    public Set<TicketDataDTO> entitiesToDataDtoSet(Set<Ticket> sourceSet) {
-        Set<TicketDataDTO> targetSet = new HashSet<>();
-        for (Ticket source : sourceSet) {
-            TicketDataDTO target = entityToDataDto(source);
-            targetSet.add(target);
-        }
-        return targetSet;
-    }
-
-    @Override
     public List<TicketDataDTO> entitiesToDataDtoList(List<Ticket> sourceList) {
         List<TicketDataDTO> targetList = new ArrayList<>();
         for (Ticket source : sourceList) {
@@ -61,15 +51,5 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDataDTO, Tick
             targetList.add(target);
         }
         return targetList;
-    }
-
-    @Override
-    public Set<Ticket> formDtoSetToEntities(Set<TicketFormDTO> sourceSet) {
-        Set<Ticket> targetSet = new HashSet<>();
-        for (TicketFormDTO source : sourceSet) {
-            Ticket target = formDtoToEntity(source);
-            targetSet.add(target);
-        }
-        return targetSet;
     }
 }

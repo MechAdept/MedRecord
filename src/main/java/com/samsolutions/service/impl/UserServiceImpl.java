@@ -1,11 +1,7 @@
 package com.samsolutions.service.impl;
 
-import com.samsolutions.converter.RoleConverter;
 import com.samsolutions.converter.UserConverter;
-import com.samsolutions.dto.RoleDTO;
-import com.samsolutions.dto.data.UserDTO;
 import com.samsolutions.dto.data.UserDataDTO;
-import com.samsolutions.dto.form.RoleFormDTO;
 import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
@@ -52,9 +48,6 @@ public class UserServiceImpl implements UserService {
     private UserConverter userConverter;
 
     @Autowired
-    private RoleConverter roleConverter;
-
-    @Autowired
     @Qualifier("encoder")
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -62,9 +55,7 @@ public class UserServiceImpl implements UserService {
     public void save(final UserFormDTO formDTO) {
         User user = userConverter.formDtoToEntity(formDTO);
         user.setPassword(bCryptPasswordEncoder.encode(formDTO.getPassword()));
-
-        Set<Role> roles = roleService.findRolesById(formDTO.getRolesId());
-        user.setRoles(roles);
+        user.setRoles(roleService.findRolesById(formDTO.getRolesId()));
         userRepository.save(user);
     }
 
@@ -73,7 +64,7 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(final String username) {
         User user = userRepository.findByUsername(username);
         if (user != null) {
-            user.setRoles(roleConverter.formDtoSetToEntities(new HashSet<>(roleService.getRolesByUser(userConverter.entityToDataDto(user)))));
+            user.setRoles(roleRepository.getRolesByUsers(user));
         }
         return user;
     }
@@ -98,9 +89,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDataDTO findWithRolesById(Long id) {
         User user = userRepository.findById(id).orElse(new User());
-        UserDataDTO userDTO = userConverter.entityToDataDto(user);
-        userDTO.setRoles(new HashSet<>(roleService.getRolesByUser(userDTO)));
-        return userDTO;
+        user.setRoles(roleRepository.getRolesByUsers(user));
+        return userConverter.entityToDataDto(user);
     }
 
     @Override
@@ -114,9 +104,9 @@ public class UserServiceImpl implements UserService {
     public void deleteRoleFromUserById(Long userId, Long roleId) {
         User user = userRepository.getOne(userId);
         Role role = roleRepository.getOne(roleId);
-        Set<Role> roleDTOSet = user.getRoles();
-        roleDTOSet.remove(role);
-        user.setRoles(roleDTOSet);
+        List<Role> roleDTOList = user.getRoles();
+        roleDTOList.remove(role);
+        user.setRoles(roleDTOList);
         userRepository.save(user);
     }
 
@@ -128,55 +118,55 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, Object> getMapAndPageByRole(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        RoleDTO roleDTO = roleService.findById(id);
+        Role role = roleRepository.getOne(id);
         Map<String, Object> map = new HashMap<>();
-        map.put("DTOList", getPageByRole(roleDTO, pageNo, pageSize, desc, sort));
+        map.put("DTOList", getPageByRole(role, pageNo, pageSize, desc, sort));
         map.put("pageNo", pageNo);
         map.put("pageSize", pageSize);
         map.put("desc", desc);
         map.put("sort", sort);
-        map.put("pageCount", pageCountByRole(pageSize, roleDTO));
-        map.put("elementsCount", countByRole(roleDTO));
-        map.put("roleDTO", roleDTO);
+        map.put("pageCount", pageCountByRole(pageSize, role));
+        map.put("elementsCount", countByRole(role));
+        map.put("roleDTO", role);
         return map;
     }
 
-    public List<UserDTO> getMapAndPageByPatient(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        RoleDTO roleDTO = roleService.findRoleByName("ROLE_PATIENT");
-        return getPageByRole(roleDTO, pageNo, pageSize, desc, sort);
+    public List<UserDataDTO> getMapAndPageByPatient(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Role role = roleRepository.findRoleByName("ROLE_PATIENT");
+        return getPageByRole(role, pageNo, pageSize, desc, sort);
     }
 
 
     @Override
     public Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Map<String, Object> map = new HashMap<>();
+        Long count = userRepository.count();
         map.put("DTOList", getPage(pageNo, pageSize, desc, sort));
         map.put("pageNo", pageNo);
         map.put("pageSize", pageSize);
         map.put("desc", desc);
         map.put("sort", sort);
-        map.put("pageCount", getPageCount(pageSize));
-        map.put("elementsCount", getTotalCount());
+        map.put("pageCount", count/pageSize);
+        map.put("elementsCount", count);
         return map;
     }
 
     @Override
     public List<UserDataDTO> findPatients() {
-        RoleDTO roleDTO = roleService.findRoleByName("ROLE_PATIENT");
-        Role role = roleConverter.formDtoToEntity(roleDTO);
+        Role role = roleRepository.findRoleByName("ROLE_PATIENT");
         return userConverter.entitiesToDataDtoList(userRepository.getAllByRolesIs(role));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<UserDataDTO> findDoctors() {
-        Set<Role> allRoles = roleConverter.formDtoSetToEntities(new HashSet<>(roleService.findAll()));
-        Set<Role> systemRoles = new HashSet<>();
+    public List<UserDataDTO> findDoctors() {
+        List<Role> allRoles = new ArrayList<>(roleRepository.findAll());
+        List<Role> systemRoles = new ArrayList<>();
         for (Roles role : Roles.values()) {
-            systemRoles.add(roleConverter.formDtoToEntity(roleService.findRoleByName(role.getAuthority())));
+            systemRoles.add(roleRepository.findRoleByName(role.getAuthority()));
         }
         allRoles.removeAll(systemRoles);
-        return userConverter.entitiesToDataDtoSet(userRepository.findByRolesInOrderById(new ArrayList<>(allRoles)));
+        return userConverter.entitiesToDataDtoList(userRepository.findByRolesInOrderById(new ArrayList<>(allRoles)));
     }
 
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
@@ -187,17 +177,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private Long getPageCount(Integer pageSize) {
-        return userRepository.count() / pageSize;
-    }
-
-    private Long getTotalCount() {
-        return userRepository.count();
-    }
-
-    private List<UserDataDTO> getPageByRole(RoleFormDTO roleDTO, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+    private List<UserDataDTO> getPageByRole(Role role, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
-        Role role = roleConverter.formDtoToEntity(roleDTO);
         Page<User> pagedResult = userRepository.findByRolesIs(role, pageable);
         if (pagedResult.hasContent()) {
             return userConverter.entitiesToDataDtoList(pagedResult.getContent());
@@ -206,11 +187,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private Long pageCountByRole(Integer pageSize, RoleFormDTO roleDTO) {
-        return userRepository.countUsersByRoles(roleConverter.formDtoToEntity(roleDTO)) / pageSize;
+    private Long pageCountByRole(Integer pageSize, Role role) {
+        return userRepository.countUsersByRoles(role) / pageSize;
     }
 
-    private Long countByRole(RoleFormDTO roleDTO) {
-        return userRepository.countUsersByRoles(roleConverter.formDtoToEntity(roleDTO));
+    private Long countByRole(Role role) {
+        return userRepository.countUsersByRoles(role);
     }
 }

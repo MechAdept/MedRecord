@@ -53,20 +53,6 @@ public class ScheduleConverter implements DTOConverter<Schedule, ScheduleDataDTO
     }
 
     @Override
-    public Set<ScheduleDataDTO> entitiesToDataDtoSet(Set<Schedule> sourceSet) {
-        Set<ScheduleDataDTO> targetSet = new HashSet<>();
-        try {
-            for (Schedule source : sourceSet) {
-                ScheduleDataDTO target = entityToDataDto(source);
-                targetSet.add(target);
-            }
-            return targetSet;
-        } catch (NullPointerException ne) {
-            return targetSet;
-        }
-    }
-
-    @Override
     public List<ScheduleDataDTO> entitiesToDataDtoList(List<Schedule> sourceList) {
         List<ScheduleDataDTO> targetList = new ArrayList<>();
         try {
@@ -77,20 +63,6 @@ public class ScheduleConverter implements DTOConverter<Schedule, ScheduleDataDTO
             return targetList;
         } catch (NullPointerException ne) {
             return targetList;
-        }
-    }
-
-    @Override
-    public Set<Schedule> formDtoSetToEntities(Set<ScheduleFormDTO> sourceSet) {
-        Set<Schedule> targetSet = new HashSet<>();
-        try {
-            for (ScheduleFormDTO source : sourceSet) {
-                Schedule target = formDtoToEntity(source);
-                targetSet.add(target);
-            }
-            return targetSet;
-        } catch (NullPointerException ne) {
-            return targetSet;
         }
     }
 }
