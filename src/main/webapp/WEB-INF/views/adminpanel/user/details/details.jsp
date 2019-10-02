@@ -60,30 +60,30 @@
         </div>
         <div class="row">
             <div class="col-xs-2">
-                <label>${userDTO.id}</label>
+                <label>${userDataDTO.id}</label>
             </div>
             <div class="col-xs-2">
-                <label>${userDTO.username}</label>
+                <label>${userDataDTO.username}</label>
             </div>
             <div class="col-xs-3" style="text-align: center">
-                <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/roles"/>" class="btn-sm btn-primary"
+                <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/roles"/>" class="btn-sm btn-primary"
                    role="button"
                    aria-pressed="true"><spring:message code="button.roles"/></a>
-                <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets"/>" class="btn-sm btn-primary"
+                <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/tickets"/>" class="btn-sm btn-primary"
                    role="button"
                    aria-pressed="true"><spring:message code="button.tickets"/></a>
-                <c:forEach items="${userDTO.roles}" var="role">
+                <c:forEach items="${userDataDTO.roles}" var="role">
                     <c:if test="${role.name eq 'ROLE_PATIENT'}">
-                        <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/health"/>" class="btn-sm btn-primary"
+                        <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/health"/>" class="btn-sm btn-primary"
                            role="button"
                            aria-pressed="true"><spring:message code="text.header.card"/></a>
                     </c:if>
                 </c:forEach>
             </div>
             <div class="col-xs-3" style="text-align: center">
-                <a href="<c:url value="/adminpanel/user/delete/${userDTO.id}"/>" class="btn-sm btn-danger" role="button"
+                <a href="<c:url value="/adminpanel/user/delete/${userDataDTO.id}"/>" class="btn-sm btn-danger" role="button"
                    aria-pressed="true"><spring:message code="button.delete"/></a>
-                <a href="<c:url value="/adminpanel/user/edit/${userDTO.id}"/>" class="btn-sm btn-warning" role="button"
+                <a href="<c:url value="/adminpanel/user/edit/${userDataDTO.id}"/>" class="btn-sm btn-warning" role="button"
                    aria-pressed="true"><spring:message code="button.edit"/></a>
             </div>
             <div class="clearfix"></div>

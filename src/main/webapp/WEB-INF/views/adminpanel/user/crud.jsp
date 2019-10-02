@@ -16,6 +16,7 @@
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
+        <%@include file="/resources/js/jquery.maskedinput.min.js"%>
     </script>
 </head>
 <body>
@@ -49,7 +50,10 @@
         </div>
         <div class="col-xs-4">
             <c:if test="${DTOList.size() != 0}">
-                <spring:message code="text.info.shown"/> ${1+((pageNo-1)*pageSize)} - ${DTOList.size()+((pageNo-1)*pageSize)} <spring:message code="text.info.from"/> ${elementsCount}             <spring:message code="text.info.items"/>
+                <spring:message
+                        code="text.info.shown"/> ${1+((pageNo-1)*pageSize)} - ${DTOList.size()+((pageNo-1)*pageSize)}
+                <spring:message code="text.info.from"/> ${elementsCount}             <spring:message
+                    code="text.info.items"/>
             </c:if>
             <c:if test="${DTOList.size() == 0}">
                 <spring:message code="text.info.empty"/>
@@ -62,7 +66,8 @@
                 <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span
                         class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${7}&desc=${desc}&sort=${sort}"/>">7</a>
+                    <li>
+                        <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${7}&desc=${desc}&sort=${sort}"/>">7</a>
                     </li>
                     <li>
                         <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${15}&desc=${desc}&sort=${sort}"/>">15</a>
@@ -91,10 +96,32 @@
             </th>
             <th scope="col">
                 <c:if test="${desc == false}">
-                    <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${pageSize}&desc=true&sort=username"/>">username</a>
+                    <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${pageSize}&desc=true&sort=username"/>"><spring:message
+                            code="text.label.username"/></a>
                 </c:if>
                 <c:if test="${desc == true}">
-                    <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${pageSize}&desc=false&sort=username"/>">username</a>
+                    <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${pageSize}&desc=false&sort=username"/>"><spring:message
+                            code="text.label.username"/></a>
+                </c:if>
+            </th>
+            <th scope="col">
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${pageSize}&desc=true&sort=name"/>"><spring:message
+                            code="text.label.name"/></a>
+                </c:if>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${pageSize}&desc=false&sort=name"/>"><spring:message
+                            code="text.label.name"/></a>
+                </c:if>
+            </th>
+            <th scope="col">
+                <c:if test="${desc == false}">
+                    <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${pageSize}&desc=true&sort=surname"/>"><spring:message
+                            code="text.label.surname"/></a>
+                </c:if>
+                <c:if test="${desc == true}">
+                    <a href="<c:url value="/adminpanel/user?pageNo=${pageNo}&pageSize=${pageSize}&desc=false&sort=surname"/>"><spring:message
+                            code="text.label.surname"/></a>
                 </c:if>
             </th>
             <th scope="col"></th>
@@ -107,10 +134,12 @@
                 <th scope="row">${user.username}</th>
                 <th scope="row">${user.name}</th>
                 <th scope="row">${user.surname}</th>
-                <td><a href="<c:url value="/adminpanel/user/details/${user.id}"/>" class="btn-sm btn-primary" role="button"
+                <td><a href="<c:url value="/adminpanel/user/details/${user.id}"/>" class="btn-sm btn-primary"
+                       role="button"
                        aria-pressed="true"><spring:message code="button.details"/></a>
                 </td>
-                <td><a href="<c:url value="/adminpanel/user/delete/${user.id}"/>" class="btn-sm btn-danger" role="button"
+                <td><a href="<c:url value="/adminpanel/user/delete/${user.id}"/>" class="btn-sm btn-danger"
+                       role="button"
                        aria-pressed="true"><spring:message code="button.delete"/></a>
                 </td>
                 <td><a href="<c:url value="/adminpanel/user/edit/${user.id}"/>" class="btn-sm btn-warning" role="button"
@@ -120,7 +149,7 @@
         </c:forEach>
         </tbody>
     </table>
-
+    <input id="phone" type="text" placeholder="<spring:message code="input.placeholder.telephone"/>">
     <div class="navbar-fixed-bottom row-fluid">
         <div class="navbar-inner">
             <div class="panel-footer">
@@ -174,4 +203,9 @@
     </div>
 </div>
 </body>
+<script>
+    $(function () {
+        $("#phone").mask("+375(99) 999-99-99");
+    });
+</script>
 </html>

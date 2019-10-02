@@ -75,7 +75,7 @@ public class TicketController {
                        @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
         model.mergeAttributes(ticketService.getMapAndPage(pageNo, pageSize, desc, sort));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        return "/adminpanel/ticket/crud";
+        return "/adminpanel/user/n";
     }
 
     /**
