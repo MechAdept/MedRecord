@@ -1,7 +1,5 @@
 package com.samsolutions.entity;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;

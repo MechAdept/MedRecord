@@ -45,7 +45,7 @@
     </div>
     <h3><spring:message code="text.header.userEdit"/></h3>
     <div class="container" style="margin-top: 20px;">
-        <form:form method="POST" action="${create}" modelAttribute="userDTOForm">
+        <form:form method="POST" action="${create}" modelAttribute="userFormDTO">
             <div class="row">
                 <div class="col-xs-2">
                     <form:label path="username"><spring:message code="text.label.username"/></form:label>

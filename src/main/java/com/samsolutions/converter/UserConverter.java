@@ -57,7 +57,6 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
         target.setTelephone(source.getTelephone());
         target.setBirth(LocalDateTime.parse(source.getBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         target.setSex(source.getSex());
-        target.setImg(source.getImg());
         target.setRoles(roleService.findRolesById(source.getRolesId()));
         return target;
     }

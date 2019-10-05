@@ -6,7 +6,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <div id="wrapper" style="margin-top: 20px;">
     <p><b>For deleting thumb-image: click on image to select and press delete button.</b> </p>
-    <form method="POST" action="upload" enctype="multipart/form-data">
+    <form method="POST" action="" enctype="multipart/form-data">
         <input id="fileUpload" multiple="multiple" type="file"/>
         <input type="submit" value="Upload">
         <button id="btnDelete">Delete</button>

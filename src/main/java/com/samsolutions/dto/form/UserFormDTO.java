@@ -25,11 +25,7 @@ public class UserFormDTO {
 
     private Boolean sex;
 
-    private String img;
-
     private Long[] rolesId;
-
-    private Long healthId;
 
     public Long getId() {
         return id;
@@ -111,28 +107,12 @@ public class UserFormDTO {
         this.sex = sex;
     }
 
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
     public Long[] getRolesId() {
         return rolesId;
     }
 
     public void setRolesId(Long[] rolesId) {
         this.rolesId = rolesId;
-    }
-
-    public Long getHealthId() {
-        return healthId;
-    }
-
-    public void setHealthId(Long healthId) {
-        this.healthId = healthId;
     }
 
     @Override
@@ -150,14 +130,12 @@ public class UserFormDTO {
                 Objects.equals(telephone, that.telephone) &&
                 Objects.equals(birth, that.birth) &&
                 Objects.equals(sex, that.sex) &&
-                Objects.equals(img, that.img) &&
-                Arrays.equals(rolesId, that.rolesId) &&
-                Objects.equals(healthId, that.healthId);
+                Arrays.equals(rolesId, that.rolesId);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, username, password, passwordConfirm, name, surname, patronymic, telephone, birth, sex, img, healthId);
+        int result = Objects.hash(id, username, password, passwordConfirm, name, surname, patronymic, telephone, birth, sex);
         result = 31 * result + Arrays.hashCode(rolesId);
         return result;
     }

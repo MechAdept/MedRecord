@@ -8,6 +8,7 @@ import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
 import com.samsolutions.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +47,13 @@ public class UserController {
     @Autowired
     private HealthService healthService;
 
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String create(@ModelAttribute final UserFormDTO userFormDTO, Model model) {
+        model.addAttribute("userFormDTO", new UserFormDTO());
+        model.addAttribute("roleDTOList", roleService.findAll());
+        return "adminpanel/user/create";
+    }
+
     /**
      * Method to create a new user.
      *
@@ -61,13 +69,6 @@ public class UserController {
         }
         userService.save(userFormDTO);
         return "redirect:/adminpanel/user";
-    }
-
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(@ModelAttribute final UserFormDTO userFormDTO, Model model) {
-        model.addAttribute("userFormDTO", new UserFormDTO());
-        model.addAttribute("roleDTOList", roleService.findAll());
-        return "adminpanel/user/create";
     }
 
     /**
@@ -128,7 +129,8 @@ public class UserController {
     public String details(@PathVariable("id") final Long id, Model model) {
         UserDataDTO userDataDTO = userService.findWithRolesById(id);
         model.addAttribute("userDataDTO", userDataDTO);
-        return "/adminpanel/user/details/details";
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        return "/adminpanel/user/details/newDetails";
     }
 
     @RequestMapping(value = "/details/{id}/roles", method = RequestMethod.GET)
