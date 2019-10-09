@@ -4,6 +4,7 @@ import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,8 @@ public interface UserService {
      */
     User findByUsername(String username);
 
+    User getById(Long id);
+
     /**
      * Method for delete user by id.
      *
@@ -62,4 +65,6 @@ public interface UserService {
     List<UserDataDTO> findDoctors();
 
     List<UserDataDTO> findPatients();
+
+    void saveImage(Long id, MultipartFile file);
 }

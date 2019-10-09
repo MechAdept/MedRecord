@@ -8,12 +8,11 @@ import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDTO> {
@@ -34,7 +33,7 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
         target.setSurname(source.getSurname());
         target.setPatronymic(source.getPatronymic());
         target.setTelephone(source.getTelephone());
-        target.setBirth(source.getBirth());
+        target.setBirth(Date.valueOf(source.getBirth()));
         target.setSex(source.getSex());
         target.setImg(source.getImg());
         try {
@@ -55,9 +54,13 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
         target.setSurname(source.getSurname());
         target.setPatronymic(source.getPatronymic());
         target.setTelephone(source.getTelephone());
-        target.setBirth(LocalDateTime.parse(source.getBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         target.setSex(source.getSex());
         target.setRoles(roleService.findRolesById(source.getRolesId()));
+        try {
+            target.setBirth(LocalDate.parse(source.getBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        } catch (NullPointerException ne) {
+            return target;
+        }
         return target;
     }
 

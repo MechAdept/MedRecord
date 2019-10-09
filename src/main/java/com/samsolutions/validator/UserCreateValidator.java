@@ -18,7 +18,7 @@ import org.springframework.validation.Validator;
  */
 
 @Component
-public class UserValidator implements Validator {
+public class UserCreateValidator implements Validator {
 
     @Autowired
     private UserService userService;
@@ -47,6 +47,27 @@ public class UserValidator implements Validator {
 
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "diff.userForm.passwordConfirm");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"surname","notEmpty");
+        if (user.getSurname().length() < 2 || user.getPassword().length() > 32) {
+            errors.rejectValue("surname", "size.userForm.surname");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"name","notEmpty");
+        if (user.getSurname().length() < 2 || user.getPassword().length() > 32) {
+            errors.rejectValue("name", "size.userForm.name");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"birth","notEmpty");
+        if (user.getSurname().length() < 2 || user.getPassword().length() > 32) {
+            errors.rejectValue("name", "size.userForm.name");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"sex","notEmpty");
+
+        if (user.getRolesId().length < 1) {
+            errors.rejectValue("rolesId", "size.userForm.rolesId");
         }
     }
 }

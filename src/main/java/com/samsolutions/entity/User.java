@@ -1,6 +1,7 @@
 package com.samsolutions.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +42,7 @@ public class User {
     private String telephone;
 
     @Column(name = "birth")
-    private LocalDateTime birth;
+    private LocalDate birth;
 
     @Column(name = "sex")
     private Boolean sex;
@@ -119,11 +120,11 @@ public class User {
         this.telephone = telephone;
     }
 
-    public LocalDateTime getBirth() {
+    public LocalDate getBirth() {
         return birth;
     }
 
-    public void setBirth(LocalDateTime birth) {
+    public void setBirth(LocalDate birth) {
         this.birth = birth;
     }
 

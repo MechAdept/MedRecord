@@ -16,7 +16,6 @@
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
-        <%@include file="/resources/js/jquery.maskedinput.min.js"%>
     </script>
 </head>
 <body>
@@ -149,7 +148,6 @@
         </c:forEach>
         </tbody>
     </table>
-    <input id="phone" type="text" placeholder="<spring:message code="input.placeholder.telephone"/>">
     <div class="navbar-fixed-bottom row-fluid">
         <div class="navbar-inner">
             <div class="panel-footer">
@@ -203,9 +201,4 @@
     </div>
 </div>
 </body>
-<script>
-    $(function () {
-        $("#phone").mask("+375(99) 999-99-99");
-    });
-</script>
 </html>

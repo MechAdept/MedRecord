@@ -10,8 +10,12 @@ import com.samsolutions.repository.UserRepository;
 import com.samsolutions.roles.Roles;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.UserService;
+import groovy.grape.GrapeIvy;
+import org.hibernate.LazyInitializationException;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +23,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -70,6 +77,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getById(Long id) {
+        return userRepository.getOne(id);
+    }
+
+    @Override
     public void delete(final Long id) {
         userRepository.deleteById(id);
     }
@@ -110,12 +122,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-//    @Override
-//    public List<UserDTO> findPatientsWithoutHealth() {
-//        return userConverter.entitiesToDtoList(userRepository.findAllByHealthIsNullAndRolesIs(roleConverter.dtoToEntity(
-//                roleService.findRoleByName("ROLE_PATIENT"))));
-//    }
-
     @Override
     public Map<String, Object> getMapAndPageByRole(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Role role = roleRepository.getOne(id);
@@ -155,6 +161,26 @@ public class UserServiceImpl implements UserService {
     public List<UserDataDTO> findPatients() {
         Role role = roleRepository.findRoleByName("ROLE_PATIENT");
         return userConverter.entitiesToDataDtoList(userRepository.getAllByRolesIs(role));
+    }
+
+    @Override
+    public void saveImage(Long id, MultipartFile file) {
+        String uploadPath = "C:/Users/ulbraz/IdeaProjects/MedRecord/src/main/webapp/resources/img";
+        if (file != null) {
+            File uploadDir = new File(uploadPath);
+            if (uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String fileName = file.getOriginalFilename();
+            UserFormDTO userFormDTO = new UserFormDTO();
+            userFormDTO.setImg(fileName);
+            try {
+                file.transferTo(new File(fileName));
+                save(userFormDTO);
+            } catch (Exception le) {
+                System.out.println("asdas");
+            }
+        }
     }
 
     @Override

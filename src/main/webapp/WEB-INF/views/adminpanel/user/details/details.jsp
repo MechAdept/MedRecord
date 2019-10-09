@@ -11,15 +11,18 @@
     <style>
         <%@include file="/resources/css/bootstrap.min.css"%>
         <%@include file="/resources/css/common.css"%>
+        <%@include file="/resources/css/avatar.css"%>
     </style>
     <title><spring:message code="text.title.userDetails"/></title>
-    <script type="text/javascript">
-        <%@include file="/resources/js/jquery-3.4.1.min.js"%>
+    <script>
         <%@include file="/resources/js/bootstrap.min.js"%>
+        <%@include file="/resources/js/jquery-3.4.1.min.js"%>
+        <%--        <%@include file="/resources/js/profile.js"%>--%>
     </script>
 </head>
 <body>
 <div class="container">
+    <%--START OF HEADER--%>
     <div class="row">
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
@@ -42,59 +45,63 @@
             </div>
         </div>
     </div>
-    <h3><spring:message code="text.header.userDetails"/></h3>
-    <div class="container" style="margin-top: 20px;">
+    <%--END OF HEADER--%>
+    <h3><spring:message code="text.header.userDetails"/> <b>${userDataDTO.username}</b></h3>
+    <div class="container" style="background-color: #fff; margin-top: 20px;">
         <div class="row">
-            <div class="col-xs-2">
-                <label><spring:message code="text.label.id"/></label>
+            <div class="col-xs-3">
+                <div class="row">
+                    <div class="img-thumbnail" width="200" height="200"
+                         style="margin-left: 10px; margin-top: 10px; background-image: url('/resources/img/emptyProfile.png');">
+                        <img src="<c:url value="/resources/img/${userDataDTO.img}"/>" height="200" width="200"
+                             style="border-radius: 10px; background-size: contain"
+                             onerror="this.style.visibility = 'hidden'">
+                    </div>
+                </div>
             </div>
-            <div class="col-xs-2">
-                <label><spring:message code="text.label.username"/></label>
-            </div>
-            <div class="col-xs-3" style="text-align: center">
-                <label><spring:message code="text.label.relatedItems"/></label>
-            </div>
-            <div class="col-xs-3" style="text-align: center">
-                <label><spring:message code="text.label.action"/></label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-2">
-                <label>${userDataDTO.id}</label>
-            </div>
-            <div class="col-xs-2">
-                <label>${userDataDTO.username}</label>
-            </div>
-            <div class="col-xs-3" style="text-align: center">
-                <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/roles"/>" class="btn-sm btn-primary"
-                   role="button"
-                   aria-pressed="true"><spring:message code="button.roles"/></a>
-                <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/tickets"/>" class="btn-sm btn-primary"
-                   role="button"
-                   aria-pressed="true"><spring:message code="button.tickets"/></a>
-                <c:forEach items="${userDataDTO.roles}" var="role">
-                    <c:if test="${role.name eq 'ROLE_PATIENT'}">
-                        <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/health"/>" class="btn-sm btn-primary"
-                           role="button"
-                           aria-pressed="true"><spring:message code="text.header.card"/></a>
+            <div class="col-xs-6">
+                <div class="row"></div>
+                <div class="row">
+                    <h4><b>ФИО: ${userDataDTO.surname} ${userDataDTO.name} ${userDataDTO.patronymic}</b></h4>
+                </div>
+                <div class="row">
+                    <h4><b>Телефон: ${userDataDTO.telephone}</b></h4>
+                </div>
+                <div class="row">
+                    <h4><b>Дата рождения: ${formatter.format(userDataDTO.birth)}</b></h4>
+                </div>
+                <div class="row">
+                    <c:if test="${userDataDTO.sex == true}">
+                        <h4><b>Пол: мужской</b></h4>
                     </c:if>
+                    <c:if test="${userDataDTO.sex == false}">
+                        <h4><b>Пол: женский</b></h4>
+                    </c:if>
+                </div>
+                <br>
+                <div class="row">
+                    <c:forEach items="${userDataDTO.roles}" var="role">
+                        <c:if test="${role.name == 'ROLE_PATIENT'}">
+                            <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/health"/>"
+                               class="btn btn-primary align-content-center" role="button"
+                               aria-pressed="true"><spring:message code="button.health"/></a>
+                        </c:if>
+                    </c:forEach>
+                    <a href="<c:url value="/adminpanel/user/edit/${userDataDTO.id}"/>"
+                       class="btn btn-warning align-content-center" role="button"
+                       aria-pressed="true"><spring:message code="button.edit"/></a>
+                    <a href="<c:url value="/adminpanel/user/delete/${userDataDTO.id}"/>"
+                       class="btn btn-danger align-content-center" role="button"
+                       aria-pressed="true"><spring:message code="button.delete"/></a>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <h4><b><spring:message code="text.label.roles"/>:</b></h4>
+                <c:forEach items="${userDataDTO.roles}" var="role">
+                    <h4><b>${role.description}</b></h4>
                 </c:forEach>
             </div>
-            <div class="col-xs-3" style="text-align: center">
-                <a href="<c:url value="/adminpanel/user/delete/${userDataDTO.id}"/>" class="btn-sm btn-danger" role="button"
-                   aria-pressed="true"><spring:message code="button.delete"/></a>
-                <a href="<c:url value="/adminpanel/user/edit/${userDataDTO.id}"/>" class="btn-sm btn-warning" role="button"
-                   aria-pressed="true"><spring:message code="button.edit"/></a>
-            </div>
-            <div class="clearfix"></div>
         </div>
     </div>
-    <div class="navbar-fixed-bottom row-fluid">
-        <div class="navbar-inner">
-            <div class="panel-footer">
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>

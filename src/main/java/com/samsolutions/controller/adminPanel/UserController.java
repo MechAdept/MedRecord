@@ -6,7 +6,8 @@ import com.samsolutions.service.HealthService;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
-import com.samsolutions.validator.UserValidator;
+import com.samsolutions.validator.UserCreateValidator;
+import com.samsolutions.validator.UserEditValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,8 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashSet;
 
 /**
@@ -33,7 +37,10 @@ import java.util.HashSet;
 public class UserController {
 
     @Autowired
-    UserValidator userValidator;
+    UserCreateValidator userCreateValidator;
+
+    @Autowired
+    UserEditValidator userEditValidator;
 
     @Autowired
     private UserService userService;
@@ -47,10 +54,15 @@ public class UserController {
     @Autowired
     private HealthService healthService;
 
+    @Value("${upload.path}")
+    private String uploadPath;
+
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute final UserFormDTO userFormDTO, Model model) {
         model.addAttribute("userFormDTO", new UserFormDTO());
         model.addAttribute("roleDTOList", roleService.findAll());
+        model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+        model.addAttribute("currentDate", new Date());
         return "adminpanel/user/create";
     }
 
@@ -60,15 +72,23 @@ public class UserController {
      * @return redirects to main page of "user" crud.
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute("userDTOForm") final UserFormDTO userFormDTO,
+    public String create(@ModelAttribute("userFormDTO") final UserFormDTO userFormDTO,
                          final BindingResult bindingResult, final Model model) {
-        userValidator.validate(userFormDTO, bindingResult);
+        userCreateValidator.validate(userFormDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("roleDTOList", roleService.findAll());
+            model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+            model.addAttribute("currentDate", new Date());
             return "adminpanel/user/create";
         }
         userService.save(userFormDTO);
         return "redirect:/adminpanel/user";
+    }
+
+    @RequestMapping(value = "/edit/setImage", method = RequestMethod.POST)
+    public String setImage(@RequestParam("id") String id, @RequestParam("file") MultipartFile file, Model model) {
+        userService.saveImage(Long.parseLong(id), file);
+        return "redirect:/adminpanel/user/details/" + id;
     }
 
     /**
@@ -97,8 +117,10 @@ public class UserController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
         model.addAttribute("userFormDTO", new UserFormDTO());
-        model.addAttribute("userDataDTO", userService.findById(id));
+        model.addAttribute("userDataDTO", userService.findWithRolesById(id));
         model.addAttribute("roleDTOList", new HashSet<>(roleService.findAll()));
+        model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+        model.addAttribute("currentDate", new Date());
         return "adminpanel/user/edit";
     }
 
@@ -108,10 +130,19 @@ public class UserController {
      * @return redirects to main page of "user" crud.
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@ModelAttribute("userFormDTO") final UserFormDTO userFormDTO, BindingResult bindingResult) {
+    public String edit(@ModelAttribute("userFormDTO") final UserFormDTO userFormDTO,
+                       final BindingResult bindingResult, final Model model) {
+        userEditValidator.validate(userFormDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userDataDTO", userService.findWithRolesById(userFormDTO.getId()));
+            model.addAttribute("roleDTOList", roleService.findAll());
+            model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+            model.addAttribute("currentDate", new Date());
+            return "adminpanel/user/edit";
+        }
         userService.save(userFormDTO);
-        return "redirect: /adminpanel/user";
-    } //todo: redo!!!, and validation
+        return "redirect:/adminpanel/user/details" + userFormDTO.getId();
+    }
 
     /**
      * Method to delete record from "user" table.
@@ -129,8 +160,8 @@ public class UserController {
     public String details(@PathVariable("id") final Long id, Model model) {
         UserDataDTO userDataDTO = userService.findWithRolesById(id);
         model.addAttribute("userDataDTO", userDataDTO);
-        model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        return "/adminpanel/user/details/newDetails";
+        model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+        return "adminpanel/user/details/details";
     }
 
     @RequestMapping(value = "/details/{id}/roles", method = RequestMethod.GET)

@@ -1,6 +1,8 @@
 package com.samsolutions.dto.data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -21,7 +23,7 @@ public class UserDataDTO {
 
     private String telephone;
 
-    private LocalDateTime birth;
+    private Date birth;
 
     private Boolean sex;
 
@@ -100,11 +102,11 @@ public class UserDataDTO {
         this.telephone = telephone;
     }
 
-    public LocalDateTime getBirth() {
+    public Date getBirth() {
         return birth;
     }
 
-    public void setBirth(LocalDateTime birth) {
+    public void setBirth(Date birth) {
         this.birth = birth;
     }
 

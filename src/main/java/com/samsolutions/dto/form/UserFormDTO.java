@@ -27,6 +27,8 @@ public class UserFormDTO {
 
     private Long[] rolesId;
 
+    private String img;
+
     public Long getId() {
         return id;
     }
@@ -115,6 +117,14 @@ public class UserFormDTO {
         this.rolesId = rolesId;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,12 +140,13 @@ public class UserFormDTO {
                 Objects.equals(telephone, that.telephone) &&
                 Objects.equals(birth, that.birth) &&
                 Objects.equals(sex, that.sex) &&
-                Arrays.equals(rolesId, that.rolesId);
+                Arrays.equals(rolesId, that.rolesId) &&
+                Objects.equals(img, that.img);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, username, password, passwordConfirm, name, surname, patronymic, telephone, birth, sex);
+        int result = Objects.hash(id, username, password, passwordConfirm, name, surname, patronymic, telephone, birth, sex, img);
         result = 31 * result + Arrays.hashCode(rolesId);
         return result;
     }

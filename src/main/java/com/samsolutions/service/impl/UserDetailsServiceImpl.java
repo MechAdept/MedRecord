@@ -42,19 +42,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserDataDTO userDataDTO = userConverter.entityToDataDto(userService.findByUsername(username));
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (RoleDataDTO roleDataDTO : userDataDTO.getRoles()) {
-            if (roleDataDTO.getName().equals(Roles.ROLE_ADMIN.getAuthority())) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_ADMIN.getAuthority()));
-            } else if (roleDataDTO.getName().equals(Roles.ROLE_PATIENT.getAuthority())) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_PATIENT.getAuthority()));
-            } else if (roleDataDTO.getName().equals(Roles.ROLE_USER.getAuthority())) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_USER.getAuthority()));
-            } else if (roleDataDTO.getName().equals(Roles.ROLE_RECEPTIONIST.getAuthority())) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_RECEPTIONIST.getAuthority()));
-            } else {
-                grantedAuthorities.add(new SimpleGrantedAuthority(Roles.ROLE_DOCTOR.getAuthority()));
+        for (Roles role : Roles.values()) {
+            for (RoleDataDTO userRole : userDataDTO.getRoles()) {
+                if (role.getAuthority().equals(userRole.getName())) {
+                    grantedAuthorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+                }
             }
         }
+
         return new org.springframework.security.core.userdetails.User(userDataDTO.getUsername(), userDataDTO.getPassword(), grantedAuthorities);
     }
 }

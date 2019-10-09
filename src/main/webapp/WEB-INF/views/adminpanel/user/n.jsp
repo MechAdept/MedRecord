@@ -19,15 +19,12 @@
 
 <script>
     $(document).ready(function() {
-
         $("#image-holder").on('click','.thumb-image',function(){
             $(this).toggleClass("selectedItem");
         });
-
         $("#btnDelete").on("click",function(){
             $(".selectedItem").remove();
         });
-
         $("#fileUpload").on('change', function() {
             //Get count of selected files
             var countFiles = $(this)[0].files.length;
