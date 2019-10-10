@@ -15,28 +15,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service(value = "visitService")
-public interface VisitService {
-    /**
-     * Method for create visit.
-     *
-     * @param visitFormDTO VisitFormDTO with parameters to be set.
-     */
-    void save(VisitFormDTO visitFormDTO);
+public interface VisitService extends IEntity<VisitDataDTO, VisitFormDTO> {
 
-    /**
-     * Method for find visit by id.
-     *
-     * @param id id of desired visit.
-     * @return VisitDTO.
-     */
-    VisitDataDTO findById(Long id);
-
-    /**
-     * Method for delete visit by id.
-     *
-     * @param id id of desired visit.
-     */
-    void delete(Long id);
-
-    VisitDataDTO findByTicket(Long id);
+    VisitDataDTO findByTicketId(Long id);
 }

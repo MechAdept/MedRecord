@@ -9,8 +9,6 @@ public class RoleFormDTO {
 
     private String name;
 
-    private String description;
-
     private Long[] usersId;
 
     public Long getId() {
@@ -29,14 +27,6 @@ public class RoleFormDTO {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Long[] getUsers() {
         return usersId;
     }
@@ -52,13 +42,12 @@ public class RoleFormDTO {
         RoleFormDTO that = (RoleFormDTO) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
                 Arrays.equals(usersId, that.usersId);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, name, description);
+        int result = Objects.hash(id, name);
         result = 31 * result + Arrays.hashCode(usersId);
         return result;
     }

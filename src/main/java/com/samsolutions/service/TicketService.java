@@ -16,30 +16,9 @@ import java.util.Map;
  */
 
 @Service
-public interface TicketService {
-    /**
-     * Method for create ticket.
-     *
-     * @param formDTO TicketFormDTO with parameters to be set.
-     */
-    void save(TicketFormDTO formDTO);
+public interface TicketService extends IEntity<TicketDataDTO, TicketFormDTO> {
 
-    /**
-     * Method for find ticket by id.
-     *
-     * @param id id of desired ticket.
-     * @return TicketDTO.
-     */
-    TicketDataDTO findTicketById(Long id);
+    Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
-    /**
-     * Method for delete ticket by id.
-     *
-     * @param id id of desired ticket.
-     */
-    void deleteTicket(Long id);
-
-    Map<String,Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
-
-    Map<String,Object> getMapAndPageByUser(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort);
+    Map<String, Object> getMapAndPageByUser(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort);
 }

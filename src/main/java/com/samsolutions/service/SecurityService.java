@@ -13,12 +13,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface SecurityService {
-    /**
-     * Method for find health by id.
-     *
-     * @return HealthDTO.
-     */
-    String findLoggedInUsername();
 
     void autologin(String username, String password);
 }

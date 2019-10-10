@@ -16,34 +16,11 @@ import java.util.List;
  */
 
 @Service
-public interface HealthService {
-    /**
-     * Method for create health.
-     *
-     * @param formDTO HealthDTO with parameters to be set.
-     */
-    void save(HealthFormDTO formDTO);
+public interface HealthService extends IEntity<HealthDataDTO, HealthFormDTO> {
 
-    /**
-     * Method for find health by id.
-     *
-     * @param id id of desired health.
-     * @return HealthDTO.
-     */
-    HealthDataDTO findHealthById(Long id);
+    void create(HealthFormDTO formDTO);
 
-    /**
-     * Method for getting healths from table.
-     *
-     * @return List<HealthDTO>.
-     */
-    List<HealthDataDTO> getHealths();
+    void deleteHealthByPatientId(Long id);
 
-    List<HealthDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
-
-    void deleteHealthByPatient(Long id);
-
-    HealthDataDTO findHealthByPatientId(Long id);
-
-    void deleteHealth(Long id);
+    HealthDataDTO findByPatientId(Long id);
 }

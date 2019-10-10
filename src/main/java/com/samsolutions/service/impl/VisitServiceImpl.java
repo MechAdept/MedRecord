@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
  * @copyright 2019 SaM
  */
 
-@Service
 public class VisitServiceImpl implements VisitService {
 
     @Autowired
@@ -38,7 +37,7 @@ public class VisitServiceImpl implements VisitService {
     UserConverter userConverter;
 
     @Override
-    public void save(final VisitFormDTO source) {
+    public void create(final VisitFormDTO source) {
         Visit target = visitConverter.formDtoToEntity(source);
         visitRepository.save(target);
     }
@@ -55,7 +54,7 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public VisitDataDTO findByTicket(Long id) {
+    public VisitDataDTO findByTicketId(Long id) {
         return visitConverter.entityToDataDto(visitRepository.findVisitByTicket(ticketRepository.getOne(id)));
     }
 }

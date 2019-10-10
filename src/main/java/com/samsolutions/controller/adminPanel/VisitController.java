@@ -3,7 +3,6 @@ package com.samsolutions.controller.adminPanel;
 import com.samsolutions.dto.data.VisitDataDTO;
 import com.samsolutions.dto.form.VisitFormDTO;
 import com.samsolutions.service.TicketService;
-import com.samsolutions.service.UserService;
 import com.samsolutions.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +34,7 @@ public class VisitController {
 
     @RequestMapping(value = "/create/{ticketId}", method = RequestMethod.GET)
     public String create(@PathVariable(value = "ticketId") final Long ticketId, Model model) {
-        model.addAttribute("ticketDTO", ticketService.findTicketById(ticketId));
+        model.addAttribute("ticketDTO", ticketService.findById(ticketId));
         model.addAttribute("visitFormDTO", new VisitFormDTO());
         return "/adminpanel/visit/create";
     }
@@ -63,7 +62,7 @@ public class VisitController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(@ModelAttribute final VisitFormDTO visitFormDTO) {
-        visitService.save(visitFormDTO);
+        visitService.create(visitFormDTO);
         return "redirect: /adminpanel/visit";
     }
 

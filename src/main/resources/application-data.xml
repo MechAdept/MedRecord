@@ -26,6 +26,15 @@
         </property>
     </bean>
 
+    <bean id="userService" class="com.samsolutions.service.impl.UserServiceImpl"/>
+    <bean id="healthService" class="com.samsolutions.service.impl.HealthServiceImpl"/>
+    <bean id="userDetailsService" class="com.samsolutions.service.impl.UserDetailsServiceImpl"/>
+    <bean id="roleService" class="com.samsolutions.service.impl.RoleServiceImpl"/>
+    <bean id="securityService" class="com.samsolutions.service.impl.SecurityServiceImpl"/>
+    <bean id="ticketService" class="com.samsolutions.service.impl.TicketServiceImpl"/>
+    <bean id="visitService" class="com.samsolutions.service.impl.VisitServiceImpl"/>
+    <bean id="scheduleService" class="com.samsolutions.service.impl.HealthServiceImpl"/>
+
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -33,7 +42,7 @@
 
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="2000000" />
+        <property name="maxUploadSize" value="200000000" />
     </bean>
 
     <!-- dataSource bean configuration -->

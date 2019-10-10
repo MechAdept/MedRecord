@@ -10,23 +10,22 @@ import com.samsolutions.repository.UserRepository;
 import com.samsolutions.roles.Roles;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.UserService;
-import groovy.grape.GrapeIvy;
-import org.hibernate.LazyInitializationException;
-import org.hibernate.Session;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 /**
@@ -38,9 +37,15 @@ import java.util.*;
  * @copyright 2019 SaM
  */
 
-@Service("UserService")
 @Transactional
+@PropertySource(value = "classpath:/properties/application.properties")
 public class UserServiceImpl implements UserService {
+
+    @Value("${project.upload.path}")
+    String projectUploadPath;
+
+    @Value("${server.upload.path}")
+    String serverUploadPath;
 
     @Autowired
     private UserRepository userRepository;
@@ -59,10 +64,10 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void save(final UserFormDTO formDTO) {
+    public void create(final UserFormDTO formDTO) {
         User user = userConverter.formDtoToEntity(formDTO);
         user.setPassword(bCryptPasswordEncoder.encode(formDTO.getPassword()));
-        user.setRoles(roleService.findRolesById(formDTO.getRolesId()));
+        user.setRoles(roleService.findByIds(formDTO.getRolesId()));
         userRepository.save(user);
     }
 
@@ -74,11 +79,6 @@ public class UserServiceImpl implements UserService {
             user.setRoles(roleRepository.getRolesByUsers(user));
         }
         return user;
-    }
-
-    @Override
-    public User getById(Long id) {
-        return userRepository.getOne(id);
     }
 
     @Override
@@ -152,35 +152,63 @@ public class UserServiceImpl implements UserService {
         map.put("pageSize", pageSize);
         map.put("desc", desc);
         map.put("sort", sort);
-        map.put("pageCount", count/pageSize);
+        map.put("pageCount", count / pageSize);
         map.put("elementsCount", count);
         return map;
     }
 
     @Override
     public List<UserDataDTO> findPatients() {
-        Role role = roleRepository.findRoleByName("ROLE_PATIENT");
+        Role role = roleRepository.findRoleByName(Roles.ROLE_PATIENT.name());
         return userConverter.entitiesToDataDtoList(userRepository.getAllByRolesIs(role));
     }
 
     @Override
     public void saveImage(Long id, MultipartFile file) {
-        String uploadPath = "C:/Users/ulbraz/IdeaProjects/MedRecord/src/main/webapp/resources/img";
+        User user = userRepository.getOne(id);
+        MultipartFile secondFile = file;
         if (file != null) {
-            File uploadDir = new File(uploadPath);
-            if (uploadDir.exists()) {
-                uploadDir.mkdir();
+            File projectUploadDir = new File(projectUploadPath);
+            File serverUploadDir = new File(serverUploadPath);
+            if (projectUploadDir.exists()) {
+                projectUploadDir.mkdir();
             }
-            String fileName = file.getOriginalFilename();
-            UserFormDTO userFormDTO = new UserFormDTO();
-            userFormDTO.setImg(fileName);
+            if (serverUploadDir.exists()) {
+                serverUploadDir.mkdir();
+            }
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFileName = uuidFile + "." + file.getOriginalFilename();
             try {
-                file.transferTo(new File(fileName));
-                save(userFormDTO);
-            } catch (Exception le) {
-                System.out.println("asdas");
+                file.transferTo(new File(projectUploadPath + "/" + resultFileName));
+                File copied = new File( serverUploadPath + "/" + resultFileName);
+                FileUtils.copyFile(new File(projectUploadPath + "/" + resultFileName), copied);
+                //todo: add file delete
+                user.setImg(resultFileName);
+            } catch (IOException e) {
+                System.out.println("OMG");
             }
         }
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updatePassword(Long id, String password) {
+
+    }
+
+    @Override
+    public void updatePhoto(Long id, MultipartFile file) {
+
+    }
+
+    @Override
+    public void updateProfile(Long id, UserFormDTO formDTO) {
+
+    }
+
+    @Override
+    public void updateRoles(Long id, UserFormDTO formDTO) {
+
     }
 
     @Override

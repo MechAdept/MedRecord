@@ -55,7 +55,7 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
         target.setPatronymic(source.getPatronymic());
         target.setTelephone(source.getTelephone());
         target.setSex(source.getSex());
-        target.setRoles(roleService.findRolesById(source.getRolesId()));
+        target.setRoles(roleService.findByIds(source.getRolesId()));
         try {
             target.setBirth(LocalDate.parse(source.getBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         } catch (NullPointerException ne) {

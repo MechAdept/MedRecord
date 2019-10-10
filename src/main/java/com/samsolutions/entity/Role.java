@@ -24,9 +24,6 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
-    private String description;
-
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> users;
 
@@ -46,14 +43,6 @@ public class Role {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public List<User> getUsers() {
         return users;
     }
@@ -69,12 +58,11 @@ public class Role {
         Role role = (Role) o;
         return Objects.equals(id, role.id) &&
                 Objects.equals(name, role.name) &&
-                Objects.equals(description, role.description) &&
                 Objects.equals(users, role.users);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, users);
+        return Objects.hash(id, name, users);
     }
 }

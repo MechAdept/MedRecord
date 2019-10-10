@@ -6,8 +6,8 @@ import com.samsolutions.service.HealthService;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
-import com.samsolutions.validator.UserCreateValidator;
-import com.samsolutions.validator.UserEditValidator;
+import com.samsolutions.validator.user.UserCreateValidator;
+import com.samsolutions.validator.user.UserEditValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -54,7 +55,7 @@ public class UserController {
     @Autowired
     private HealthService healthService;
 
-    @Value("${upload.path}")
+    @Value("${project.upload.path}")
     private String uploadPath;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -81,12 +82,12 @@ public class UserController {
             model.addAttribute("currentDate", new Date());
             return "adminpanel/user/create";
         }
-        userService.save(userFormDTO);
+        userService.create(userFormDTO);
         return "redirect:/adminpanel/user";
     }
 
-    @RequestMapping(value = "/edit/setImage", method = RequestMethod.POST)
-    public String setImage(@RequestParam("id") String id, @RequestParam("file") MultipartFile file, Model model) {
+    @RequestMapping(value = "/edit/image", method = RequestMethod.POST)
+    public String updateImage(@RequestParam("id") String id, @RequestParam("file") MultipartFile file) throws IOException {
         userService.saveImage(Long.parseLong(id), file);
         return "redirect:/adminpanel/user/details/" + id;
     }
@@ -140,7 +141,7 @@ public class UserController {
             model.addAttribute("currentDate", new Date());
             return "adminpanel/user/edit";
         }
-        userService.save(userFormDTO);
+        userService.create(userFormDTO);
         return "redirect:/adminpanel/user/details" + userFormDTO.getId();
     }
 
@@ -192,7 +193,7 @@ public class UserController {
 
     @RequestMapping(value = "/details/{id}/health", method = RequestMethod.GET)
     public String detailsHealth(@PathVariable(value = "id") final Long id, Model model) {
-        model.addAttribute("healthDTO", healthService.findHealthByPatientId(id));
+        model.addAttribute("healthDTO", healthService.findByPatientId(id));
         model.addAttribute("userDTO", userService.findById(id));
         return "adminpanel/health/details";
     }
@@ -204,7 +205,7 @@ public class UserController {
                                        @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
                                        @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
                                        @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
-        ticketService.deleteTicket(ticketId);
+        ticketService.delete(ticketId);
         model.mergeAttributes(ticketService.getMapAndPageByUser(id, pageNo, pageSize, desc, sort));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return "/adminpanel/user/details/tickets";

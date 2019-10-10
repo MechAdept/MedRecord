@@ -48,25 +48,9 @@ public class RoleController {
      * @return return main page of "role" crud.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public String read(final Model model, @RequestParam(value = "pageNo",
-            required = false, defaultValue = "1") Integer pageNo,
-                       @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                       @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
-                       @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
-        model.mergeAttributes(roleService.getMapAndPage(pageNo, pageSize, desc, sort));
+    public String read(Model model) {
+        model.addAttribute("DTOList", roleService.findAll());
         return "adminpanel/role/crud";
-    }
-
-    /**
-     * Method for edit record of "role" table.
-     *
-     * @param roleFormDTO form to edit a role.
-     * @return redirects to main page of "role" crud.
-     */
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(@ModelAttribute final RoleFormDTO roleFormDTO) {
-        roleService.save(roleFormDTO);
-        return "redirect: /adminpanel/role";
     }
 
     /**
@@ -84,43 +68,14 @@ public class RoleController {
         return "/adminpanel/role/edit";
     }
 
-    /**
-     * Method to delete record from "role" table.
-     *
-     * @param id is id.
-     * @return redirects to main page of "role" crud.
-     */
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") final Long id) {
-        roleService.deleteRole(id);
-        return "redirect: /adminpanel/role";
-    }
-
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
-    public String details(@PathVariable("id") final Long id, Model model) {
-        model.addAttribute("roleDTO", roleService.findById(id));
-        return "/adminpanel/role/details/details";
-    }
-
-    @RequestMapping(value = "/details/{id}/users", method = RequestMethod.GET)
-    public String detailsUsers(@PathVariable("id") final Long id, Model model,
-                               @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
-                               @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                               @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
-                               @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
+    public String details(@PathVariable("id") final Long id, Model model,
+                          @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+                          @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
+                          @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
+                          @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
         model.mergeAttributes(userService.getMapAndPageByRole(id, pageNo, pageSize, desc, sort));
-        return "/adminpanel/role/details/users";
-    }
-
-    @RequestMapping(value = "/details/{id}/roles/delete/{userId}", method = RequestMethod.GET)
-    public String detailsUserDelete(@PathVariable(value = "id") final Long id,
-                                    @PathVariable(value = "userId") final Long userId,
-                                    @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
-                                    @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                    @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
-                                    @RequestParam(value = "sort", required = false, defaultValue = "id") String sort, Model model) {
-        userService.deleteRoleFromUserById(userId, id);
-        model.mergeAttributes(userService.getMapAndPageByRole(id, pageNo, pageSize, desc, sort));
-        return "/adminpanel/role/details/users";
+        model.addAttribute("roleDataDTO", roleService.findById(id));
+        return "/adminpanel/role/details";
     }
 }

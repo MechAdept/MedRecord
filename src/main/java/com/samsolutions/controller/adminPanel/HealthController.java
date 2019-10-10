@@ -44,7 +44,7 @@ public class HealthController {
         if (bindingResult.hasErrors()) {
             return "adminpanel/health/create";
         }
-        healthService.save(healthFormDTO);
+        healthService.create(healthFormDTO);
 
         UserDataDTO userDataDTO = userService.findWithRolesById(healthFormDTO.getPatientId());
         model.addAttribute("userDataDTO", userDataDTO);
@@ -69,7 +69,7 @@ public class HealthController {
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
-        HealthDataDTO healthDataDTO = healthService.findHealthById(id);
+        HealthDataDTO healthDataDTO = healthService.findById(id);
         model.addAttribute("healthDTO", healthDataDTO);
         return "adminpanel/health/edit";
     }
@@ -84,7 +84,7 @@ public class HealthController {
         if (bindingResult.hasErrors()) {
             return "adminpanel/health/edit";
         }
-        healthService.save(healthFormDTO);
+        healthService.create(healthFormDTO);
         UserDataDTO userDTO = userService.findWithRolesById(healthFormDTO.getPatientId());
         model.addAttribute("userDTO", userDTO);
         return "/adminpanel/user/details/details";
@@ -98,13 +98,13 @@ public class HealthController {
      */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable("id") final Long id) {
-        healthService.deleteHealth(id);
+        healthService.delete(id);
         return "redirect:/adminpanel/health/create";
     }
 
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String details(@PathVariable("id") final Long id, Model model) {
-        model.addAttribute("healthDTO", healthService.findHealthById(id));
+        model.addAttribute("healthDTO", healthService.findById(id));
         return "adminpanel/health/details";
     }
 

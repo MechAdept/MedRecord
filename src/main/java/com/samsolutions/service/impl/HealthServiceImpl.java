@@ -30,8 +30,6 @@ import java.util.List;
  * @copyright 2019 SaM
  */
 
-
-@Service("HealthService")
 @Transactional
 public class HealthServiceImpl implements HealthService {
 
@@ -48,7 +46,7 @@ public class HealthServiceImpl implements HealthService {
     UserRepository userRepository;
 
     @Override
-    public HealthDataDTO findHealthById(final Long id) {
+    public HealthDataDTO findById(final Long id) {
         HealthDataDTO healthDataDTO = healthConverter.entityToDataDto(healthRepository.findById(id).orElse(new Health()));
         UserDataDTO userDataDTO = userService.findWithRolesById(healthDataDTO.getPatient().getId());
         healthDataDTO.setPatient(userDataDTO);
@@ -56,34 +54,19 @@ public class HealthServiceImpl implements HealthService {
     }
 
     @Override
-    public void save(final HealthFormDTO formDTO) {
+    public void create(final HealthFormDTO formDTO) {
         Health health = healthConverter.formDtoToEntity(formDTO);
         healthRepository.save(health);
     }
 
     @Override
-    public List<HealthDataDTO> getHealths() {
-        return healthConverter.entitiesToDataDtoList(healthRepository.findAll(new Sort(Sort.Direction.ASC, "id")));
-    }
-
-    public List<HealthDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
-        Page<Health> pagedResult = healthRepository.findAll(pageable);
-        if (pagedResult.hasContent()) {
-            return healthConverter.entitiesToDataDtoList(pagedResult.getContent());
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
-    @Override
-    public void deleteHealthByPatient(Long id) {
+    public void deleteHealthByPatientId(Long id) {
         User patient = userRepository.getOne(id);
         healthRepository.deleteHealthByPatient(patient);
     }
 
     @Override
-    public HealthDataDTO findHealthByPatientId(Long id) {
+    public HealthDataDTO findByPatientId(Long id) {
         try {
             User patient = userRepository.getOne(id);
             return healthConverter.entityToDataDto(healthRepository.findHealthByPatient(patient));
@@ -93,15 +76,7 @@ public class HealthServiceImpl implements HealthService {
     }
 
     @Override
-    public void deleteHealth(Long id) {
+    public void delete(Long id) {
         healthRepository.deleteById(id);
-    }
-
-    private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        if (desc) {
-            return PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
-        } else {
-            return PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
-        }
     }
 }

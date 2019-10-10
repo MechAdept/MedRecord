@@ -43,7 +43,7 @@ public class TicketController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(@ModelAttribute(name = "ticketDTO") final TicketFormDTO ticketFormDTO, Model model) {
-        ticketService.save(ticketFormDTO);
+        ticketService.create(ticketFormDTO);
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         model.addAttribute("userDataDto", userService.findById(ticketFormDTO.getPatientId()));
         return "/adminpanel/ticket/";
@@ -87,7 +87,7 @@ public class TicketController {
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") final Long id, final Model model) {
-        TicketDataDTO ticketDataDTO = ticketService.findTicketById(id);
+        TicketDataDTO ticketDataDTO = ticketService.findById(id);
         model.addAttribute("ticketDTO", ticketDataDTO);
         model.addAttribute("ticketDTOForm", new TicketDataDTO());
         model.addAttribute("doctorsDTOList", userService.findDoctors());
@@ -103,7 +103,7 @@ public class TicketController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(@ModelAttribute final TicketFormDTO ticketFormDTO) {
-        ticketService.save(ticketFormDTO);
+        ticketService.create(ticketFormDTO);
         return "redirect: /adminpanel/ticket";
     }
 
@@ -119,7 +119,7 @@ public class TicketController {
                          @RequestParam(value = "pageSize", defaultValue = "15") Integer pageSize,
                          @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
                          @RequestParam(value = "sort", defaultValue = "datetime") String sort, Model model) {
-        ticketService.deleteTicket(id);
+        ticketService.delete(id);
         model.mergeAttributes(ticketService.getMapAndPage(pageNo, pageSize, desc, sort));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
@@ -128,16 +128,16 @@ public class TicketController {
 
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String details(@PathVariable("id") final Long id, Model model) {
-        model.addAttribute("ticketDTO", ticketService.findTicketById(id));
+        model.addAttribute("ticketDTO", ticketService.findById(id));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return "/adminpanel/ticket/details/details";
     }
 
     @RequestMapping(value = "/details/{id}/visit", method = RequestMethod.GET)
     public String detailsVisit(@PathVariable("id") final Long id, Model model) {
-        TicketDataDTO ticketDataDTO = ticketService.findTicketById(id);
+        TicketDataDTO ticketDataDTO = ticketService.findById(id);
         model.addAttribute("ticketDTO", ticketDataDTO);
-        model.addAttribute("visitDTO", visitService.findByTicket(ticketDataDTO.getId()));
+        model.addAttribute("visitDTO", visitService.findByTicketId(ticketDataDTO.getId()));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return "/adminpanel/visit/details";
     }

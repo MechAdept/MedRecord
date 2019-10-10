@@ -32,7 +32,6 @@ import java.util.Map;
  * @copyright 2019 SaM
  */
 
-@Service("TicketService")
 @Transactional
 public class TicketServiceImpl implements TicketService {
     @Autowired
@@ -52,17 +51,17 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional(readOnly = true)
-    public TicketDataDTO findTicketById(final Long id) {
+    public TicketDataDTO findById(final Long id) {
         return ticketConverter.entityToDataDto(ticketRepository.findById(id).orElse(new Ticket()));
     }
 
     @Override
-    public void save(final TicketFormDTO formDTO) {
+    public void create(final TicketFormDTO formDTO) {
         ticketRepository.save(ticketConverter.formDtoToEntity(formDTO));
     }
 
     @Override
-    public void deleteTicket(final Long id) {
+    public void delete(final Long id) {
         ticketRepository.deleteById(id);
     }
 

@@ -19,13 +19,7 @@ import java.util.Map;
  */
 
 @Service
-public interface RoleService {
-    /**
-     * Method for create role.
-     *
-     * @param formDTO RoleFormDTO with data to be set.
-     */
-    void save(RoleFormDTO formDTO);
+public interface RoleService{
 
     /**
      * Method for find role by id.
@@ -35,27 +29,7 @@ public interface RoleService {
      */
     RoleDataDTO findById(Long id);
 
-    List<Role> findRolesById(Long[] ids);
-
-    /**
-     * Method for getting roles from table.
-     *
-     * @return List<RoleDTO>.
-     */
-    List<RoleDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
-
-    /**
-     * Method for delete role by id.
-     *
-     * @param id id of desired role.
-     */
-    void deleteRole(Long id);
-
-    List<RoleDataDTO> getRolesByUser(UserFormDTO formDTO);
+    List<Role> findByIds(Long[] ids);
 
     List<RoleDataDTO> findAll();
-
-    RoleDataDTO findRoleByName(String name);
-
-    Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort); //todo, optimize
 }

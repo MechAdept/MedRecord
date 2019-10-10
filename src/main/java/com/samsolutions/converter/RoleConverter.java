@@ -23,7 +23,6 @@ public class RoleConverter implements DTOConverter<Role, RoleDataDTO, RoleFormDT
         RoleDataDTO target = new RoleDataDTO();
         target.setId(source.getId());
         target.setName(source.getName());
-        target.setDescription(source.getDescription());
         target.setUsers(userConverter.entitiesToDataDtoList(source.getUsers()));
         return target;
     }
@@ -33,7 +32,6 @@ public class RoleConverter implements DTOConverter<Role, RoleDataDTO, RoleFormDT
         Role target = new Role();
         target.setId(source.getId());
         target.setName(source.getName());
-        target.setDescription(source.getDescription());
         try {
             target.setUsers(userRepository.findUsersByIdIn(Arrays.asList(source.getUsers())));
             return target;
@@ -49,7 +47,6 @@ public class RoleConverter implements DTOConverter<Role, RoleDataDTO, RoleFormDT
             RoleDataDTO target = new RoleDataDTO();
             target.setId(source.getId());
             target.setName(source.getName());
-            target.setDescription(source.getDescription());
             targetList.add(target);
         }
         return targetList;

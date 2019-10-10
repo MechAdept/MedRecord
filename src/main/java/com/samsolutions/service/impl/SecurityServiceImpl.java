@@ -29,17 +29,7 @@ public class SecurityServiceImpl implements SecurityService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    @Qualifier("UserDetailsService")
     private UserDetailsService userDetailsService;
-
-    @Override
-    public String findLoggedInUsername() {
-        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
-        if (userDetails instanceof UserDetails) {
-            return ((UserDetails) userDetails).getUsername();
-        }
-        return null;
-    }
 
     @Override
     public void autologin(final String username, final String password) {

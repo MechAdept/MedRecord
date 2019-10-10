@@ -3,8 +3,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<c:url value="/adminpanel/user/edit" var="edit"/>
-<c:url value="/adminpanel/user/edit/setImage" var="setImage"/>
+<c:url value="/adminpanel/user/edit/pass" var="changePass"/>
+<c:url value="/adminpanel/user/edit/image" var="changeImage"/>
+<c:url value="/adminpanel/user/edit/profile" var="changeProfile"/>
+<c:url value="/adminpanel/user/edit/roles" var="changeRoles"/>
 
 <html>
 <head>
@@ -28,8 +30,6 @@
                aria-pressed="true"><spring:message code="button.roles"/></a>
             <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
                aria-pressed="true"><spring:message code="button.users"/></a>
-            <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
-               aria-pressed="true"><spring:message code="button.tickets"/></a>
         </div>
         <div class="col-xs-3"></div>
         <div class="col-xs-3">
@@ -56,161 +56,219 @@
                 </div>
                 <br>
                 <br>
-                <form method="post" action="${setImage}" enctype="multipart/form-data">
-                    <input type="file" id="imgInp" name="file"/>
+                <form method="post" action="${changeImage}" enctype="multipart/form-data">
                     <input type="hidden" value="${userDataDTO.id}" name="id"/>
+                    <input type="file" id="imgInp" name="file"/>
                     <br>
-                    <td><input type="submit" class="form-control btn btn-warning" value="<spring:message code="button.changePhoto"/>"/></td>
+                    <td><input type="submit" class="form-control btn btn-warning"
+                               value="<spring:message code="button.changePhoto"/>"/></td>
                 </form>
             </div>
-            <div class="clearfix"></div>
+            <div class="col-xs-6">
+                <div id="faq" role="tablist" aria-multiselectable="true">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="questionOne">
+                            <h5 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#faq" href="#answerOne" aria-expanded="false"
+                                   aria-controls="answerOne">
+                                    <spring:message code="collapse.updatePassword"/>
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="answerOne" class="panel-collapse collapse" role="tabpanel"
+                             aria-labelledby="questionOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <form:form method="post" modelAttribute="userFormDTO"
+                                                   action="${changePass}">
+                                            <form:input type="password" path="password" class="form-control"
+                                                        placeholder="Password"/>
+                                            <form:errors path="password" cssStyle="color: red;"/>
+                                            <br>
+                                            <form:input type="passwordConfirm" path="passwordConfirm"
+                                                        class="form-control"
+                                                        placeholder="Confirm"/>
+                                            <form:errors path="passwordConfirm" cssStyle="color: red;"/>
+                                            <br>
+                                            <input type="submit" class="form-control"
+                                                   value="<spring:message code="button.create"/>"/>
+                                        </form:form>
+                                    </div>
+                                    <div class="col-xs-2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="questionTwo">
+                            <h5 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#faq" href="#answerTwo"
+                                   aria-expanded="false" aria-controls="answerTwo">
+                                    <spring:message code="collapse.updateRoles"/>
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="answerTwo" class="panel-collapse collapse" role="tabpanel"
+                             aria-labelledby="questionTwo">
+                            <div class="panel-body">
+                                <div class="col-xs-3"></div>
+                                <div class="col-xs-6">
+                                    <form:form modelAttribute="userFormDTO" method="post" action="${changeRoles}">
+                                        <form:hidden path="id" value="${userDataDTO.id}"/>
+                                        <form:select path="rolesId">
+                                            <c:forEach items="${roleDTOList}" var="role">
+                                                <c:choose>
+                                                    <c:when test="${userDataDTO.roles.contains(role)}">
+                                                        <form:option value="${role.id}"
+                                                                     selected="selected">${role.name}</form:option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <form:option value="${role.id}">${role.name}</form:option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </form:select>
+                                        <form:errors path="rolesId" cssStyle="color: red;"/>
+                                        <input type="submit" class="form-control"
+                                               value="<spring:message code="button.save"/>"/>
+                                    </form:form>
+                                </div>
+                                <div class="col-xs-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="questionThree">
+                            <h5 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#faq" href="#answerThree"
+                                   aria-expanded="true" aria-controls="answerThree">
+                                    <spring:message code="collapse.updateProfile"/>
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="answerThree" class="panel-collapse collapse in" role="tabpanel"
+                             aria-labelledby="questionThree">
+                            <div class="panel-body">
+                                <form:form method="post" modelAttribute="userFormDTO" action="${changeProfile}">
+                                    <form:hidden path="id" value="${userDataDTO.id}"/>
+                                    <div class="col-xs-2"></div>
+                                    <div class="col-xs-8">
+                                        <div class="row">
+                                            <div class="col-xs-5">
+                                                <form:label path="name"><spring:message
+                                                        code="text.label.name"/></form:label>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <form:input path="name" value="${userDataDTO.name}" placeholder="Name"
+                                                            cssClass="form-control"/>
+                                                <form:errors path="name" cssStyle="color: red;"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-xs-5">
+                                                <form:label path="surname"><spring:message
+                                                        code="text.label.surname"/></form:label>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <form:input path="surname" value="${userDataDTO.surname}"
+                                                            placeholder="Surname" cssClass="form-control"/>
+                                                <form:errors path="surname" cssStyle="color: red;"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-xs-5">
+                                                <form:label path="patronymic"><spring:message
+                                                        code="text.label.patronymic"/></form:label>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <form:input path="patronymic" value="${userDataDTO.patronymic}"
+                                                            placeholder="patronymic" cssClass="form-control"/>
+                                                <form:errors path="patronymic" cssStyle="color: red;"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-xs-5">
+                                                <form:label path="telephone"><spring:message
+                                                        code="text.label.telephone"/></form:label>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <input id="telephone" class="form-control" name="telephone" type="text"
+                                                       placeholder="${userDataDTO.telephone}"
+                                                       value="${userDataDTO.telephone}">
+                                                <form:errors path="telephone" cssStyle="color: red;"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-xs-5">
+                                                <form:label path="birth"><spring:message
+                                                        code="text.label.birth"/></form:label>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <form:input path="birth" type="date"
+                                                            max="${formatter.format(currentDate)}"
+                                                            value="${formatter.format(userDataDTO.birth)}"/>
+                                                <form:errors path="birth" cssStyle="color: red"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-xs-5">
+                                                <form:label path="sex"><spring:message
+                                                        code="text.label.sex"/></form:label>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <form:select path="sex" cssClass="form-control">
+                                                    <c:if test="${userDataDTO.sex == false}">
+                                                        <form:option value="0" selected="selected"><spring:message
+                                                                code="select.sex.female"/></form:option>
+                                                        <form:option value="1"><spring:message
+                                                                code="select.sex.male"/></form:option>
+                                                    </c:if>
+                                                    <c:if test="${userDataDTO.sex == true}">
+                                                        <form:option value="0"><spring:message
+                                                                code="select.sex.female"/></form:option>
+                                                        <form:option value="1" selected="selected"><spring:message
+                                                                code="select.sex.male"/></form:option>
+                                                    </c:if>
+                                                    <c:if test="${userDataDTO.sex == null}">
+                                                        <form:option value="0"><spring:message
+                                                                code="select.sex.female"/></form:option>
+                                                        <form:option value="1"><spring:message
+                                                                code="select.sex.male"/></form:option>
+                                                    </c:if>
+                                                </form:select>
+                                                <form:errors path="sex" cssStyle="color: red" cssClass="form-control"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-xs-5">
+
+                                            </div>
+                                            <div class="col-xs-5">
+                                                <input type="submit" class="form-control"
+                                                       value="<spring:message code="button.save"/>"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2"></div>
+                                </form:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>
-        <form:form method="post" action="${edit}" modelAttribute="userFormDTO">
-            <form:hidden path="id" value="${userDataDTO.id}"/>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-3">
-                    <td><form:label path="password"><spring:message code="login.password"/></form:label></td>
-                </div>
-                <div class="col-xs-3">
-                    <form:input type="password" path="password" class="form-control" placeholder="Password"/>
-                    <form:errors path="password" cssStyle="color: red;"/>
-                </div>
-                <div class="col-xs-3">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px">
-                <div class="col-xs-3">
-                    <b><form:label path="passwordConfirm"/><spring:message code="form.passwordConfirm"/></b>
-                </div>
-                <div class="col-xs-3">
-                    <form:input type="password" path="passwordConfirm" class="form-control"
-                                placeholder="Confirm your password"/>
-                    <form:errors path="passwordConfirm" cssStyle="color: red"/>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-3">
-                    <td><form:label path="rolesId"><spring:message code="text.label.roles"/></form:label></td>
-                </div>
-                <div class="col-xs-3">
-                    <div class="form-group">
-                        <form:select path="rolesId">
-                            <c:forEach items="${roleDTOList}" var="role">
-                                <c:choose>
-                                    <c:when test="${userDataDTO.roles.contains(role)}">
-                                        <form:option value="${role.id}" selected="selected">${role.name}</form:option>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <form:option value="${role.id}">${role.name}</form:option>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
-                        </form:select>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-3">
-                    <td><form:label path="surname"><spring:message code="text.label.surname"/></form:label></td>
-                </div>
-                <div class="col-xs-3">
-                    <div class="form-group">
-                        <form:input path="surname" class="form-control" placeholder="Surname"
-                                    value="${userDataDTO.surname}"/>
-                        <form:errors path="surname" cssStyle="color: red"/>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-3">
-                    <td><form:label path="name"><spring:message code="text.label.name"/></form:label></td>
-                </div>
-                <div class="col-xs-3">
-                    <div class="form-group">
-                        <form:input path="name" class="form-control" placeholder="Name" value="${userDataDTO.name}"/>
-                        <form:errors path="name" cssStyle="color: red"/>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-3">
-                    <td><form:label path="patronymic"><spring:message code="text.label.patronymic"/></form:label></td>
-                </div>
-                <div class="col-xs-3">
-                    <div class="form-group">
-                        <form:input path="patronymic" class="form-control" placeholder="Patronymic"
-                                    value="${userDataDTO.patronymic}"/>
-                        <form:errors path="patronymic" cssStyle="color: red"/>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-3">
-                    <td><form:label path="telephone"><spring:message code="text.label.telephone"/></form:label></td>
-                </div>
-                <div class="col-xs-3">
-                    <div class="form-group">
-                        <input id="telephone" class="form-control" name="telephone" type="text"
-                               placeholder="+375(__)___-__-__" value="${userDataDTO.telephone}">
-                        <form:errors path="telephone" cssStyle="color: red"/>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-3">
-                    <td><form:label path="birth"><spring:message code="text.label.birth"/></form:label></td>
-                </div>
-                <div class="col-xs-3">
-                    <div class="form-group">
-                        <form:input path="birth" type="date"
-                                    max="${formatter.format(currentDate)}"
-                                    value="${formatter.format(userDataDTO.birth)}"/>
-                        <form:errors path="birth" cssStyle="color: red"/>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-xs-3">
-                    <td><form:label path="sex"><spring:message code="text.label.sex"/></form:label></td>
-                </div>
-                <div class="col-xs-3">
-                    <div class="form-group">
-                        <form:select path="sex">
-                            <c:if test="${userDataDTO.sex == false}">
-                                <form:option value="0" selected="selected"><spring:message
-                                        code="select.sex.female"/></form:option>
-                                <form:option value="1"><spring:message code="select.sex.male"/></form:option>
-                            </c:if>
-                            <c:if test="${userDataDTO.sex == true}">
-                                <form:option value="0"><spring:message code="select.sex.female"/></form:option>
-                                <form:option value="1" selected="selected"><spring:message
-                                        code="select.sex.male"/></form:option>
-                            </c:if>
-                            <c:if test="${userDataDTO.sex == null}">
-                                <form:option value="0"><spring:message code="select.sex.female"/></form:option>
-                                <form:option value="1"><spring:message code="select.sex.male"/></form:option>
-                            </c:if>
-                        </form:select>
-                        <form:errors path="sex" cssStyle="color: red"/>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-3">
-                    <td><input type="submit" class="form-control" value="<spring:message code="button.save"/>"/></td>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </form:form>
     </div>
     <div class="navbar-fixed-bottom row-fluid">
         <div class="navbar-inner">
@@ -222,7 +280,11 @@
 </body>
 <script>
     $(function () {
-        $("#telephone").mask("+375(99)999-99-99");
+        $("#telephone").mask("+375 (99) 999-99-99");
+    });
+
+    $("#imgInp").change(function () {
+        readURL(this);
     });
 
     function readURL(input) {
@@ -236,9 +298,5 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-    $("#imgInp").change(function () {
-        readURL(this);
-    });
 </script>
 </html>

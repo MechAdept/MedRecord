@@ -4,7 +4,7 @@ import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.SecurityService;
 import com.samsolutions.service.UserService;
-import com.samsolutions.validator.UserCreateValidator;
+import com.samsolutions.validator.user.UserCreateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -75,7 +75,7 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        userService.save(userForm);
+        userService.create(userForm);
 
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
         return "redirect:/welcome";

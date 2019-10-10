@@ -1,4 +1,4 @@
-package com.samsolutions.validator;
+package com.samsolutions.validator.user;
 
 import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.service.UserService;
@@ -8,17 +8,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-/**
- * Validator for registration form.
- *
- * @author Vladislav Brazovskij <u.brazouski@sam-solutions.com>
- * @package com.samsolutions.validator
- * @link http ://sam-solutions.com/
- * @copyright 2019 SaM
- */
-
 @Component
-public class UserCreateValidator implements Validator {
+public class UserEditValidator implements Validator {
 
     @Autowired
     private UserService userService;
@@ -29,19 +20,10 @@ public class UserCreateValidator implements Validator {
     }
 
     @Override
-    public void validate(final Object o, final Errors errors) {
+    public void validate(Object o, Errors errors) {
         UserFormDTO user = (UserFormDTO) o;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "notEmpty");
-        if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
-            errors.rejectValue("username", "size.userForm.username");
-        }
-        if (userService.findByUsername(user.getUsername()) != null) {
-            errors.rejectValue("username", "duplicate.userForm.username");
-        }
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "notEmpty");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
+        if (user.getPassword().length() < 8 || user.getPassword().length() > 32 && user.getPassword().length() > 1) {
             errors.rejectValue("password", "size.userForm.password");
         }
 
@@ -49,22 +31,27 @@ public class UserCreateValidator implements Validator {
             errors.rejectValue("passwordConfirm", "diff.userForm.passwordConfirm");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"surname","notEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "surname", "notEmpty");
         if (user.getSurname().length() < 2 || user.getPassword().length() > 32) {
             errors.rejectValue("surname", "size.userForm.surname");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"name","notEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "surname", "notEmpty");
+        if (user.getSurname().length() < 2 || user.getPassword().length() > 32) {
+            errors.rejectValue("surname", "size.userForm.surname");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "notEmpty");
         if (user.getSurname().length() < 2 || user.getPassword().length() > 32) {
             errors.rejectValue("name", "size.userForm.name");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"birth","notEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birth", "notEmpty");
         if (user.getSurname().length() < 2 || user.getPassword().length() > 32) {
             errors.rejectValue("name", "size.userForm.name");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"sex","notEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "sex", "notEmpty");
 
         if (user.getRolesId().length < 1) {
             errors.rejectValue("rolesId", "size.userForm.rolesId");

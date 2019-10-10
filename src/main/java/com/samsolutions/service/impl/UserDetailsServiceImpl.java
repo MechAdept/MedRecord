@@ -27,7 +27,6 @@ import java.util.Set;
  * @copyright 2019 SaM
  */
 
-@Service("UserDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired

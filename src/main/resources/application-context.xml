@@ -10,7 +10,6 @@
     <context:component-scan base-package="com.samsolutions"/>
     <jpa:repositories base-package="com.samsolutions.repository" entity-manager-factory-ref="sessionFactory"/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
-    <mvc:resources mapping="/img/**" location="/resources/img/"/>
 
     <context:annotation-config/>
 

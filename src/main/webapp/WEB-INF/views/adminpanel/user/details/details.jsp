@@ -98,7 +98,7 @@
             <div class="col-xs-3">
                 <h4><b><spring:message code="text.label.roles"/>:</b></h4>
                 <c:forEach items="${userDataDTO.roles}" var="role">
-                    <h4><b>${role.description}</b></h4>
+                    <h4><b><spring:message code="${role.name}"/></b></h4>
                 </c:forEach>
             </div>
         </div>
