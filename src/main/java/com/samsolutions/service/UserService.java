@@ -33,13 +33,11 @@ public interface UserService extends IEntity<UserDataDTO, UserFormDTO> {
 
     UserDataDTO findWithRolesById(Long id);
 
-    void deleteRoleFromUserById(Long userId, Long RoleId);
-
     List<UserDataDTO> findDoctors();
 
     List<UserDataDTO> findPatients();
 
-    void saveImage(Long id, MultipartFile file) throws IOException;
+    void updatePhoto(Long id, MultipartFile file) throws IOException;
 
     List<UserDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
@@ -47,11 +45,9 @@ public interface UserService extends IEntity<UserDataDTO, UserFormDTO> {
 
     Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
-    void updatePassword(Long id, String password);
+    void updatePassword(UserFormDTO formDTO);
 
-    void updatePhoto(Long id, MultipartFile file);
+    void updateProfile(UserFormDTO formDTO);
 
-    void updateProfile(Long id, UserFormDTO formDTO);
-
-    void updateRoles(Long id, UserFormDTO formDTO);
+    void updateRoles(UserFormDTO formDTO);
 }

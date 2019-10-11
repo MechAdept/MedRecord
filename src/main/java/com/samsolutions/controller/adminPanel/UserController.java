@@ -7,9 +7,10 @@ import com.samsolutions.service.RoleService;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
 import com.samsolutions.validator.user.UserCreateValidator;
-import com.samsolutions.validator.user.UserEditValidator;
+import com.samsolutions.validator.user.UserPasswordValidator;
+import com.samsolutions.validator.user.UserRolesValidator;
+import com.samsolutions.validator.user.UserProfileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,12 +39,6 @@ import java.util.HashSet;
 public class UserController {
 
     @Autowired
-    UserCreateValidator userCreateValidator;
-
-    @Autowired
-    UserEditValidator userEditValidator;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -55,8 +50,17 @@ public class UserController {
     @Autowired
     private HealthService healthService;
 
-    @Value("${project.upload.path}")
-    private String uploadPath;
+    @Autowired
+    UserCreateValidator userCreateValidator;
+
+    @Autowired
+    UserProfileValidator userProfileValidator;
+
+    @Autowired
+    UserPasswordValidator userPasswordValidator;
+
+    @Autowired
+    UserRolesValidator userRolesValidator;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute final UserFormDTO userFormDTO, Model model) {
@@ -84,12 +88,6 @@ public class UserController {
         }
         userService.create(userFormDTO);
         return "redirect:/adminpanel/user";
-    }
-
-    @RequestMapping(value = "/edit/image", method = RequestMethod.POST)
-    public String updateImage(@RequestParam("id") String id, @RequestParam("file") MultipartFile file) throws IOException {
-        userService.saveImage(Long.parseLong(id), file);
-        return "redirect:/adminpanel/user/details/" + id;
     }
 
     /**
@@ -133,7 +131,7 @@ public class UserController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(@ModelAttribute("userFormDTO") final UserFormDTO userFormDTO,
                        final BindingResult bindingResult, final Model model) {
-        userEditValidator.validate(userFormDTO, bindingResult);
+        userProfileValidator.validate(userFormDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("userDataDTO", userService.findWithRolesById(userFormDTO.getId()));
             model.addAttribute("roleDTOList", roleService.findAll());
@@ -141,8 +139,58 @@ public class UserController {
             model.addAttribute("currentDate", new Date());
             return "adminpanel/user/edit";
         }
-        userService.create(userFormDTO);
         return "redirect:/adminpanel/user/details" + userFormDTO.getId();
+    }
+
+    @RequestMapping(value = "/edit/photo", method = RequestMethod.POST)
+    public String updatePhoto(@RequestParam("id") String id, @RequestParam("file") MultipartFile file) throws IOException {
+        userService.updatePhoto(Long.parseLong(id), file);
+        return "redirect:/adminpanel/user/details/" + id;
+    }
+
+    @RequestMapping(value = "/edit/pass", method = RequestMethod.POST)
+    public String updatePassword(@ModelAttribute("userFormDTO") final UserFormDTO userFormDTO,
+                                 final BindingResult bindingResult, Model model) {
+        userPasswordValidator.validate(userFormDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userDataDTO", userService.findWithRolesById(userFormDTO.getId()));
+            model.addAttribute("roleDTOList", roleService.findAll());
+            model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+            model.addAttribute("currentDate", new Date());
+            return "adminpanel/user/edit";
+        }
+        userService.updatePassword(userFormDTO);
+        return "redirect:/adminpanel/user/details/" + userFormDTO.getId();
+    }
+
+    @RequestMapping(value = "/edit/roles", method = RequestMethod.POST)
+    public String updateRoles(@ModelAttribute("userFormDTO") final UserFormDTO userFormDTO,
+                              final BindingResult bindingResult, Model model) {
+        userRolesValidator.validate(userFormDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userDataDTO", userService.findWithRolesById(userFormDTO.getId()));
+            model.addAttribute("roleDTOList", roleService.findAll());
+            model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+            model.addAttribute("currentDate", new Date());
+            return "adminpanel/user/edit";
+        }
+        userService.updateRoles(userFormDTO);
+        return "redirect:/adminpanel/user/details/" + userFormDTO.getId();
+    }
+
+    @RequestMapping(value = "edit/profile",method = RequestMethod.POST)
+    public String updateProfile(@ModelAttribute("userFormDTO") final UserFormDTO userFormDTO,
+                                final BindingResult bindingResult, Model model) {
+        userProfileValidator.validate(userFormDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userDataDTO", userService.findWithRolesById(userFormDTO.getId()));
+            model.addAttribute("roleDTOList", roleService.findAll());
+            model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+            model.addAttribute("currentDate", new Date());
+            return "adminpanel/user/edit";
+        }
+        userService.updateProfile(userFormDTO);
+        return "redirect:/adminpanel/user/details/" + userFormDTO.getId();
     }
 
     /**
@@ -169,14 +217,6 @@ public class UserController {
     public String detailsRole(@PathVariable(value = "id") final Long id, Model model) {
         model.addAttribute("userDTO", userService.findWithRolesById(id));
         return "/adminpanel/user/details/roles";
-    }
-
-    @RequestMapping(value = "/details/{id}/roles/delete/{roleid}", method = RequestMethod.GET)
-    public String detailsRoleDelete(@PathVariable(value = "id") final Long id,
-                                    @PathVariable(value = "roleid") final Long roleId, Model model) {
-        userService.deleteRoleFromUserById(id, roleId);
-        model.addAttribute("userDTO", userService.findWithRolesById(id));
-        return "adminpanel/user/details/roles";
     }
 
     @RequestMapping(value = "/details/{id}/tickets", method = RequestMethod.GET)

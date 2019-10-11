@@ -5,10 +5,11 @@ import com.samsolutions.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 /**
  * The User repository provides ready-made methods for working with user table.
@@ -27,6 +28,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param username username to be set.
      * @return User
      */
+    @Query(value = "select u from User u inner join u.roles where u.username = ?1")
     User findByUsername(String username);
 
     Long countUsersByRoles(Role role);
@@ -40,4 +42,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findUsersByIdIn(List<Long> ids);
 
     List<User> findByRolesInOrderById(List<Role> roles);
+
+    @Query(value = "select u from User u inner join u.roles where u.id = ?1")
+    User getOneWithRoles(Long id);
 }

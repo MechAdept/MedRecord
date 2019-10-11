@@ -10,7 +10,8 @@ import com.samsolutions.repository.UserRepository;
 import com.samsolutions.roles.Roles;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.UserService;
-import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -40,9 +42,6 @@ import java.util.*;
 @Transactional
 @PropertySource(value = "classpath:/properties/application.properties")
 public class UserServiceImpl implements UserService {
-
-    @Value("${project.upload.path}")
-    String projectUploadPath;
 
     @Value("${server.upload.path}")
     String serverUploadPath;
@@ -63,6 +62,8 @@ public class UserServiceImpl implements UserService {
     @Qualifier("encoder")
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
     public void create(final UserFormDTO formDTO) {
         User user = userConverter.formDtoToEntity(formDTO);
@@ -74,11 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User findByUsername(final String username) {
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
-            user.setRoles(roleRepository.getRolesByUsers(user));
-        }
-        return user;
+        return userRepository.findByUsername(username);
     }
 
     @Override
@@ -100,26 +97,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDataDTO findWithRolesById(Long id) {
-        User user = userRepository.findById(id).orElse(new User());
-        user.setRoles(roleRepository.getRolesByUsers(user));
+        User user = userRepository.getOneWithRoles(id);
         return userConverter.entityToDataDto(user);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserDataDTO findById(final Long id) {
-        User user = userRepository.findById(id).orElse(new User());
+        User user = userRepository.getOne(id);
         return userConverter.entityToDataDto(user);
-    }
-
-    @Override
-    public void deleteRoleFromUserById(Long userId, Long roleId) {
-        User user = userRepository.getOne(userId);
-        Role role = roleRepository.getOne(roleId);
-        List<Role> roleDTOList = user.getRoles();
-        roleDTOList.remove(role);
-        user.setRoles(roleDTOList);
-        userRepository.save(user);
     }
 
     @Override
@@ -138,7 +124,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<UserDataDTO> getMapAndPageByPatient(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        Role role = roleRepository.findRoleByName("ROLE_PATIENT");
+        Role role = roleRepository.findRoleByName(Roles.ROLE_PATIENT.name());
         return getPageByRole(role, pageNo, pageSize, desc, sort);
     }
 
@@ -164,63 +150,69 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveImage(Long id, MultipartFile file) {
+    public void updatePhoto(Long id, MultipartFile file) {
         User user = userRepository.getOne(id);
-        MultipartFile secondFile = file;
         if (file != null) {
-            File projectUploadDir = new File(projectUploadPath);
             File serverUploadDir = new File(serverUploadPath);
-            if (projectUploadDir.exists()) {
-                projectUploadDir.mkdir();
-            }
             if (serverUploadDir.exists()) {
                 serverUploadDir.mkdir();
             }
             String uuidFile = UUID.randomUUID().toString();
             String resultFileName = uuidFile + "." + file.getOriginalFilename();
             try {
-                file.transferTo(new File(projectUploadPath + "/" + resultFileName));
-                File copied = new File( serverUploadPath + "/" + resultFileName);
-                FileUtils.copyFile(new File(projectUploadPath + "/" + resultFileName), copied);
-                //todo: add file delete
-                user.setImg(resultFileName);
+                File serverFile = new File(serverUploadPath + "/" + user.getImg());
+                if (serverFile.exists()) {
+                    if (serverFile.delete()) {
+                        file.transferTo(new File(serverUploadPath + "/" + resultFileName));
+                        user.setImg(resultFileName);
+                        userRepository.save(user);
+                        logger.debug(serverUploadPath + "/" + user.getImg() + " user img successfully update");
+                    }
+                } else {
+                    file.transferTo(new File(serverUploadPath + "/" + resultFileName));
+                    user.setImg(resultFileName);
+                    userRepository.save(user);
+                    logger.debug(serverUploadPath + "/" + user.getImg() + " user img successfully update");
+                }
             } catch (IOException e) {
-                System.out.println("OMG");
+                logger.debug(serverUploadPath + "/" + resultFileName + " save error");
             }
         }
+    }
+
+    @Override
+    public void updatePassword(UserFormDTO userFormDTO) {
+        User user = userRepository.getOneWithRoles(userFormDTO.getId());
+        user.setPassword(bCryptPasswordEncoder.encode(userFormDTO.getPassword()));
         userRepository.save(user);
-    }
-
-    @Override
-    public void updatePassword(Long id, String password) {
 
     }
 
     @Override
-    public void updatePhoto(Long id, MultipartFile file) {
-
+    public void updateProfile(UserFormDTO formDTO) {
+        User entity = userRepository.getOneWithRoles(formDTO.getId());
+        entity.setName(formDTO.getName());
+        entity.setSurname(formDTO.getSurname());
+        entity.setPatronymic(formDTO.getPatronymic());
+        entity.setTelephone(formDTO.getTelephone());
+        entity.setBirth(LocalDate.parse(formDTO.getBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        entity.setSex(formDTO.getSex());
+        entity.setSex(formDTO.getSex());
+        userRepository.save(entity);
     }
 
     @Override
-    public void updateProfile(Long id, UserFormDTO formDTO) {
-
-    }
-
-    @Override
-    public void updateRoles(Long id, UserFormDTO formDTO) {
-
+    public void updateRoles(UserFormDTO formDTO) {
+        User user = userRepository.getOneWithRoles(formDTO.getId());
+        user.setRoles(roleRepository.findRolesByIdIn(Arrays.asList(formDTO.getRolesId())));
+        userRepository.save(user);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UserDataDTO> findDoctors() {
-        List<Role> allRoles = new ArrayList<>(roleRepository.findAll());
-        List<Role> systemRoles = new ArrayList<>();
-        for (Roles role : Roles.values()) {
-            systemRoles.add(roleRepository.findRoleByName(role.getAuthority()));
-        }
-        allRoles.removeAll(systemRoles);
-        return userConverter.entitiesToDataDtoList(userRepository.findByRolesInOrderById(new ArrayList<>(allRoles)));
+        Role role = roleRepository.findRoleByName(Roles.ROLE_DOCTOR.name());
+        return userConverter.entitiesToDataDtoList(userRepository.getAllByRolesIs(role));
     }
 
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {

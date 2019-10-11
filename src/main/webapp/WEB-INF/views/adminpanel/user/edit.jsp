@@ -4,23 +4,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <c:url value="/adminpanel/user/edit/pass" var="changePass"/>
-<c:url value="/adminpanel/user/edit/image" var="changeImage"/>
+<c:url value="/adminpanel/user/edit/photo" var="changeImage"/>
 <c:url value="/adminpanel/user/edit/profile" var="changeProfile"/>
 <c:url value="/adminpanel/user/edit/roles" var="changeRoles"/>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <style>
-        <%@include file="/resources/css/bootstrap.min.css"%>
-        <%@include file="/resources/css/common.css"%>
-    </style>
     <title><spring:message code="text.title.userEdit"/></title>
     <script type="text/javascript">
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
         <%@include file="/resources/js/bootstrap.min.js"%>
         <%@include file="/resources/js/jquery.maskedinput.min.js"%>
+        <%@include file="/resources/js/js.cookie.min.js"%>
     </script>
+    <style>
+        <%@include file="/resources/css/bootstrap.min.css"%>
+        <%@include file="/resources/css/common.css"%>
+    </style>
 </head>
 <body>
 <div class="container">
@@ -65,19 +66,16 @@
                 </form>
             </div>
             <div class="col-xs-6">
-                <div id="faq" role="tablist" aria-multiselectable="true">
-
+                <div class="panel-group" id="accordion">
                     <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="questionOne">
+                        <div class="panel-heading">
                             <h5 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#faq" href="#answerOne" aria-expanded="false"
-                                   aria-controls="answerOne">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                                     <spring:message code="collapse.updatePassword"/>
                                 </a>
                             </h5>
                         </div>
-                        <div id="answerOne" class="panel-collapse collapse" role="tabpanel"
-                             aria-labelledby="questionOne">
+                        <div id="collapseOne" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-2">
@@ -85,6 +83,7 @@
                                     <div class="col-xs-8">
                                         <form:form method="post" modelAttribute="userFormDTO"
                                                    action="${changePass}">
+                                            <form:hidden path="id" value="${userDataDTO.id}"/>
                                             <form:input type="password" path="password" class="form-control"
                                                         placeholder="Password"/>
                                             <form:errors path="password" cssStyle="color: red;"/>
@@ -95,7 +94,7 @@
                                             <form:errors path="passwordConfirm" cssStyle="color: red;"/>
                                             <br>
                                             <input type="submit" class="form-control"
-                                                   value="<spring:message code="button.create"/>"/>
+                                                   value="<spring:message code="button.save"/>"/>
                                         </form:form>
                                     </div>
                                     <div class="col-xs-2">
@@ -106,16 +105,14 @@
                     </div>
 
                     <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="questionTwo">
+                        <div class="panel-heading">
                             <h5 class="panel-title">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#faq" href="#answerTwo"
-                                   aria-expanded="false" aria-controls="answerTwo">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                                     <spring:message code="collapse.updateRoles"/>
                                 </a>
                             </h5>
                         </div>
-                        <div id="answerTwo" class="panel-collapse collapse" role="tabpanel"
-                             aria-labelledby="questionTwo">
+                        <div id="collapseTwo" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <div class="col-xs-3"></div>
                                 <div class="col-xs-6">
@@ -144,16 +141,15 @@
                         </div>
                     </div>
                     <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="questionThree">
+                        <div class="panel-heading">
                             <h5 class="panel-title">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#faq" href="#answerThree"
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
                                    aria-expanded="true" aria-controls="answerThree">
                                     <spring:message code="collapse.updateProfile"/>
                                 </a>
                             </h5>
                         </div>
-                        <div id="answerThree" class="panel-collapse collapse in" role="tabpanel"
-                             aria-labelledby="questionThree">
+                        <div id="collapseThree" class="panel-collapse collapse in" >
                             <div class="panel-body">
                                 <form:form method="post" modelAttribute="userFormDTO" action="${changeProfile}">
                                     <form:hidden path="id" value="${userDataDTO.id}"/>
@@ -293,10 +289,29 @@
 
             reader.onload = function (e) {
                 $('#blah').attr('src', e.target.result);
+                $('#blah').css('visibility', 'visible')
             }
-
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+    $(document).ready(function () {
+        //when a group is shown, save it as the active accordion group
+        $("#accordion").on('shown.bs.collapse', function () {
+            var active = $("#accordion .in").attr('id');
+            $.cookie('activeAccordionGroup', active);
+            //  alert(active);
+        });
+        $("#accordion").on('hidden.bs.collapse', function () {
+            $.removeCookie('activeAccordionGroup');
+        });
+        var last = $.cookie('activeAccordionGroup');
+        if (last != null) {
+            //remove default collapse settings
+            $("#accordion .panel-collapse").removeClass('in');
+            //show the account_last visible group
+            $("#" + last).addClass("in");
+        }
+    });
 </script>
 </html>

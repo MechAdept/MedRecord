@@ -59,9 +59,15 @@ public class UserCreateValidator implements Validator {
             errors.rejectValue("name", "size.userForm.name");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"birth","notEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"patronymic","notEmpty");
         if (user.getSurname().length() < 2 || user.getPassword().length() > 32) {
-            errors.rejectValue("name", "size.userForm.name");
+            errors.rejectValue("patronymic", "size.userForm.patronymic");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birth", "notEmpty");
+
+        if (user.getTelephone().length() < 17 && user.getTelephone().length() > 0) {
+            errors.rejectValue("telephone", "size.userForm.telephone");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors,"sex","notEmpty");

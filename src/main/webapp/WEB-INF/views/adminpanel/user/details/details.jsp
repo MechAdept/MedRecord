@@ -17,7 +17,6 @@
     <script>
         <%@include file="/resources/js/bootstrap.min.js"%>
         <%@include file="/resources/js/jquery-3.4.1.min.js"%>
-        <%--        <%@include file="/resources/js/profile.js"%>--%>
     </script>
 </head>
 <body>
@@ -29,8 +28,6 @@
                aria-pressed="true"><spring:message code="button.roles"/></a>
             <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
                aria-pressed="true"><spring:message code="button.users"/></a>
-            <a href="<c:url value="/adminpanel/ticket"/>" class="btn btn-info" role="button"
-               aria-pressed="true"><spring:message code="button.tickets"/></a>
         </div>
         <div class="col-xs-3"></div>
         <div class="col-xs-3">
