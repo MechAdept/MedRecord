@@ -37,7 +37,7 @@ public class VisitServiceImpl implements VisitService {
     UserConverter userConverter;
 
     @Override
-    public void create(final VisitFormDTO source) {
+    public void save(final VisitFormDTO source) {
         Visit target = visitConverter.formDtoToEntity(source);
         visitRepository.save(target);
     }

@@ -25,5 +25,5 @@ public interface IEntity<A, B> {
      *
      * @param form formDataDTO with parameters to be set.
      */
-    void create(B form);
+    void save(B form);
 }

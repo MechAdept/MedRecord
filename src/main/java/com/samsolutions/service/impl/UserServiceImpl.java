@@ -1,6 +1,7 @@
 package com.samsolutions.service.impl;
 
 import com.samsolutions.converter.UserConverter;
+import com.samsolutions.dto.data.RoleDataDTO;
 import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.Role;
@@ -21,6 +22,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,10 +68,17 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
-    public void create(final UserFormDTO formDTO) {
+    public void save(final UserFormDTO formDTO) {
         User user = userConverter.formDtoToEntity(formDTO);
         user.setPassword(bCryptPasswordEncoder.encode(formDTO.getPassword()));
         user.setRoles(roleService.findByIds(formDTO.getRolesId()));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void registration(final UserFormDTO formDTO) {
+        User user = userConverter.formDtoToEntity(formDTO);
+        user.setPassword(bCryptPasswordEncoder.encode(formDTO.getPassword()));
         userRepository.save(user);
     }
 
@@ -207,6 +217,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roleRepository.findRolesByIdIn(Arrays.asList(formDTO.getRolesId())));
         userRepository.save(user);
     }
+
 
     @Override
     @Transactional(readOnly = true)

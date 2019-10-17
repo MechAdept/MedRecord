@@ -62,7 +62,7 @@ public class VisitController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(@ModelAttribute final VisitFormDTO visitFormDTO) {
-        visitService.create(visitFormDTO);
+        visitService.save(visitFormDTO);
         return "redirect: /adminpanel/visit";
     }
 

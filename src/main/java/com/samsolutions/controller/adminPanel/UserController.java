@@ -86,7 +86,7 @@ public class UserController {
             model.addAttribute("currentDate", new Date());
             return "adminpanel/user/create";
         }
-        userService.create(userFormDTO);
+        userService.save(userFormDTO);
         return "redirect:/adminpanel/user";
     }
 
@@ -210,7 +210,7 @@ public class UserController {
         UserDataDTO userDataDTO = userService.findWithRolesById(id);
         model.addAttribute("userDataDTO", userDataDTO);
         model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
-        return "adminpanel/user/details/details";
+        return "adminpanel/user/details";
     }
 
     @RequestMapping(value = "/details/{id}/roles", method = RequestMethod.GET)
@@ -228,14 +228,14 @@ public class UserController {
         model.mergeAttributes(ticketService.getMapAndPageByUser(id, pageNo, pageSize, desc, sort));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         model.addAttribute("userDTO", userService.findById(id));
-        return "/adminpanel/user/details/tickets";
+        return "adminpanel/user/details/tickets/tickets";
     }
 
     @RequestMapping(value = "/details/{id}/health", method = RequestMethod.GET)
     public String detailsHealth(@PathVariable(value = "id") final Long id, Model model) {
-        model.addAttribute("healthDTO", healthService.findByPatientId(id));
-        model.addAttribute("userDTO", userService.findById(id));
-        return "adminpanel/health/details";
+        model.addAttribute("healthDataDTO", healthService.findByPatientId(id));
+        model.addAttribute("userDataDTO", userService.findById(id));
+        return "adminpanel/user/details/health/read";
     }
 
     @RequestMapping(value = "/details/{id}/tickets/delete/{ticketId}", method = RequestMethod.GET)
@@ -248,6 +248,6 @@ public class UserController {
         ticketService.delete(ticketId);
         model.mergeAttributes(ticketService.getMapAndPageByUser(id, pageNo, pageSize, desc, sort));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        return "/adminpanel/user/details/tickets";
+        return "adminpanel/user/details/tickets/tickets";
     }
 }

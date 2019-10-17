@@ -1,6 +1,7 @@
 package com.samsolutions.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Health Entity.
@@ -19,7 +20,7 @@ public class Health {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="patient_id")
     private User patient;
 
@@ -28,12 +29,6 @@ public class Health {
 
     @Column(name = "weight")
     private Long weight;
-
-    @Column(name = "skin")
-    private String skin;
-
-    @Column(name = "race")
-    private String race;
 
     @Column(name = "chest")
     private Long chest;
@@ -104,22 +99,6 @@ public class Health {
 
     public void setWeight(Long weight) {
         this.weight = weight;
-    }
-
-    public String getSkin() {
-        return skin;
-    }
-
-    public void setSkin(String skin) {
-        this.skin = skin;
-    }
-
-    public String getRace() {
-        return race;
-    }
-
-    public void setRace(String race) {
-        this.race = race;
     }
 
     public Long getChest() {
@@ -226,5 +205,30 @@ public class Health {
         this.patient = patient;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Health health = (Health) o;
+        return Objects.equals(id, health.id) &&
+                Objects.equals(height, health.height) &&
+                Objects.equals(weight, health.weight) &&
+                Objects.equals(chest, health.chest) &&
+                Objects.equals(waist, health.waist) &&
+                Objects.equals(hips, health.hips) &&
+                Objects.equals(nervous, health.nervous) &&
+                Objects.equals(constitution, health.constitution) &&
+                Objects.equals(musculature, health.musculature) &&
+                Objects.equals(leye, health.leye) &&
+                Objects.equals(reye, health.reye) &&
+                Objects.equals(blood, health.blood) &&
+                Objects.equals(alcohol, health.alcohol) &&
+                Objects.equals(smoke, health.smoke) &&
+                Objects.equals(drugs, health.drugs);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, height, weight, chest, waist, hips, nervous, constitution, musculature, leye, reye, blood, alcohol, smoke, drugs);
+    }
 }

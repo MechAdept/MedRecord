@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public interface HealthService extends IEntity<HealthDataDTO, HealthFormDTO> {
 
-    void create(HealthFormDTO formDTO);
+    void save(HealthFormDTO formDTO);
 
     void deleteHealthByPatientId(Long id);
 

@@ -43,7 +43,7 @@ public class TicketController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(@ModelAttribute(name = "ticketDTO") final TicketFormDTO ticketFormDTO, Model model) {
-        ticketService.create(ticketFormDTO);
+        ticketService.save(ticketFormDTO);
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         model.addAttribute("userDataDto", userService.findById(ticketFormDTO.getPatientId()));
         return "/adminpanel/ticket/";
@@ -103,7 +103,7 @@ public class TicketController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String edit(@ModelAttribute final TicketFormDTO ticketFormDTO) {
-        ticketService.create(ticketFormDTO);
+        ticketService.save(ticketFormDTO);
         return "redirect: /adminpanel/ticket";
     }
 

@@ -1,5 +1,6 @@
 package com.samsolutions.repository;
 
+import com.samsolutions.entity.Health;
 import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
 import org.springframework.data.domain.Page;
@@ -45,4 +46,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "select u from User u inner join u.roles where u.id = ?1")
     User getOneWithRoles(Long id);
+
+    @Query(value = "select u from User u inner join u.roles inner join u.health inner join u.doctorTicket inner join u.patientTicket where u.id = ?1")
+    User fetchOne(Long id);
+
+    @Query(value = "select u from User u inner join u.health where u.id = ?1")
+    User getOneWithHealth(Long id);
 }

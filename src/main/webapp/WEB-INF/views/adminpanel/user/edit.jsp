@@ -149,7 +149,7 @@
                                 </a>
                             </h5>
                         </div>
-                        <div id="collapseThree" class="panel-collapse collapse in" >
+                        <div id="collapseThree" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <form:form method="post" modelAttribute="userFormDTO" action="${changeProfile}">
                                     <form:hidden path="id" value="${userDataDTO.id}"/>

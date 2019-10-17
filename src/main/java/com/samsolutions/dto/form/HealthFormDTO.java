@@ -10,19 +10,15 @@ public class HealthFormDTO {
 
     private Long patientId;
 
-    private Long height;
+    private String height;
 
-    private Long weight;
+    private String weight;
 
-    private String skin;
+    private String chest;
 
-    private String race;
+    private String waist;
 
-    private Long chest;
-
-    private Long waist;
-
-    private Long hips;
+    private String hips;
 
     private String nervous;
 
@@ -30,9 +26,9 @@ public class HealthFormDTO {
 
     private String musculature;
 
-    private Float leye;
+    private String leye;
 
-    private Float reye;
+    private String reye;
 
     private String blood;
 
@@ -58,59 +54,43 @@ public class HealthFormDTO {
         this.patientId = patientId;
     }
 
-    public Long getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(Long height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public Long getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(Long weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
-    public String getSkin() {
-        return skin;
-    }
-
-    public void setSkin(String skin) {
-        this.skin = skin;
-    }
-
-    public String getRace() {
-        return race;
-    }
-
-    public void setRace(String race) {
-        this.race = race;
-    }
-
-    public Long getChest() {
+    public String getChest() {
         return chest;
     }
 
-    public void setChest(Long chest) {
+    public void setChest(String chest) {
         this.chest = chest;
     }
 
-    public Long getWaist() {
+    public String getWaist() {
         return waist;
     }
 
-    public void setWaist(Long waist) {
+    public void setWaist(String waist) {
         this.waist = waist;
     }
 
-    public Long getHips() {
+    public String getHips() {
         return hips;
     }
 
-    public void setHips(Long hips) {
+    public void setHips(String hips) {
         this.hips = hips;
     }
 
@@ -138,19 +118,19 @@ public class HealthFormDTO {
         this.musculature = musculature;
     }
 
-    public Float getLeye() {
+    public String getLeye() {
         return leye;
     }
 
-    public void setLeye(Float leye) {
+    public void setLeye(String leye) {
         this.leye = leye;
     }
 
-    public Float getReye() {
+    public String getReye() {
         return reye;
     }
 
-    public void setReye(Float reye) {
+    public void setReye(String reye) {
         this.reye = reye;
     }
 
@@ -195,8 +175,6 @@ public class HealthFormDTO {
                 Objects.equals(patientId, that.patientId) &&
                 Objects.equals(height, that.height) &&
                 Objects.equals(weight, that.weight) &&
-                Objects.equals(skin, that.skin) &&
-                Objects.equals(race, that.race) &&
                 Objects.equals(chest, that.chest) &&
                 Objects.equals(waist, that.waist) &&
                 Objects.equals(hips, that.hips) &&
@@ -213,6 +191,6 @@ public class HealthFormDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, patientId, height, weight, skin, race, chest, waist, hips, nervous, constitution, musculature, leye, reye, blood, alcohol, smoke, drugs);
+        return Objects.hash(id, patientId, height, weight, chest, waist, hips, nervous, constitution, musculature, leye, reye, blood, alcohol, smoke, drugs);
     }
 }

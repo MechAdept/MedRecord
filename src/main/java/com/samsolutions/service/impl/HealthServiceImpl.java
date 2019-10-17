@@ -54,7 +54,7 @@ public class HealthServiceImpl implements HealthService {
     }
 
     @Override
-    public void create(final HealthFormDTO formDTO) {
+    public void save(final HealthFormDTO formDTO) {
         Health health = healthConverter.formDtoToEntity(formDTO);
         healthRepository.save(health);
     }
@@ -77,6 +77,6 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void delete(Long id) {
-        healthRepository.deleteById(id);
+        healthRepository.deleteHealthByPatient(userRepository.getOne(id));
     }
 }

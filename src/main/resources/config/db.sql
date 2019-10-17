@@ -29,7 +29,6 @@ CREATE TABLE `health` (
   `patient_id` int(11) NOT NULL,
   `height` int(11) NOT NULL,
   `weight` int(11) NOT NULL,
-  `skin` varchar(45) NOT NULL,
   `race` varchar(45) NOT NULL,
   `chest` int(11) NOT NULL,
   `waist` int(11) NOT NULL,

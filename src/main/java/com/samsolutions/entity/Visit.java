@@ -47,7 +47,7 @@ public class Visit {
     private String treatment;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket", referencedColumnName = "id")
+    @JoinColumn(name = "ticket_id", referencedColumnName = "id")
     private Ticket ticket;
 
     /**

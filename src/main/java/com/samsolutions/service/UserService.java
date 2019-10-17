@@ -3,6 +3,7 @@ package com.samsolutions.service;
 import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.dto.form.TicketFormDTO;
 import com.samsolutions.dto.form.UserFormDTO;
+import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,8 @@ import java.util.Map;
 
 @Service
 public interface UserService extends IEntity<UserDataDTO, UserFormDTO> {
+
+    void registration(UserFormDTO formDTO);
 
     /**
      * Method for find user by username.

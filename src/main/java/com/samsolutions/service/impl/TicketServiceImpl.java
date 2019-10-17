@@ -56,7 +56,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void create(final TicketFormDTO formDTO) {
+    public void save(final TicketFormDTO formDTO) {
         ticketRepository.save(ticketConverter.formDtoToEntity(formDTO));
     }
 

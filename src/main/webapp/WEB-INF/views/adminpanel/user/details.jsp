@@ -59,20 +59,20 @@
             <div class="col-xs-6">
                 <div class="row"></div>
                 <div class="row">
-                    <h4><b>ФИО: ${userDataDTO.surname} ${userDataDTO.name} ${userDataDTO.patronymic}</b></h4>
+                    <h4><b><spring:message code="text.label.fullname"/>: ${userDataDTO.surname} ${userDataDTO.name} ${userDataDTO.patronymic}</b></h4>
                 </div>
                 <div class="row">
-                    <h4><b>Телефон: ${userDataDTO.telephone}</b></h4>
+                    <h4><b><spring:message code="text.label.telephone"/>: ${userDataDTO.telephone}</b></h4>
                 </div>
                 <div class="row">
-                    <h4><b>Дата рождения: ${formatter.format(userDataDTO.birth)}</b></h4>
+                    <h4><b><spring:message code="text.label.birth"/>: ${formatter.format(userDataDTO.birth)}</b></h4>
                 </div>
                 <div class="row">
                     <c:if test="${userDataDTO.sex == true}">
-                        <h4><b>Пол: мужской</b></h4>
+                        <h4><b><spring:message code="text.label.sex"/>: <spring:message code="user.sex.male"/></b></h4>
                     </c:if>
                     <c:if test="${userDataDTO.sex == false}">
-                        <h4><b>Пол: женский</b></h4>
+                        <h4><b><spring:message code="text.label.sex"/>: <spring:message code="user.sex.female"/></b></h4>
                     </c:if>
                 </div>
                 <br>

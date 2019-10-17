@@ -12,10 +12,6 @@ public class HealthDataDTO {
 
     private Long weight;
 
-    private String skin;
-
-    private String race;
-
     private Long chest;
 
     private Long waist;
@@ -70,22 +66,6 @@ public class HealthDataDTO {
 
     public void setWeight(Long weight) {
         this.weight = weight;
-    }
-
-    public String getSkin() {
-        return skin;
-    }
-
-    public void setSkin(String skin) {
-        this.skin = skin;
-    }
-
-    public String getRace() {
-        return race;
-    }
-
-    public void setRace(String race) {
-        this.race = race;
     }
 
     public Long getChest() {
@@ -193,8 +173,6 @@ public class HealthDataDTO {
                 Objects.equals(patient, that.patient) &&
                 Objects.equals(height, that.height) &&
                 Objects.equals(weight, that.weight) &&
-                Objects.equals(skin, that.skin) &&
-                Objects.equals(race, that.race) &&
                 Objects.equals(chest, that.chest) &&
                 Objects.equals(waist, that.waist) &&
                 Objects.equals(hips, that.hips) &&
@@ -211,7 +189,7 @@ public class HealthDataDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, patient, height, weight, skin, race, chest, waist, hips, nervous, constitution,
+        return Objects.hash(id, patient, height, weight, chest, waist, hips, nervous, constitution,
                 musculature, leye, reye, blood, alcohol, smoke, drugs);
     }
 }

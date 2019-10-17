@@ -4,7 +4,10 @@ import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.User;
 import com.samsolutions.service.RoleService;
+import com.samsolutions.service.impl.UserServiceImpl;
 import org.hibernate.LazyInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +19,8 @@ import java.util.List;
 
 @Component
 public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDTO> {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     RoleConverter roleConverter;
@@ -40,8 +45,9 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
             target.setRoles(roleConverter.entitiesToDataDtoList(source.getRoles()));
             return target;
         } catch (LazyInitializationException le) {
-            return target;
+            logger.debug(le.getMessage());
         }
+        return target;
     }
 
     @Override
@@ -55,11 +61,15 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
         target.setPatronymic(source.getPatronymic());
         target.setTelephone(source.getTelephone());
         target.setSex(source.getSex());
-        target.setRoles(roleService.findByIds(source.getRolesId()));
+        try {
+            target.setRoles(roleService.findByIds(source.getRolesId()));
+        } catch (NullPointerException ne) {
+            logger.debug("DTO haven't roles");
+        }
         try {
             target.setBirth(LocalDate.parse(source.getBirth(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         } catch (NullPointerException ne) {
-            return target;
+            logger.debug("DTO haven't birth");
         }
         return target;
     }
@@ -74,7 +84,8 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
             }
             return targetList;
         } catch (LazyInitializationException le) {
-            return targetList;
+            logger.debug(le.getMessage());
         }
+        return targetList;
     }
 }

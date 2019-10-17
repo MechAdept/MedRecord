@@ -190,15 +190,11 @@ public class User {
                 Objects.equals(telephone, user.telephone) &&
                 Objects.equals(birth, user.birth) &&
                 Objects.equals(sex, user.sex) &&
-                Objects.equals(img, user.img) &&
-                Objects.equals(roles, user.roles) &&
-                Objects.equals(patientTicket, user.patientTicket) &&
-                Objects.equals(doctorTicket, user.doctorTicket) &&
-                Objects.equals(health, user.health);
+                Objects.equals(img, user.img);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, name, surname, patronymic, telephone, birth, sex, img, roles, patientTicket, doctorTicket, health);
+        return Objects.hash(id, username, password, name, surname, patronymic, telephone, birth, sex, img);
     }
 }
