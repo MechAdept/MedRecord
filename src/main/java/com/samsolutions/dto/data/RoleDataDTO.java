@@ -2,7 +2,6 @@ package com.samsolutions.dto.data;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class RoleDataDTO {
 

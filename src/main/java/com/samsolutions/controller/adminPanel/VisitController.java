@@ -5,7 +5,7 @@ import com.samsolutions.dto.form.VisitFormDTO;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/adminpanel/visit")
-@PreAuthorize("isAuthenticated()")
+@Secured("ROLE_ADMIN")
 public class VisitController {
     @Autowired
     private VisitService visitService;

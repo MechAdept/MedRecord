@@ -6,7 +6,7 @@ public enum Roles implements GrantedAuthority {
     ROLE_PATIENT,
     ROLE_RECEPTIONIST,
     ROLE_ADMIN,
-    ROLE_DOCTOR;
+    ROLE_MEDIC;
 
     public String getAuthority() {
         return name();

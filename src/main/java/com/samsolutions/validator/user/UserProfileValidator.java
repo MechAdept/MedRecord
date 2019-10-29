@@ -35,7 +35,7 @@ public class UserProfileValidator implements Validator {
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "patronymic", "notEmpty");
-        if (user.getSurname().length() < 2 || user.getPassword().length() > 32) {
+        if (user.getPatronymic().length() < 2 || user.getPatronymic().length() > 32) {
             errors.rejectValue("patronymic", "size.userForm.patronymic");
         }
 

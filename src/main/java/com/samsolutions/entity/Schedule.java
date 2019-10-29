@@ -21,11 +21,11 @@ public class Schedule {
     @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "doctor")
+    @JoinColumn(name = "doctor_id")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private User doctor;
 
-    @JoinColumn(name = "ticket")
+    @JoinColumn(name = "ticket_id")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Ticket ticket;
 

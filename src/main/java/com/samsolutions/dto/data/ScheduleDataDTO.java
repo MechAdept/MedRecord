@@ -15,6 +15,8 @@ public class ScheduleDataDTO {
 
     private Boolean available;
 
+    public ScheduleDataDTO() {}
+
     public Long getId() {
         return id;
     }

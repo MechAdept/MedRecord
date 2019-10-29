@@ -1,40 +1,51 @@
 package com.samsolutions.dto.data;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class UserDataDTO {
 
+    @JsonIgnore
     private Long id;
 
+    @JsonIgnore
     private String username;
 
+    @JsonIgnore
     private String password;
 
+    @JsonIgnore
     private String name;
 
+    @JsonIgnore
     private String surname;
 
+    @JsonIgnore
     private String patronymic;
 
+    @JsonIgnore
     private String telephone;
 
+    @JsonIgnore
     private Date birth;
 
+    @JsonIgnore
     private Boolean sex;
 
+    @JsonIgnore
     private String img;
 
+    @JsonIgnore
     private List<RoleDataDTO> roles;
 
     private List<TicketDataDTO> patientTickets;
 
     private List<TicketDataDTO> doctorTickets;
 
+    @JsonIgnore
     private HealthDataDTO health;
 
     public UserDataDTO(String username, String password, List<RoleDataDTO> roles) {

@@ -6,7 +6,7 @@ import com.samsolutions.service.HealthService;
 import com.samsolutions.service.UserService;
 import com.samsolutions.validator.health.HealthCreateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(value = "/adminpanel/health")
-@PreAuthorize("isAuthenticated()")
+@Secured("ROLE_ADMIN")
 public class HealthController {
 
     @Autowired

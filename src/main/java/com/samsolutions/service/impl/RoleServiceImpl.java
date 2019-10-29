@@ -31,6 +31,7 @@ import java.util.*;
 
 @Transactional
 public class RoleServiceImpl implements RoleService {
+
     @Autowired
     private RoleRepository roleRepository;
 

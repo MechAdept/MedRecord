@@ -25,12 +25,16 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDataDTO, Tick
 
     @Override
     public TicketDataDTO entityToDataDto(Ticket source) {
-        TicketDataDTO target = new TicketDataDTO();
-        target.setId(source.getId());
-        target.setDoctor(userConverter.entityToDataDto(source.getDoctor()));
-        target.setPatient(userConverter.entityToDataDto(source.getPatient()));
-        target.setDatetime(source.getDatetime());
-        return target;
+        try {
+            TicketDataDTO target = new TicketDataDTO();
+            target.setId(source.getId());
+            target.setDoctor(userConverter.entityToDataDto(source.getDoctor()));
+            target.setPatient(userConverter.entityToDataDto(source.getPatient()));
+            target.setDatetime(source.getDatetime());
+            return target;
+        } catch (NullPointerException ne) {
+            return new TicketDataDTO();
+        }
     }
 
     @Override

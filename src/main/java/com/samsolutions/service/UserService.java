@@ -36,9 +36,7 @@ public interface UserService extends IEntity<UserDataDTO, UserFormDTO> {
 
     UserDataDTO findWithRolesById(Long id);
 
-    List<UserDataDTO> findDoctors();
-
-    List<UserDataDTO> findPatients();
+    Map<String, Object> getMapAndPageForDoctors(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     void updatePhoto(Long id, MultipartFile file) throws IOException;
 

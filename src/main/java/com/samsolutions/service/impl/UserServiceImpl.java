@@ -119,6 +119,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Map<String, Object> getMapAndPageForDoctors(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Map<String, Object> map = new HashMap<>();
+        Role role = roleRepository.findRoleByName(Roles.ROLE_MEDIC.getAuthority());
+        map.put("DTOList", getPageByRole(role, pageNo, pageSize, desc, sort));
+        map.put("pageNo", pageNo);
+        map.put("pageSize", pageSize);
+        map.put("desc", desc);
+        map.put("sort", sort);
+        map.put("pageCount", pageCountByRole(pageSize, role));
+        map.put("elementsCount", countByRole(role));
+        map.put("roleDTO", role);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> getMapAndPageByRole(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Role role = roleRepository.getOne(id);
         Map<String, Object> map = new HashMap<>();
@@ -133,12 +148,6 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
-    public List<UserDataDTO> getMapAndPageByPatient(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        Role role = roleRepository.findRoleByName(Roles.ROLE_PATIENT.name());
-        return getPageByRole(role, pageNo, pageSize, desc, sort);
-    }
-
-
     @Override
     public Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Map<String, Object> map = new HashMap<>();
@@ -151,12 +160,6 @@ public class UserServiceImpl implements UserService {
         map.put("pageCount", count / pageSize);
         map.put("elementsCount", count);
         return map;
-    }
-
-    @Override
-    public List<UserDataDTO> findPatients() {
-        Role role = roleRepository.findRoleByName(Roles.ROLE_PATIENT.name());
-        return userConverter.entitiesToDataDtoList(userRepository.getAllByRolesIs(role));
     }
 
     @Override
@@ -216,14 +219,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getOneWithRoles(formDTO.getId());
         user.setRoles(roleRepository.findRolesByIdIn(Arrays.asList(formDTO.getRolesId())));
         userRepository.save(user);
-    }
-
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<UserDataDTO> findDoctors() {
-        Role role = roleRepository.findRoleByName(Roles.ROLE_DOCTOR.name());
-        return userConverter.entitiesToDataDtoList(userRepository.getAllByRolesIs(role));
     }
 
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {

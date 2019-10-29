@@ -44,7 +44,7 @@
     </div>
     <%--END OF HEADER--%>
     <h3><spring:message code="text.header.userDetails"/> <b>${userDataDTO.username}</b></h3>
-    <div class="container" style="background-color: #fff; margin-top: 20px;">
+    <div class="container" style="background-color: #fff; margin-top: 20px; margin-bottom: 20px;">
         <div class="row">
             <div class="col-xs-3">
                 <div class="row">
@@ -82,6 +82,9 @@
                             <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/health"/>"
                                class="btn btn-primary align-content-center" role="button"
                                aria-pressed="true"><spring:message code="button.health"/></a>
+                            <a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/doctors"/>"
+                               class="btn btn-primary align-content-center" role="button"
+                               aria-pressed="true"><spring:message code="button.booking"/></a>
                         </c:if>
                     </c:forEach>
                     <a href="<c:url value="/adminpanel/user/edit/${userDataDTO.id}"/>"

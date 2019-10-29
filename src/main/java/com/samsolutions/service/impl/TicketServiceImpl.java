@@ -4,8 +4,10 @@ import com.samsolutions.converter.TicketConverter;
 import com.samsolutions.converter.UserConverter;
 import com.samsolutions.dto.data.TicketDataDTO;
 import com.samsolutions.dto.form.TicketFormDTO;
+import com.samsolutions.entity.Schedule;
 import com.samsolutions.entity.Ticket;
 import com.samsolutions.entity.User;
+import com.samsolutions.repository.ScheduleRepository;
 import com.samsolutions.repository.TicketRepository;
 import com.samsolutions.repository.UserRepository;
 import com.samsolutions.service.TicketService;
@@ -18,6 +20,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +38,7 @@ import java.util.Map;
 
 @Transactional
 public class TicketServiceImpl implements TicketService {
+
     @Autowired
     private TicketRepository ticketRepository;
 
@@ -48,6 +53,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ScheduleRepository scheduleRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -65,6 +73,19 @@ public class TicketServiceImpl implements TicketService {
         ticketRepository.deleteById(id);
     }
 
+    @Override
+    public void booking(Long patientId, Long scheduleId) {
+        Ticket ticket = new Ticket();
+        Schedule schedule = scheduleRepository.getOne(scheduleId);
+        ticket.setDoctor(userRepository.getOne(schedule.getDoctor().getId()));
+        ticket.setPatient(userRepository.getOne(patientId));
+        ticket.setDatetime(schedule.getDatetime());
+        ticketRepository.save(ticket);
+    }
+
+    public TicketDataDTO current(Long patientId, Long doctorId) {
+        return ticketConverter.entityToDataDto(ticketRepository.findNotClousedCoupon(userRepository.getOne(patientId), userRepository.getOne(doctorId)));
+    }
 
     @Override
     public Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
