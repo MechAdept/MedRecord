@@ -49,7 +49,7 @@
     <b>Выберите дату: </b>
     <input type="date" id="bookingDate" name="trip-start"
            value="${formatter.format(currentDate)}"
-           min="${formatter.format(currentDate)}" max="2019-12-21" style="visibility: hidden">
+           min="${formatter.format(currentDate)}" max="${formatter.format(maxDate)}" style="visibility: hidden">
     <br>
     <br>
     <div class="row">

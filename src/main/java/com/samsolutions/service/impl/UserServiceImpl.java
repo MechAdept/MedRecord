@@ -1,12 +1,12 @@
 package com.samsolutions.service.impl;
 
 import com.samsolutions.converter.UserConverter;
-import com.samsolutions.dto.data.RoleDataDTO;
 import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
 import com.samsolutions.repository.RoleRepository;
+import com.samsolutions.repository.ScheduleRepository;
 import com.samsolutions.repository.UserRepository;
 import com.samsolutions.roles.Roles;
 import com.samsolutions.service.RoleService;
@@ -22,8 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.transaction.UnexpectedRollbackException;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -60,6 +58,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserConverter userConverter;
+
+    @Autowired
+    ScheduleRepository scheduleRepository;
 
     @Autowired
     @Qualifier("encoder")

@@ -1,6 +1,7 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.data.ScheduleDataDTO;
+import com.samsolutions.dto.form.UserFormDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface ScheduleService {
     Boolean booking(Long patientId, Long scheduleId);
 
     List<ScheduleDataDTO> getDayBySchedule(Long scheduleId);
+
+    void fillMonth(UserFormDTO userFormDTO);
 }

@@ -64,6 +64,9 @@ public class User {
     @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Health health;
 
+    @OneToMany(mappedBy = "doctor",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Schedule> schedules;
+
     public Long getId() {
         return id;
     }
@@ -174,6 +177,14 @@ public class User {
 
     public void setHealth(Health health) {
         this.health = health;
+    }
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
     }
 
     @Override

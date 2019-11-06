@@ -13,9 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class TicketConverter implements DTOConverter<Ticket, TicketDataDTO, TicketFormDTO> {
@@ -52,7 +50,7 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDataDTO, Tick
             logger.debug("Ticket does not have a visit");
         }
         return target;
-}
+    }
 
     @Override
     public Ticket formDtoToEntity(TicketFormDTO source) {

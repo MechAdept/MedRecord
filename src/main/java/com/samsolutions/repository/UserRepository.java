@@ -1,6 +1,5 @@
 package com.samsolutions.repository;
 
-import com.samsolutions.entity.Health;
 import com.samsolutions.entity.Role;
 import com.samsolutions.entity.User;
 import org.springframework.data.domain.Page;
@@ -10,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The User repository provides ready-made methods for working with user table.
@@ -36,20 +34,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findByRolesIs(Role roles, Pageable pageable);
 
-    List<User> findAllByHealthIsNullAndRolesIs(Role role);
-
     List<User> getAllByRolesIs(Role role);
 
     List<User> findUsersByIdIn(List<Long> ids);
 
-    List<User> findByRolesInOrderById(List<Role> roles);
-
     @Query(value = "select u from User u inner join u.roles where u.id = ?1")
     User getOneWithRoles(Long id);
-
-    @Query(value = "select u from User u inner join u.roles inner join u.health inner join u.doctorTicket inner join u.patientTicket where u.id = ?1")
-    User fetchOne(Long id);
-
-    @Query(value = "select u from User u inner join u.health where u.id = ?1")
-    User getOneWithHealth(Long id);
 }

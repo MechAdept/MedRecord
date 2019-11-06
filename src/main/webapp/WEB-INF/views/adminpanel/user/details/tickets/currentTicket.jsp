@@ -24,7 +24,7 @@
         <div class="col-xs-6">
             <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
                aria-pressed="true"><spring:message code="button.roles"/></a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-info" role="button"
+            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
                aria-pressed="true"><spring:message code="button.users"/></a>
         </div>
         <div class="col-xs-3"></div>
@@ -90,8 +90,6 @@
                     href="<c:url value="/adminpanel/ticket/${patientDataDTO.id}/${doctorDataDTO.id}/${ticketDataDTO.id}/delete"/>" class="btn-sm btn-danger"
                     role="button"
                     aria-pressed="true"><spring:message code="button.delete"/></a>
-                <a href="<c:url value="/adminpanel/ticket/${ticketDataDTO.id}/edit"/>"
-                   class="btn-sm btn-warning" role="button" aria-pressed="true"><spring:message code="button.edit"/></a>
             </div>
             <div class="clearfix"></div>
         </div>

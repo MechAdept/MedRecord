@@ -22,7 +22,7 @@ public class Schedule {
     private Long id;
 
     @JoinColumn(name = "doctor_id")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private User doctor;
 
     @JoinColumn(name = "ticket_id")

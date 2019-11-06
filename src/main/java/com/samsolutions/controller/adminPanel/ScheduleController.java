@@ -5,6 +5,7 @@ import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.service.ScheduleService;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
+import org.apache.tools.ant.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 @Controller
@@ -49,10 +53,15 @@ public class ScheduleController {
 //        if(ticketDataDTO != null){
 //            return "redirect: /adminpanel/ticket/" + pid + "/" + did + "/current";
 //        }
+        Date currentDate = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        c.add(Calendar.MONTH, 1);
         model.addAttribute("patientDataDTO", userService.findById(pid));
         model.addAttribute("doctorDataDTO", userService.findById(did));
         model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
-        model.addAttribute("currentDate", new Date());
+        model.addAttribute("currentDate", currentDate);
+        model.addAttribute("maxDate", c.getTime());
         return "adminpanel/user/details/booking/booking";
     }
 

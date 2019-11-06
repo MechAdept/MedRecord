@@ -48,6 +48,9 @@ public class UserController {
     private HealthService healthService;
 
     @Autowired
+    ScheduleService scheduleService;
+
+    @Autowired
     UserCreateValidator userCreateValidator;
 
     @Autowired
@@ -84,6 +87,7 @@ public class UserController {
             return "adminpanel/user/details/create";
         }
         userService.save(userFormDTO);
+        scheduleService.fillMonth(userFormDTO);
         return "redirect:/adminpanel/user";
     }
 
