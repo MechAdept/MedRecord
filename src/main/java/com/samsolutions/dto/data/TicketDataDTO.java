@@ -22,6 +22,8 @@ public class TicketDataDTO {
 
     private LocalDateTime datetime;
 
+    private VisitDataDTO visit;
+
     /**
      * Returns id.
      *
@@ -94,6 +96,13 @@ public class TicketDataDTO {
         this.datetime = datetime;
     }
 
+    public VisitDataDTO getVisit() {
+        return visit;
+    }
+
+    public void setVisit(VisitDataDTO visit) {
+        this.visit = visit;
+    }
 
     @Override
     public boolean equals(final Object o) {

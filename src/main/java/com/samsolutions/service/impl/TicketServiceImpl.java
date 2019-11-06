@@ -17,11 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +67,11 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void delete(final Long id) {
+        Ticket ticket = ticketRepository.getOne(id);
+        Schedule schedule = scheduleRepository.findByTicketIs(ticket);
+        schedule.setTicket(null);
+        schedule.setAvailable(true);
+        scheduleRepository.save(schedule);
         ticketRepository.deleteById(id);
     }
 
@@ -77,14 +79,15 @@ public class TicketServiceImpl implements TicketService {
     public void booking(Long patientId, Long scheduleId) {
         Ticket ticket = new Ticket();
         Schedule schedule = scheduleRepository.getOne(scheduleId);
-        ticket.setDoctor(userRepository.getOne(schedule.getDoctor().getId()));
         ticket.setPatient(userRepository.getOne(patientId));
+        ticket.setDoctor(schedule.getDoctor());
         ticket.setDatetime(schedule.getDatetime());
         ticketRepository.save(ticket);
     }
 
     public TicketDataDTO current(Long patientId, Long doctorId) {
-        return ticketConverter.entityToDataDto(ticketRepository.findNotClousedCoupon(userRepository.getOne(patientId), userRepository.getOne(doctorId)));
+        Ticket ticket = ticketRepository.findByDoctorIsAndPatientIsAndAttendanceIsNull(userRepository.getOne(doctorId), userRepository.getOne(patientId));
+        return ticketConverter.entityToDataDto(ticket);
     }
 
     @Override

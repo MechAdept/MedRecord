@@ -1,17 +1,6 @@
 package com.samsolutions.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -46,6 +35,9 @@ public class Ticket {
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id", referencedColumnName = "ticket")
     private Visit visit;
+
+    @Column(name = "attendance")
+    private Boolean attendance;
 
     public Long getId() {
         return id;
@@ -87,6 +79,15 @@ public class Ticket {
         this.visit = visit;
     }
 
+    public Boolean getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(Boolean attendance) {
+        this.attendance = attendance;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,11 +97,12 @@ public class Ticket {
                 Objects.equals(patient, ticket.patient) &&
                 Objects.equals(doctor, ticket.doctor) &&
                 Objects.equals(datetime, ticket.datetime) &&
-                Objects.equals(visit, ticket.visit);
+                Objects.equals(visit, ticket.visit) &&
+                Objects.equals(attendance, ticket.attendance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, patient, doctor, datetime, visit);
+        return Objects.hash(id, patient, doctor, datetime, visit, attendance);
     }
 }

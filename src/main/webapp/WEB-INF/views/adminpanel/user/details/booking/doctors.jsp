@@ -120,7 +120,7 @@
                 <th scope="row">${user.id}</th>
                 <th scope="row">${user.name}</th>
                 <th scope="row">${user.surname}</th>
-                <td><a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/doctors/${user.id}"/>"
+                <td><a href="<c:url value="/adminpanel/user/${userDataDTO.id}/booking/${user.id}"/>"
                        class="btn-sm btn-primary"
                        role="button"
                        aria-pressed="true"><spring:message code="button.booking"/></a>

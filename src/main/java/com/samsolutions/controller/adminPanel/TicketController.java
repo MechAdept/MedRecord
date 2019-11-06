@@ -1,15 +1,14 @@
 package com.samsolutions.controller.adminPanel;
 
-import com.samsolutions.dto.data.TicketDataDTO;
-import com.samsolutions.dto.form.TicketFormDTO;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
-import com.samsolutions.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.time.format.DateTimeFormatter;
 
@@ -23,7 +22,7 @@ import java.time.format.DateTimeFormatter;
  */
 
 @Controller
-@RequestMapping("/adminpanel/ticket")
+@RequestMapping(value = "/adminpanel/ticket")
 @Secured("ROLE_ADMIN")
 public class TicketController {
 
@@ -34,10 +33,20 @@ public class TicketController {
     UserService userService;
 
     @RequestMapping(value = "/{patientId}/{doctorId}/current", method = RequestMethod.GET)
-    public String doctorsForBooking(@PathVariable(value = "patientId") Long patientId, @PathVariable(value = "doctorId") Long doctorId, Model model) {
+    public String current(@PathVariable(value = "patientId") Long patientId, @PathVariable(value = "doctorId") Long doctorId, Model model) {
         model.addAttribute("patientDataDTO", userService.findById(patientId));
-        model.addAttribute("ticketDataDTO",ticketService.current(patientId,doctorId));
-        return "/adminpanel/user/details/booking/doctors";
+        model.addAttribute("doctorDataDTO", userService.findById(doctorId));
+        model.addAttribute("ticketDataDTO", ticketService.current(patientId, doctorId));
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        return "/adminpanel/user/details/tickets/currentTicket";
+    }
+
+    @RequestMapping(value = "/{patientId}/{doctorId}/{ticketId}/delete", method = RequestMethod.GET)
+    public String delete(@PathVariable(value = "patientId") Long patientId,
+                         @PathVariable(value = "doctorId") Long doctorId,
+                         @PathVariable(value = "ticketId") Long ticketId) {
+        ticketService.delete(ticketId);
+        return "redirect: /adminpanel/user/" + patientId + "/booking/" + doctorId ;
     }
 
 }

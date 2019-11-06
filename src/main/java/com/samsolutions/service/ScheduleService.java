@@ -10,7 +10,7 @@ public interface ScheduleService {
 
     List<ScheduleDataDTO> getDayByDateAndId(String date, Long id);
 
-    void booking(Long patientId, Long scheduleId);
+    Boolean booking(Long patientId, Long scheduleId);
 
     List<ScheduleDataDTO> getDayBySchedule(Long scheduleId);
 }

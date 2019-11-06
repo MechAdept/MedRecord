@@ -8,7 +8,6 @@ import java.util.Objects;
 
 public class UserDataDTO {
 
-    @JsonIgnore
     private Long id;
 
     @JsonIgnore
@@ -41,8 +40,10 @@ public class UserDataDTO {
     @JsonIgnore
     private List<RoleDataDTO> roles;
 
+    @JsonIgnore
     private List<TicketDataDTO> patientTickets;
 
+    @JsonIgnore
     private List<TicketDataDTO> doctorTickets;
 
     @JsonIgnore

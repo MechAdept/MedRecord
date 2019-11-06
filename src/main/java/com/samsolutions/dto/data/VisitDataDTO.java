@@ -17,8 +17,6 @@ public class VisitDataDTO {
 
     private String treatment;
 
-    private TicketDataDTO ticket;
-
     public Long getId() {
         return id;
     }
@@ -67,14 +65,6 @@ public class VisitDataDTO {
         this.treatment = treatment;
     }
 
-    public TicketDataDTO getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(TicketDataDTO ticket) {
-        this.ticket = ticket;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,12 +75,11 @@ public class VisitDataDTO {
                 Objects.equals(complaint, that.complaint) &&
                 Objects.equals(examination, that.examination) &&
                 Objects.equals(diagnosis, that.diagnosis) &&
-                Objects.equals(treatment, that.treatment) &&
-                Objects.equals(ticket, that.ticket);
+                Objects.equals(treatment, that.treatment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, datetime, complaint, examination, diagnosis, treatment, ticket);
+        return Objects.hash(id, datetime, complaint, examination, diagnosis, treatment);
     }
 }

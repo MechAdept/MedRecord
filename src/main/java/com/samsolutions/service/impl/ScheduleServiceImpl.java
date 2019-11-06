@@ -32,7 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     TicketRepository ticketRepository;
 
     @Autowired
-    ScheduleConverter converter;
+    ScheduleConverter scheduleConverter;
 
     @Override
     public List<ScheduleDataDTO> getDayByDateAndId(String date, Long id) {
@@ -47,19 +47,25 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         LocalDateTime from = LocalDateTime.parse(date, formatter);
         List<Schedule> list = scheduleRepository.getDayByDoctorAndDates(user, from, from.plusDays(1));
-        return converter.entitiesToDataDtoList(list);
+        return scheduleConverter.entitiesToDataDtoList(list);
     }
 
     @Override
-    public void booking(Long patientId, Long scheduleId) {
+    public Boolean booking(Long patientId, Long scheduleId) {
         Schedule schedule = scheduleRepository.getOne(scheduleId);
+        User patient = userRepository.getOne(patientId);
+        User doctor = schedule.getDoctor();
+        if (ticketRepository.findByDoctorIsAndPatientIsAndAttendanceIsNull(doctor,patient) != null){
+            return false;
+        }
         Ticket ticket = new Ticket();
-        ticket.setPatient(userRepository.getOne(patientId));
-        ticket.setDoctor(schedule.getDoctor());
+        ticket.setPatient(patient);
+        ticket.setDoctor(doctor);
         ticket.setDatetime(schedule.getDatetime());
         schedule.setTicket(ticket);
         schedule.setAvailable(false);
         scheduleRepository.save(schedule);
+        return true;
     }
 
     @Override
@@ -67,6 +73,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         Schedule schedule = scheduleRepository.getOne(scheduleId);
         LocalDateTime from = schedule.getDatetime().with(LocalTime.of(0,0,0));
         List<Schedule> list = scheduleRepository.getDayByDoctorAndDates(schedule.getDoctor(), from, from.plusDays(1));
-        return converter.entitiesToDataDtoList(list);
+        return scheduleConverter.entitiesToDataDtoList(list);
     }
 }

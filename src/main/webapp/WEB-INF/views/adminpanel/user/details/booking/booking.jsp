@@ -7,6 +7,7 @@
 <%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
 <c:url value="/adminpanel/schedule/${doctorDataDTO.id}/" var="getSchedule"/>
 <c:url value="/adminpanel/schedule/booking/${patientDataDTO.id}/" var="bookTime"/>
+<c:url value="/adminpanel/ticket/${patientDataDTO.id}/${doctorDataDTO.id}/current" var="currentTicket"/>
 
 <html>
 <head>
@@ -165,23 +166,39 @@
         getSchedule(e.target);
     });
 
-    $(function(){
-        $('.bookingButton').on('click', function(){
-            var date = document.getElementById('bookingDate').value;
-            var url = this.querySelector('.bookingHref').textContent;
-            console.log(url);
-            if (!isEmpty(url)) {
-                $.ajax({
-                    url: url,
-                    datatype: 'json',
-                    type: 'get',
-                    success: function (json) {
-                        console.log("success ajax ");
-                    }
-                })
+    $(function () {
+        $('.bookingButton').on('click', function () {
+            console.log(this)
+            alert(this.style.backgroundColor)
+            if (this.style.backgroundColor === 'rgb(62, 116, 146)') {
+                var url = this.querySelector('.bookingHref').textContent;
+                console.log(url);
+                if (!isEmpty(url)) {
+                    var newTicketHref = "${currentTicket}";
+                    document.location.href = newTicketHref;
+                }
             } else {
-                var message = "<spring:message code="booking.message.error"/>";
-                alert(message);
+                var url = this.querySelector('.bookingHref').textContent;
+                console.log(url);
+                if (!isEmpty(url)) {
+                    $.ajax({
+                        url: url,
+                        datatype: 'json',
+                        type: 'get',
+                        success: function (json) {
+                            var newTicketHref = "${currentTicket}";
+                            document.location.href = newTicketHref;
+                        },
+                        error: function (e) {
+                            var message = "<spring:message code="booking.message.duplicate"/>";
+                            alert(message);
+                            console.log(e.responseText)
+                        }
+                    })
+                } else {
+                    var message = "<spring:message code="booking.message.error"/>";
+                    alert(message);
+                }
             }
         });
     });
@@ -200,16 +217,25 @@
                             var selector = $('#thumbnail' + i);
                             var scheduleId=selector[0].querySelector('.scheduleId');
                             var bookingHref=selector[0].querySelector('.bookingHref');
-                            console.log(scheduleId.textContent);
                             if (json[i].available === true) {
                                 selector.css('background-color', '#7DFFD4');
                                 scheduleId.textContent = json[i].id;
                                 bookingHref.textContent = "${bookTime}"+json[i].id;
                                 console.log(selector[0].querySelector('.bookingHref').textContent);
                             } else if (json[i].available === false) {
-                                selector.css('background-color', '#CC5078');
-                                scheduleId.textContent = "";
-                                bookingHref.textContent = "";
+                                if(json[i].ticket != null){
+                                    console.log(json[i].ticket.patient.id)
+                                    if(json[i].ticket.patient.id == ${patientDataDTO.id}){
+                                        selector.css('background-color', '#3E7492');
+                                        scheduleId.textContent = json[i].id;
+                                        bookingHref.textContent = "${bookTime}"+json[i].id + "/dereserve";
+                                    }
+                                    else {
+                                        selector.css('background-color', '#CC5078');
+                                        scheduleId.textContent = "";
+                                        bookingHref.textContent = "";
+                                    }
+                                }
                             } else {
                                 selector.css('background-color', '#889599');
                                 scheduleId.textContent = "";

@@ -48,9 +48,6 @@ public class UserController {
     private HealthService healthService;
 
     @Autowired
-    private ScheduleService scheduleService;
-
-    @Autowired
     UserCreateValidator userCreateValidator;
 
     @Autowired

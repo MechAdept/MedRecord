@@ -1,0 +1,15 @@
+.button-busy {
+    background-color: #CC5078;
+}
+
+.button-free {
+    background-color: #7DFFD4;
+}
+
+.button-own {
+    background-color: #3E7492;
+}
+
+.button-close {
+    background-color: #889599;
+}

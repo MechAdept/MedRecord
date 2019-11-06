@@ -5,6 +5,9 @@ import com.samsolutions.dto.form.ScheduleFormDTO;
 import com.samsolutions.entity.Schedule;
 import com.samsolutions.repository.TicketRepository;
 import com.samsolutions.repository.UserRepository;
+import com.samsolutions.service.impl.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,14 +33,24 @@ public class ScheduleConverter implements DTOConverter<Schedule, ScheduleDataDTO
     @Autowired
     TicketRepository ticketRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
     public ScheduleDataDTO entityToDataDto(Schedule source) {
         ScheduleDataDTO target = new ScheduleDataDTO();
         target.setId(source.getId());
         target.setDoctor(userConverter.entityToDataDto(source.getDoctor()));
-        target.setTicket(ticketConverter.entityToDataDto(source.getTicket()));
+        try {
+            target.setTicket(ticketConverter.entityToDataDto(source.getTicket()));
+        } catch (NullPointerException ne) {
+            logger.debug("Schedule does not have a ticket");
+        }
         target.setDatetime(source.getDatetime());
-        target.setAvailable(source.getAvailable());
+        try {
+            target.setAvailable(source.getAvailable());
+        } catch (NullPointerException ne) {
+            logger.debug("Available of this schedule is undefined");
+        }
         return target;
     }
 
@@ -55,14 +68,10 @@ public class ScheduleConverter implements DTOConverter<Schedule, ScheduleDataDTO
     @Override
     public List<ScheduleDataDTO> entitiesToDataDtoList(List<Schedule> sourceList) {
         List<ScheduleDataDTO> targetList = new ArrayList<>();
-        try {
             for (Schedule source : sourceList) {
                 ScheduleDataDTO target = entityToDataDto(source);
                 targetList.add(target);
             }
             return targetList;
-        } catch (NullPointerException ne) {
-            return targetList;
-        }
     }
 }

@@ -77,14 +77,9 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
     @Override
     public List<UserDataDTO> entitiesToDataDtoList(List<User> sourceList) {
         List<UserDataDTO> targetList = new ArrayList<>();
-        try {
-            for (User source : sourceList) {
-                UserDataDTO target = entityToDataDto(source);
-                targetList.add(target);
-            }
-            return targetList;
-        } catch (LazyInitializationException le) {
-            logger.debug(le.getMessage());
+        for (User source : sourceList) {
+            UserDataDTO target = entityToDataDto(source);
+            targetList.add(target);
         }
         return targetList;
     }

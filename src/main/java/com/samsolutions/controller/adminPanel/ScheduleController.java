@@ -1,5 +1,6 @@
 package com.samsolutions.controller.adminPanel;
 
+import com.samsolutions.dto.data.TicketDataDTO;
 import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.service.ScheduleService;
 import com.samsolutions.service.TicketService;
@@ -44,9 +45,10 @@ public class ScheduleController {
 
     @RequestMapping(value = "/adminpanel/user/{pid}/booking/{did}", method = RequestMethod.GET)
     public String booking(@PathVariable("pid") final Long pid, @PathVariable("did") Long did, Model model) {
-        if(ticketService.current(pid, did) != null){
-            return "redirect: /adminpanel/ticket/" + pid + "/" + did + "/current";
-        }
+//        TicketDataDTO ticketDataDTO = ticketService.current(pid,did);
+//        if(ticketDataDTO != null){
+//            return "redirect: /adminpanel/ticket/" + pid + "/" + did + "/current";
+//        }
         model.addAttribute("patientDataDTO", userService.findById(pid));
         model.addAttribute("doctorDataDTO", userService.findById(did));
         model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));

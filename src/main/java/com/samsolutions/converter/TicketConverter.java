@@ -4,6 +4,9 @@ import com.samsolutions.dto.data.TicketDataDTO;
 import com.samsolutions.dto.form.TicketFormDTO;
 import com.samsolutions.entity.Ticket;
 import com.samsolutions.repository.UserRepository;
+import com.samsolutions.service.impl.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,19 +26,33 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDataDTO, Tick
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    VisitConverter visitConverter;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
     public TicketDataDTO entityToDataDto(Ticket source) {
+        TicketDataDTO target = new TicketDataDTO();
+        target.setId(source.getId());
         try {
-            TicketDataDTO target = new TicketDataDTO();
-            target.setId(source.getId());
             target.setDoctor(userConverter.entityToDataDto(source.getDoctor()));
-            target.setPatient(userConverter.entityToDataDto(source.getPatient()));
-            target.setDatetime(source.getDatetime());
-            return target;
         } catch (NullPointerException ne) {
-            return new TicketDataDTO();
+            logger.debug("Ticket does not have a doctor");
         }
-    }
+        try {
+            target.setPatient(userConverter.entityToDataDto(source.getPatient()));
+        } catch (NullPointerException ne) {
+            logger.debug("Ticket does not have a patient");
+        }
+        target.setDatetime(source.getDatetime());
+        try {
+            target.setVisit(visitConverter.entityToDataDto(source.getVisit()));
+        } catch (NullPointerException ne) {
+            logger.debug("Ticket does not have a visit");
+        }
+        return target;
+}
 
     @Override
     public Ticket formDtoToEntity(TicketFormDTO source) {

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * The Ticket repository provides ready-made methods for working with ticket table.
@@ -26,15 +27,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     Page<Ticket> findByDoctorOrPatientEquals(User doctor, User Patient, Pageable pageable);
 
-    Ticket findByPatientAndDatetime(User patient, LocalDateTime dateTime);
+    Ticket findByDoctorIsAndPatientIsAndAttendanceIsNull(User doctor, User patient);
 
-    @Query("select t from Ticket t where t.patient = ?1 and t.visit is null")
-    Ticket findByPatient(User patient);
-
-    @Query("select t from Ticket t where t.patient = ?1 and t.doctor = ?2 and t.visit is null")
-    Ticket findNotClousedCoupon(User patient, User doctor);
-
-//    Page<Ticket> findAllByVisitNotNull();
-//
-//    Page<Ticket> findAllByVisitIsNull();
+    List<Ticket> findAllByDatetimeLessThanAndAttendanceIsFalse(LocalDateTime localDateTime);
 }

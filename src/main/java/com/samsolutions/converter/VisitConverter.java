@@ -4,6 +4,9 @@ import com.samsolutions.dto.data.VisitDataDTO;
 import com.samsolutions.dto.form.VisitFormDTO;
 import com.samsolutions.entity.Visit;
 import com.samsolutions.repository.TicketRepository;
+import com.samsolutions.service.impl.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,11 +26,12 @@ public class VisitConverter implements DTOConverter<Visit, VisitDataDTO, VisitFo
     @Autowired
     TicketRepository ticketRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
     public VisitDataDTO entityToDataDto(Visit source) {
         VisitDataDTO target = new VisitDataDTO();
         target.setId(source.getId());
-        target.setTicket(ticketConverter.entityToDataDto(source.getTicket()));
         target.setDatetime(source.getDatetime());
         target.setComplaint(source.getComplaint());
         target.setExamination(source.getExamination());
