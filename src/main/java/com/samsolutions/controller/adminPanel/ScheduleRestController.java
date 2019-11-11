@@ -32,7 +32,7 @@ public class ScheduleRestController {
     @ResponseBody
     public ResponseEntity<Object> bookTime(@PathVariable("patientId") Long patientId, @PathVariable("scheduleId") Long scheduleId) {
         if (scheduleService.booking(patientId, scheduleId)) {
-            return new ResponseEntity<Object>(scheduleService.getDayBySchedule(scheduleId), HttpStatus.OK);
+            return new ResponseEntity<>(scheduleService.getDayBySchedule(scheduleId), HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("mega message");
         }
@@ -42,7 +42,7 @@ public class ScheduleRestController {
     @ResponseBody
     public ResponseEntity<Object> deReserveTime(@PathVariable("patientId") Long patientId, @PathVariable("scheduleId") Long scheduleId) {
         if (scheduleService.booking(patientId, scheduleId)) {
-            return new ResponseEntity<Object>(scheduleService.getDayBySchedule(scheduleId), HttpStatus.OK);
+            return new ResponseEntity<>(scheduleService.getDayBySchedule(scheduleId), HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }

@@ -16,4 +16,10 @@ public interface ScheduleService {
     List<ScheduleDataDTO> getDayBySchedule(Long scheduleId);
 
     void fillMonth(UserFormDTO userFormDTO);
+
+    void deleteOldSchedule();
+
+    void addNewSchedule();
+
+    void blockSchedule();
 }

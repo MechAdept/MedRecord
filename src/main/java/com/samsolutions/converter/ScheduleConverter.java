@@ -14,9 +14,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class ScheduleConverter implements DTOConverter<Schedule, ScheduleDataDTO, ScheduleFormDTO> {
@@ -68,10 +66,10 @@ public class ScheduleConverter implements DTOConverter<Schedule, ScheduleDataDTO
     @Override
     public List<ScheduleDataDTO> entitiesToDataDtoList(List<Schedule> sourceList) {
         List<ScheduleDataDTO> targetList = new ArrayList<>();
-            for (Schedule source : sourceList) {
-                ScheduleDataDTO target = entityToDataDto(source);
-                targetList.add(target);
-            }
-            return targetList;
+        for (Schedule source : sourceList) {
+            ScheduleDataDTO target = entityToDataDto(source);
+            targetList.add(target);
+        }
+        return targetList;
     }
 }

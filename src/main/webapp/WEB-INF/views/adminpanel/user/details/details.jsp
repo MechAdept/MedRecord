@@ -86,6 +86,11 @@
                                class="btn btn-primary align-content-center" role="button"
                                aria-pressed="true"><spring:message code="button.booking"/></a>
                         </c:if>
+                        <c:if test="${role.name == 'ROLE_MEDIC'}">
+                            <a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/readBooking"/>"
+                               class="btn btn-primary align-content-center" role="button"
+                               aria-pressed="true"><spring:message code="button.readBooking"/></a>
+                        </c:if>
                     </c:forEach>
                     <a href="<c:url value="/adminpanel/user/edit/${userDataDTO.id}"/>"
                        class="btn btn-warning align-content-center" role="button"

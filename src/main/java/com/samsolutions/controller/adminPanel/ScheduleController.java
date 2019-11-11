@@ -1,11 +1,8 @@
 package com.samsolutions.controller.adminPanel;
 
-import com.samsolutions.dto.data.TicketDataDTO;
-import com.samsolutions.dto.data.UserDataDTO;
 import com.samsolutions.service.ScheduleService;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
-import org.apache.tools.ant.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -16,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @Secured("ROLE_ADMIN")
@@ -49,31 +46,44 @@ public class ScheduleController {
 
     @RequestMapping(value = "/adminpanel/user/{pid}/booking/{did}", method = RequestMethod.GET)
     public String booking(@PathVariable("pid") final Long pid, @PathVariable("did") Long did, Model model) {
-//        TicketDataDTO ticketDataDTO = ticketService.current(pid,did);
-//        if(ticketDataDTO != null){
-//            return "redirect: /adminpanel/ticket/" + pid + "/" + did + "/current";
-//        }
+        model.mergeAttributes(bookingPreparation(pid, did));
+        return "adminpanel/user/details/booking/booking";
+    }
+
+    @RequestMapping(value = "/adminpanel/user/{pid}/readBooking/", method = RequestMethod.GET)
+    public String bookingRead(@PathVariable("did") final Long did, Model model) {
+        model.mergeAttributes(readAndEditPreparation(did));
+        return "/adminpanel/user/details/booking/readBooking";
+    }
+
+    @RequestMapping(value = "/adminpanel/user/{did}/edit", method = RequestMethod.GET)
+    public String bookingEdit(@PathVariable("did") final Long doctorId, Model model) {
+        model.mergeAttributes(readAndEditPreparation(doctorId));
+        return "/adminpanel/user/details/booking/editBooking";
+    }
+
+    private Map<String, Object> bookingPreparation(Long patientId, Long doctorId) {
+        Map<String, Object> map = schedulePreparation();
+        map.put("patientDataDTO", userService.findById(patientId));
+        map.put("doctorDataDTO", userService.findById(doctorId));
+        return map;
+    }
+
+    private Map<String, Object> readAndEditPreparation(Long doctorId) {
+        Map<String, Object> map = schedulePreparation();
+        map.put("doctorDataDTO", userService.findById(doctorId));
+        return map;
+    }
+
+    private Map<String, Object> schedulePreparation() {
+        Map<String, Object> map = new HashMap<>();
         Date currentDate = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(currentDate);
         c.add(Calendar.MONTH, 1);
-        model.addAttribute("patientDataDTO", userService.findById(pid));
-        model.addAttribute("doctorDataDTO", userService.findById(did));
-        model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
-        model.addAttribute("currentDate", currentDate);
-        model.addAttribute("maxDate", c.getTime());
-        return "adminpanel/user/details/booking/booking";
-    }
-
-    @RequestMapping(value = "/adminpanel/user/{pid}/read/", method = RequestMethod.GET)
-    public String bookingRead(@PathVariable("pid") final Long pid, @PathVariable("did") final Long did, Model model) {
-        model.addAttribute(userService.findById(pid));
-        model.addAttribute(userService.findById(did));
-        return "/adminpanel/user/details/booking/readBooking";
-    }
-
-    @RequestMapping(value = "/adminpanel/user/{id}/edit", method = RequestMethod.GET)
-    public String bookingEdit(@PathVariable("id") final Long id, Model model) {
-        return "/adminpanel/user/details/booking/editBooking";
+        map.put("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+        map.put("currentDate", currentDate);
+        map.put("maxDate", c.getTime());
+        return map;
     }
 }

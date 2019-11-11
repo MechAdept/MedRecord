@@ -3,6 +3,7 @@ package com.samsolutions.service.impl;
 import com.samsolutions.converter.ScheduleConverter;
 import com.samsolutions.dto.data.ScheduleDataDTO;
 import com.samsolutions.dto.form.UserFormDTO;
+import com.samsolutions.entity.Role;
 import com.samsolutions.entity.Schedule;
 import com.samsolutions.entity.Ticket;
 import com.samsolutions.entity.User;
@@ -20,6 +21,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -90,6 +92,42 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
     }
 
+    @Override
+    public void deleteOldSchedule() {
+        LocalDateTime from = LocalDateTime.now().with(LocalTime.of(0, 0, 0));
+        scheduleRepository.deleteAllByDatetimeBefore(from.plusDays(1));
+    }
+
+    @Override
+    public void addNewSchedule() {
+        Role role = roleRepository.findRoleByName(Roles.ROLE_MEDIC.getAuthority());
+        List<User> doctors = userRepository.getAllByRolesIs(role);
+        for (User user : doctors) {
+            List<Schedule> schedules = schedulePreparation();
+            for (Schedule schedule : schedules) {
+                schedule.setDoctor(user);
+                scheduleRepository.save(schedule);
+            }
+        }
+    }
+
+    @Override
+    public void blockSchedule() {
+        Role role = roleRepository.findRoleByName(Roles.ROLE_MEDIC.getAuthority());
+        List<User> doctors = userRepository.getAllByRolesIs(role);
+        LocalDateTime from = LocalDateTime.now().with(LocalTime.of(0, 0, 0));
+        LocalDateTime timeRange = from.plusHours(1);
+        for (User doctor : doctors) {
+            List<Schedule> schedules = scheduleRepository.getDayByDoctorAndDates(doctor, from, from.plusDays(1));
+            for (Schedule schedule : schedules) {
+                if (schedule.getDatetime().getHour() < timeRange.getHour()) {
+                    schedule.setAvailable(null);
+                    scheduleRepository.save(schedule);
+                }
+            }
+        }
+    }
+
     private void fillSchedule(User doctor) {
         LocalDateTime today = LocalDateTime.now().with(LocalTime.of(8, 0, 0));
         if (scheduleRepository.getAllByDoctorIs(doctor).isEmpty()) {
@@ -98,10 +136,25 @@ public class ScheduleServiceImpl implements ScheduleService {
                     Schedule schedule = new Schedule();
                     schedule.setDoctor(doctor);
                     schedule.setDatetime(today.plusDays(day).plusHours(hour));
-                    schedule.setAvailable(true);
+                    if (hour<8){
+                        schedule.setAvailable(true);
+                    } else {
+                        schedule.setAvailable(null);
+                    }
                     scheduleRepository.save(schedule);
                 }
             }
         }
+    }
+
+    private List<Schedule> schedulePreparation() {
+        List<Schedule> schedules = new ArrayList<>();
+        LocalDateTime today = LocalDateTime.now().with(LocalTime.of(8, 0, 0));
+        for (int i = 0; i < 12; i++) {
+            Schedule schedule = new Schedule();
+            schedule.setDatetime(today.plusHours(i));
+            schedules.add(schedule);
+        }
+        return schedules;
     }
 }

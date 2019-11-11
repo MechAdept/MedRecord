@@ -49,4 +49,11 @@ public class TicketController {
         return "redirect: /adminpanel/user/" + patientId + "/booking/" + doctorId ;
     }
 
+    @RequestMapping(value = "/{ticketId}", method =  RequestMethod.GET)
+    public String read(@PathVariable(value = "ticketId") Long ticketId, Model model){
+        model.addAttribute("ticketDataDTO", ticketService.findById(ticketId));
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        return "/adminpanel/ticket/details/details";
+    }
+
 }
