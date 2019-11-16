@@ -6,17 +6,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-
     <style>
         <%@include file="/resources/css/login.bootstrap.css"%>
     </style>
-
     <title><spring:message code="text.title.medrecord"/></title>
-
 </head>
 
 <body>

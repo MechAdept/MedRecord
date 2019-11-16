@@ -28,6 +28,4 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     Page<Ticket> findByDoctorOrPatientEquals(User doctor, User Patient, Pageable pageable);
 
     Ticket findByDoctorIsAndPatientIsAndAttendanceIsNull(User doctor, User patient);
-
-    List<Ticket> findAllByDatetimeLessThanAndAttendanceIsFalse(LocalDateTime localDateTime);
 }

@@ -20,6 +20,7 @@ import java.util.Map;
 
 @Controller
 @Secured("ROLE_ADMIN")
+@RequestMapping("/adminpanel/schedule")
 public class ScheduleController {
 
     @Autowired
@@ -31,59 +32,38 @@ public class ScheduleController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/adminpanel/schedule/{pid}/doctors", method = RequestMethod.GET)
-    public String doctorsForBooking(Model model, @PathVariable(name = "pid") final Long pid,
+    @RequestMapping(value = "/{patientId}/doctors", method = RequestMethod.GET)
+    public String doctorsForBooking(Model model, @PathVariable(name = "patientId") final Long patientId,
                                     @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
                                     @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
                                     @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
                                     @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
-        model.addAttribute(userService.findById(pid));
+        model.addAttribute("patientDataDTO",userService.findById(patientId));
         model.mergeAttributes(userService.getMapAndPageForDoctors(pageNo, pageSize, desc, sort));
-        model.addAttribute(userService.findById(pid));
         return "/adminpanel/user/details/booking/doctors";
     }
 
 
-    @RequestMapping(value = "/adminpanel/user/{pid}/booking/{did}", method = RequestMethod.GET)
-    public String booking(@PathVariable("pid") final Long pid, @PathVariable("did") Long did, Model model) {
-        model.mergeAttributes(bookingPreparation(pid, did));
+    @RequestMapping(value = "/{patientId}/booking/{doctorId}", method = RequestMethod.GET)
+    public String booking(@PathVariable("patientId") final Long patientId, @PathVariable("doctorId") Long doctorId, Model model) {
+        model.mergeAttributes(scheduleService.bookingPreparation());
+        model.addAttribute("patientDataDTO", userService.findById(patientId));
+        model.addAttribute("doctorDataDTO", userService.findById(doctorId));
         return "adminpanel/user/details/booking/booking";
     }
 
-    @RequestMapping(value = "/adminpanel/user/{pid}/readBooking/", method = RequestMethod.GET)
-    public String bookingRead(@PathVariable("did") final Long did, Model model) {
-        model.mergeAttributes(readAndEditPreparation(did));
+    @RequestMapping(value = "/{doctorId}/readSchedule", method = RequestMethod.GET)
+    public String bookingRead(@PathVariable("doctorId") final Long doctorId, Model model) {
+        model.mergeAttributes(scheduleService.bookingPreparation());
+        model.addAttribute("doctorDataDTO", userService.findById(doctorId));
         return "/adminpanel/user/details/booking/readBooking";
     }
 
-    @RequestMapping(value = "/adminpanel/user/{did}/edit", method = RequestMethod.GET)
-    public String bookingEdit(@PathVariable("did") final Long doctorId, Model model) {
-        model.mergeAttributes(readAndEditPreparation(doctorId));
+    @RequestMapping(value = "/{doctorId}/editSchedule", method = RequestMethod.GET)
+    public String bookingEdit(@PathVariable("doctorId") final Long doctorId, Model model) {
+        model.mergeAttributes(scheduleService.bookingPreparation());
+        model.addAttribute("doctorDataDTO", userService.findById(doctorId));
         return "/adminpanel/user/details/booking/editBooking";
     }
 
-    private Map<String, Object> bookingPreparation(Long patientId, Long doctorId) {
-        Map<String, Object> map = schedulePreparation();
-        map.put("patientDataDTO", userService.findById(patientId));
-        map.put("doctorDataDTO", userService.findById(doctorId));
-        return map;
-    }
-
-    private Map<String, Object> readAndEditPreparation(Long doctorId) {
-        Map<String, Object> map = schedulePreparation();
-        map.put("doctorDataDTO", userService.findById(doctorId));
-        return map;
-    }
-
-    private Map<String, Object> schedulePreparation() {
-        Map<String, Object> map = new HashMap<>();
-        Date currentDate = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
-        c.add(Calendar.MONTH, 1);
-        map.put("formatter", new SimpleDateFormat("yyyy-MM-dd"));
-        map.put("currentDate", currentDate);
-        map.put("maxDate", c.getTime());
-        return map;
-    }
 }

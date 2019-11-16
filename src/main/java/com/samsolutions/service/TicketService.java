@@ -22,7 +22,5 @@ public interface TicketService extends IEntity<TicketDataDTO, TicketFormDTO> {
 
     TicketDataDTO current(Long PatientId, Long doctorId);
 
-    Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort);
-
     Map<String, Object> getMapAndPageByUser(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort);
 }

@@ -22,6 +22,8 @@ public class TicketDataDTO {
 
     private LocalDateTime datetime;
 
+    private Boolean attendance;
+
     private VisitDataDTO visit;
 
     /**
@@ -103,6 +105,10 @@ public class TicketDataDTO {
     public void setVisit(VisitDataDTO visit) {
         this.visit = visit;
     }
+
+    public Boolean getAttendance() {return attendance;}
+
+    public void setAttendance(Boolean attendance) {this.attendance = attendance;}
 
     @Override
     public boolean equals(final Object o) {

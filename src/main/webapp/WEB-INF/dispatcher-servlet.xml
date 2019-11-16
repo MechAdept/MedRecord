@@ -11,8 +11,7 @@
     <context:component-scan base-package="com.samsolutions"/>
     <context:annotation-config/>
     <sec:global-method-security secured-annotations="enabled"/>
-    <task:annotation-driven />
-    <mvc:annotation-driven/>
+    <task:annotation-driven/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
@@ -29,7 +28,7 @@
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="messageConverters">
             <list>
-                <ref bean="jsonMessageConverter" />
+                <ref bean="jsonMessageConverter"/>
             </list>
         </property>
     </bean>
@@ -46,7 +45,6 @@
 
     <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
         <property name="paramName" value="lang"/>
-
     </bean>
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">

@@ -5,7 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="spr" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
-<c:url value="/adminpanel/schedule/${doctorDataDTO.id}/" var="getSchedule"/>
+<c:url value="/schedule/${doctorDataDTO.id}/" var="getSchedule"/>
 <c:url value="/adminpanel/user/details/" var="patientDetais"/>
 <c:url value="/adminpanel/ticket/" var="ticketHref"/>
 
@@ -59,7 +59,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.3s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">8:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -67,7 +68,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">9:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -75,7 +77,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">10:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -83,7 +86,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">11:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -91,7 +95,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">12:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -99,7 +104,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">13:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
         </div>
@@ -112,7 +118,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">14:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -120,7 +127,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">15:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -128,7 +136,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">16:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -136,7 +145,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">17:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -144,7 +154,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">18:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -152,7 +163,8 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">19:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="patientHref" style="display: none"></div>
+                    <div class="ticketHref" style="display: none"></div>
+                    <div class="patientName" style=""></div>
                 </button>
             </div>
             <div class="col-xs-2"></div>
@@ -168,25 +180,20 @@
 
     $(function () {
         $('.bookingButton').on('click', function () {
-            console.log(this)
-            alert(this.style.backgroundColor)
-            if (this.style.backgroundColor === 'rgb(62, 116, 146)') {
-                var url = this.querySelector('.patientHref').textContent;
-                console.log(url);
-                if (!isEmpty(url)) {
-                    var newTicketHref = "${currentTicket}";
-                    document.location.href = newTicketHref;
-                }
+            if (this.style.backgroundColor === 'rgb(136, 149, 153)' || this.style.backgroundColor === 'rgb(125, 255, 212)')
+            {
+                var message = "<spring:message code="booking.message.ticketError"/>";
+                alert(message);
             } else {
-                var url = this.querySelector('.patientHref').textContent;
-                console.log(url);
+                var url = this.querySelector('.ticketHref').textContent;
+                document.location.href = url;
             }
         });
     });
 
     function getSchedule() {
         var date = document.getElementById('bookingDate').value;
-        var url = "<c:url value="/adminpanel/schedule/${doctorDataDTO.id}/"/>" + date;
+        var url = "<c:url value="/schedule/${doctorDataDTO.id}/"/>" + date;
         $.ajax({
                 url: url,
                 dataType: 'json',
@@ -197,40 +204,52 @@
                         for (i = 0; i < 12; i++) {
                             var selector = $('#thumbnail' + i);
                             var scheduleId=selector[0].querySelector('.scheduleId');
-                            var patientHref=selector[0].querySelector('.patientHref');
+                            var ticketHref=selector[0].querySelector('.ticketHref');
+                            var patientName=selector[0].querySelector('.patientName');
                             if (json[i].available === true) {
                                 selector.css('background-color', '#7DFFD4');
+                                console.log(json[i]);
                                 scheduleId.textContent = json[i].id;
-                                patientHref.textContent = "${patientDetais}"+json[i].id;
-                                console.log(selector[0].querySelector('.patientHref').textContent);
+                                ticketHref.textContent = "";
                             } else if (json[i].available === false) {
                                 if(json[i].ticket != null){
                                     console.log(json[i].ticket.patient.id)
-                                    if(json[i].ticket.patient.id == ${patientDataDTO.id}){
-                                        selector.css('background-color', '#3E7492');
-                                        scheduleId.textContent = json[i].id;
-                                        patientHref.textContent = "${patientDetais}"+json[i].ticket.patient.id;
-                                    }
-                                    else {
-                                        selector.css('background-color', '#CC5078');
+                                    if(json[i].ticket.attendance === null) {
+                                        selector.css('background-color', '#fffd44');
                                         scheduleId.textContent = "";
-                                        patientHref.textContent = "";
+                                        ticketHref.textContent = "${ticketHref}" + json[i].ticket.id;
+                                        patientName.textContent = json[i].ticket.patient.name + " " + json[i].ticket.patient.surname;
+                                    }
+                                else if (json[i].ticket.attendance === true){
+                                        selector.css('background-color', '#5c5da1');
+                                        scheduleId.textContent = "";
+                                        ticketHref.textContent = "${ticketHref}" + json[i].ticket.id;
+                                        patientName.textContent = json[i].ticket.patient.name + " " + json[i].ticket.patient.surname;
+                                    }
+                                else {
+                                        selector.css('background-color', '#b14d4b');
+                                        scheduleId.textContent = "";
+                                        ticketHref.textContent = "${ticketHref}" + json[i].ticket.id;
+                                        patientName.textContent = json[i].ticket.patient.name + " " + json[i].ticket.patient.surname;
                                     }
                                 }
                             } else {
                                 selector.css('background-color', '#889599');
                                 scheduleId.textContent = "";
-                                patientHref.textContent = "";
+                                ticketHref.textContent = "";
+                                patientName.textContent = "";
                             }
                         }
                     } else {
                         for (i = 0; i < 12; i++) {
                             var selector = $('#thumbnail' + i);
                             var scheduleId=selector[0].querySelector('.scheduleId');
-                            var patientHref=selector[0].querySelector('.patientHref');
+                            var ticketHref=selector[0].querySelector('.ticketHref');
+                            var patientName=selector[0].querySelector('.patientName');
                             selector.css('background-color', '#889599');
                             scheduleId.textContent = "";
-                            patientHref.textContent = "";
+                            ticketHref.textContent = "";
+                            patientName.textContent = "";
                         }
                     }
                 },

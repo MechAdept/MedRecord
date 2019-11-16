@@ -1,6 +1,8 @@
 package com.samsolutions.controller;
 
+import com.samsolutions.dto.data.RoleDataDTO;
 import com.samsolutions.dto.form.UserFormDTO;
+import com.samsolutions.roles.Roles;
 import com.samsolutions.service.RoleService;
 import com.samsolutions.service.SecurityService;
 import com.samsolutions.service.UserService;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.UnexpectedRollbackException;
@@ -22,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Controller of operations for login and registration for user.
@@ -67,7 +73,7 @@ public class RegistrationController {
     /**
      * The method of checking client's data and registering a new user.
      *
-     * @param userFormDTO      is form to create a user.
+     * @param userFormDTO   is form to create a user.
      * @param bindingResult is checks the object for errors and returns them.
      * @return if successful, redirects to the welcome page, otherwise returns the registration page.
      */
@@ -113,7 +119,19 @@ public class RegistrationController {
      */
     @Secured("IS_AUTHENTICATED_FULLY")
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
-    public String welcome() {
+    public String welcome(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<String> roles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        if (roles.size() > 1) {
+            model.addAttribute("roles", roles);
+            model.addAttribute("ROLE_ADMIN", Roles.ROLE_ADMIN.getAuthority());
+            model.addAttribute("ROLE_MEDIC", Roles.ROLE_MEDIC.getAuthority());
+            model.addAttribute("ROLE_PATIENT", Roles.ROLE_PATIENT.getAuthority());
+            model.addAttribute("ROLE_RECEPTIONIST", Roles.ROLE_RECEPTIONIST.getAuthority());
+        } else {
+            return "redirect: /" + roles.get(0);
+        }
         return "welcome";
     }
 }

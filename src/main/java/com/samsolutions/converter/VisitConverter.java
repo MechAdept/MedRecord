@@ -31,7 +31,12 @@ public class VisitConverter implements DTOConverter<Visit, VisitDataDTO, VisitFo
     @Override
     public VisitDataDTO entityToDataDto(Visit source) {
         VisitDataDTO target = new VisitDataDTO();
-        target.setId(source.getId());
+        try {
+            target.setId(source.getId());
+        } catch (NullPointerException ne) {
+            logger.debug("Visit not exist");
+            return target;
+        }
         target.setDatetime(source.getDatetime());
         target.setComplaint(source.getComplaint());
         target.setExamination(source.getExamination());
@@ -45,7 +50,7 @@ public class VisitConverter implements DTOConverter<Visit, VisitDataDTO, VisitFo
         Visit target = new Visit();
         target.setId(source.getId());
         target.setTicket(ticketRepository.getOne(source.getTicketId()));
-        target.setDatetime(LocalDateTime.parse(source.getDatetime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        target.setDatetime(LocalDateTime.parse(source.getDatetime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         target.setComplaint(source.getComplaint());
         target.setExamination(source.getExamination());
         target.setDiagnosis(source.getDiagnosis());

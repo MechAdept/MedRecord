@@ -16,10 +16,8 @@ public class UserDataDTO {
     @JsonIgnore
     private String password;
 
-    @JsonIgnore
     private String name;
 
-    @JsonIgnore
     private String surname;
 
     @JsonIgnore

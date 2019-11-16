@@ -85,8 +85,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User findByUsername(final String username) {
-        return userRepository.findByUsername(username);
+    public UserDataDTO findByUsername(final String username) {
+        return userConverter.entityToDataDto(userRepository.findByUsername(username));
     }
 
     @Override

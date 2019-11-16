@@ -32,7 +32,7 @@ public interface UserService extends IEntity<UserDataDTO, UserFormDTO> {
      * @param username username of desired user.
      * @return UserDTO.
      */
-    User findByUsername(String username);
+    UserDataDTO findByUsername(String username);
 
     UserDataDTO findWithRolesById(Long id);
 

@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Controller of crud operations for table "visit".
  *
@@ -34,48 +37,34 @@ public class VisitController {
 
     @RequestMapping(value = "/create/{ticketId}", method = RequestMethod.GET)
     public String create(@PathVariable(value = "ticketId") final Long ticketId, Model model) {
-        model.addAttribute("ticketDTO", ticketService.findById(ticketId));
-        model.addAttribute("visitFormDTO", new VisitFormDTO());
-        return "/adminpanel/visit/create";
+        model.addAttribute("ticketDataDTO", ticketService.findById(ticketId));
+        VisitFormDTO visitFormDTO = new VisitFormDTO();
+        visitFormDTO.setDatetime(LocalDateTime.now().toString());
+        model.addAttribute("visitFormDTO", visitFormDTO);
+        return "/adminpanel/user/details/ticket/visit/create";
     }
 
-    /**
-     * Method to shows form for edit record of visit table.
-     *
-     * @param model is model.
-     * @param id    is id.
-     * @return return main page of "visit" crud.
-     */
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String edit(@PathVariable("id") final Long id, final Model model) {
-        VisitDataDTO visitDataDTO = visitService.findById(id);
-        model.addAttribute("visitDataDTO", visitDataDTO);
-        model.addAttribute("visitFormDTO", new VisitFormDTO());
-        return "adminpanel/visit/edit";
-    }
-
-    /**
-     * Method for edit record of "visit" table.
-     *
-     * @param visitFormDTO form to edit a visit.
-     * @return redirects to main page of "visit" crud.
-     */
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@ModelAttribute final VisitFormDTO visitFormDTO) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String save(@ModelAttribute("visitFormDTO") final VisitFormDTO visitFormDTO, Model model) {
         visitService.save(visitFormDTO);
-        return "redirect: /adminpanel/visit";
+        model.addAttribute("visitDataDTO", visitService.findByTicketId(visitFormDTO.getTicketId()));
+        model.addAttribute("ticketDataDTO",ticketService.findById(visitFormDTO.getTicketId()));
+        return "/adminpanel/user/details/ticket/visit/details";
     }
 
-    /**
-     * Method to delete record from "visit" table.
-     *
-     * @param id is id.
-     * @return redirects to main page of "visit" crud.
-     */
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") final Long id) {
-        visitService.delete(id);
-        return "redirect: /adminpanel/visit";
+    @RequestMapping(value = "/{ticketId}", method = RequestMethod.GET)
+    public String details(@PathVariable(value = "ticketId") final Long ticketId, Model model) {
+        VisitDataDTO visitDataDTO = visitService.findByTicketId(ticketId);
+        if (visitDataDTO.getId() != null) {
+            model.addAttribute("visitDataDTO", visitDataDTO);
+            model.addAttribute("ticketDataDTO",ticketService.findById(ticketId));
+            model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            return "/adminpanel/user/details/ticket/visit/details";
+        } else {
+            return "redirect: /adminpanel/visit/create/" + ticketId;
+        }
     }
+
+
 }
 

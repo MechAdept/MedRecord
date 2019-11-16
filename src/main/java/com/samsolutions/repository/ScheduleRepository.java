@@ -20,10 +20,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     Schedule findByTicketIs(Ticket ticket);
 
-    @Modifying
-    @Query(value = "delete from Schedule s where s.datetime between ?1 and ?2")
-    void deleteDay(LocalDateTime from, LocalDateTime to);
-
     void deleteAllByDatetimeBefore(LocalDateTime before);
 
     List<Schedule> getAllByDoctorIs(User doctor);

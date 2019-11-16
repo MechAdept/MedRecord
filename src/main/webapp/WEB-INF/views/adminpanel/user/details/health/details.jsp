@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -104,7 +104,7 @@
                     <label><spring:message code="health.label.nervous"/>:</label>
                 </div>
                 <div class="col-xs-6">
-                        ${healthDataDTO.nervous}
+                        <spring:message code="health.nervous.${healthDataDTO.nervous}"/>
                 </div>
             </div>
             <div class="row">
@@ -112,7 +112,7 @@
                     <label><spring:message code="health.label.constitution"/>:</label>
                 </div>
                 <div class="col-xs-6">
-                        ${healthDataDTO.constitution}
+                    <spring:message code="health.constitution.${healthDataDTO.constitution}"/>
                 </div>
             </div>
             <div class="row">
@@ -120,7 +120,7 @@
                     <label><spring:message code="health.label.musculature"/>:</label>
                 </div>
                 <div class="col-xs-6">
-                        ${healthDataDTO.musculature}
+                    <spring:message code="health.musculature.${healthDataDTO.musculature}"/>
                 </div>
             </div>
             <div class="row">

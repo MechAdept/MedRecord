@@ -32,7 +32,11 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDataDTO, Tick
     @Override
     public TicketDataDTO entityToDataDto(Ticket source) {
         TicketDataDTO target = new TicketDataDTO();
-        target.setId(source.getId());
+        try {
+            target.setId(source.getId());
+        } catch (NullPointerException ne) {
+            logger.debug("Ticket does not have a id");
+        }
         try {
             target.setDoctor(userConverter.entityToDataDto(source.getDoctor()));
         } catch (NullPointerException ne) {
@@ -43,11 +47,21 @@ public class TicketConverter implements DTOConverter<Ticket, TicketDataDTO, Tick
         } catch (NullPointerException ne) {
             logger.debug("Ticket does not have a patient");
         }
-        target.setDatetime(source.getDatetime());
+        try {
+            target.setDatetime(source.getDatetime());
+        } catch (NullPointerException ne)
+        {
+            logger.debug("Ticket does not have a datetime");
+        }
         try {
             target.setVisit(visitConverter.entityToDataDto(source.getVisit()));
         } catch (NullPointerException ne) {
             logger.debug("Ticket does not have a visit");
+        }
+        try {
+            target.setAttendance(source.getAttendance());
+        } catch (NullPointerException ne) {
+            logger.debug("Ticket does not have a Attendance");
         }
         return target;
     }

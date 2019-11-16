@@ -5,6 +5,7 @@ import com.samsolutions.dto.form.UserFormDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface ScheduleService {
@@ -22,4 +23,8 @@ public interface ScheduleService {
     void addNewSchedule();
 
     void blockSchedule();
+
+    void changeAvailableById(Long id);
+
+    Map<String, Object> bookingPreparation();
 }

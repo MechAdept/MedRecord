@@ -6,12 +6,14 @@ import com.samsolutions.converter.VisitConverter;
 import com.samsolutions.dto.data.VisitDataDTO;
 import com.samsolutions.dto.form.TicketFormDTO;
 import com.samsolutions.dto.form.VisitFormDTO;
+import com.samsolutions.entity.Ticket;
 import com.samsolutions.entity.Visit;
 import com.samsolutions.repository.TicketRepository;
 import com.samsolutions.repository.VisitRepository;
 import com.samsolutions.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implements the methods defined in the visit service.
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
  * @copyright 2019 SaM
  */
 
+@Transactional
 public class VisitServiceImpl implements VisitService {
 
     @Autowired
@@ -39,6 +42,9 @@ public class VisitServiceImpl implements VisitService {
     @Override
     public void save(final VisitFormDTO source) {
         Visit target = visitConverter.formDtoToEntity(source);
+        Ticket ticket = ticketRepository.getOne(source.getTicketId());
+        ticket.setAttendance(true);
+        ticketRepository.save(ticket);
         visitRepository.save(target);
     }
 

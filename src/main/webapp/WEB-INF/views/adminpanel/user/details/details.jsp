@@ -59,7 +59,9 @@
             <div class="col-xs-6">
                 <div class="row"></div>
                 <div class="row">
-                    <h4><b><spring:message code="text.label.fullname"/>: ${userDataDTO.surname} ${userDataDTO.name} ${userDataDTO.patronymic}</b></h4>
+                    <h4><b><spring:message
+                            code="text.label.fullname"/>: ${userDataDTO.surname} ${userDataDTO.name} ${userDataDTO.patronymic}</b>
+                    </h4>
                 </div>
                 <div class="row">
                     <h4><b><spring:message code="text.label.telephone"/>: ${userDataDTO.telephone}</b></h4>
@@ -72,40 +74,52 @@
                         <h4><b><spring:message code="text.label.sex"/>: <spring:message code="user.sex.male"/></b></h4>
                     </c:if>
                     <c:if test="${userDataDTO.sex == false}">
-                        <h4><b><spring:message code="text.label.sex"/>: <spring:message code="user.sex.female"/></b></h4>
+                        <h4><b><spring:message code="text.label.sex"/>: <spring:message code="user.sex.female"/></b>
+                        </h4>
                     </c:if>
                 </div>
-                <br>
                 <div class="row">
                     <c:forEach items="${userDataDTO.roles}" var="role">
                         <c:if test="${role.name == 'ROLE_PATIENT'}">
+                            <br>
                             <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/health"/>"
                                class="btn btn-primary align-content-center" role="button"
                                aria-pressed="true"><spring:message code="button.health"/></a>
                             <a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/doctors"/>"
                                class="btn btn-primary align-content-center" role="button"
                                aria-pressed="true"><spring:message code="button.booking"/></a>
+                            <a href="<c:url value="/adminpanel/ticket/${userDataDTO.id}/list"/>"
+                               class="btn btn-primary align-content-center" role="button"
+                               aria-pressed="true"><spring:message code="button.tickets"/></a>
+                            <br>
                         </c:if>
                         <c:if test="${role.name == 'ROLE_MEDIC'}">
-                            <a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/readBooking"/>"
+                            <a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/readSchedule"/>"
                                class="btn btn-primary align-content-center" role="button"
-                               aria-pressed="true"><spring:message code="button.readBooking"/></a>
+                               aria-pressed="true"><spring:message code="button.readSchedule"/></a>
+                            <a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/editSchedule"/>"
+                               class="btn btn-primary align-content-center" role="button"
+                               aria-pressed="true"><spring:message code="button.editSchedule"/></a>
+                            <br>
                         </c:if>
                     </c:forEach>
-                    <a href="<c:url value="/adminpanel/user/edit/${userDataDTO.id}"/>"
-                       class="btn btn-warning align-content-center" role="button"
-                       aria-pressed="true"><spring:message code="button.edit"/></a>
-                    <a href="<c:url value="/adminpanel/user/delete/${userDataDTO.id}"/>"
-                       class="btn btn-danger align-content-center" role="button"
-                       aria-pressed="true"><spring:message code="button.delete"/></a>
                 </div>
+                <br>
             </div>
             <div class="col-xs-3">
                 <h4><b><spring:message code="text.label.roles"/>:</b></h4>
                 <c:forEach items="${userDataDTO.roles}" var="role">
                     <h4><b><spring:message code="${role.name}"/></b></h4>
                 </c:forEach>
+                <br>
+                <a href="<c:url value="/adminpanel/user/edit/${userDataDTO.id}"/>"
+                   class="btn btn-warning align-content-center" role="button"
+                   aria-pressed="true"><spring:message code="button.edit"/></a>
+                <a href="<c:url value="/adminpanel/user/delete/${userDataDTO.id}"/>"
+                   class="btn btn-danger align-content-center" role="button"
+                   aria-pressed="true"><spring:message code="button.delete"/></a>
             </div>
+            <br>
         </div>
     </div>
 </body>

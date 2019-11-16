@@ -3,7 +3,7 @@ package com.samsolutions.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface IEntity<A, B> {
+public interface IEntity<DataDTO, FormDTO> {
 
     /**
      * Method for find "A" by id.
@@ -11,7 +11,7 @@ public interface IEntity<A, B> {
      * @param id id of desired "A".
      * @return "A".
      */
-    A findById(Long id);
+    DataDTO findById(Long id);
 
     /**
      * Method for delete Entity by id.
@@ -25,5 +25,5 @@ public interface IEntity<A, B> {
      *
      * @param form formDataDTO with parameters to be set.
      */
-    void save(B form);
+    void save(FormDTO form);
 }

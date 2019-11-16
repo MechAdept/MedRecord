@@ -91,19 +91,6 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("DTOList", getPage(pageNo, pageSize, desc, sort));
-        map.put("pageNo", pageNo);
-        map.put("pageSize", pageSize);
-        map.put("desc", desc);
-        map.put("sort", sort);
-        map.put("pageCount", getPageCount(pageSize));
-        map.put("elementsCount", getTotalCount());
-        return map;
-    }
-
-    @Override
     public Map<String, Object> getMapAndPageByUser(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         User user = userRepository.getOne(id);
         Map<String, Object> map = new HashMap<>();
@@ -128,16 +115,6 @@ public class TicketServiceImpl implements TicketService {
         return pageable;
     }
 
-    private List<TicketDataDTO> getPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
-        Page<Ticket> pagedResult = ticketRepository.findAll(pageable);
-        if (pagedResult.hasContent()) {
-            return ticketConverter.entitiesToDataDtoList(pagedResult.getContent());
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
     private List<TicketDataDTO> getPageByUser(User user, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Pageable pageable = getPageable(pageNo, pageSize, desc, sort);
         Page<Ticket> pagedResult = ticketRepository.findByDoctorOrPatientEquals(user, user, pageable);
@@ -146,14 +123,6 @@ public class TicketServiceImpl implements TicketService {
         } else {
             return new ArrayList<>();
         }
-    }
-
-    private Long getPageCount(Integer pageSize) {
-        return ticketRepository.count() / pageSize;
-    }
-
-    private Long getTotalCount() {
-        return ticketRepository.count();
     }
 
     private Long getPageCountByUser(Integer pageSize, User user) {

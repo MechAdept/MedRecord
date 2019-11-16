@@ -106,13 +106,13 @@ public class HealthController {
      */
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
     public String delete(@PathVariable("id") final Long id) {
-        healthService.deleteHealthByPatientId(id);
+        healthService.delete(id);
         return "redirect: /adminpanel/user/details/" + id + "/health";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String details(@PathVariable("id") final Long id, Model model) {
         model.addAttribute("healthDTO", healthService.findById(id));
-        return "/adminpanel/user/details/health/read";
+        return "adminpanel/user/details/health/details";
     }
 }

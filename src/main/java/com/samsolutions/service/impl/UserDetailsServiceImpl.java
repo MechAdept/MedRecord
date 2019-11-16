@@ -38,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NESTED)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        UserDataDTO userDataDTO = userConverter.entityToDataDto(userService.findByUsername(username));
+        UserDataDTO userDataDTO = userService.findByUsername(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Roles role : Roles.values()) {

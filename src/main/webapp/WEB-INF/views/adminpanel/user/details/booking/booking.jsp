@@ -5,9 +5,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="spr" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
-<c:url value="/adminpanel/schedule/${doctorDataDTO.id}/" var="getSchedule"/>
-<c:url value="/adminpanel/schedule/booking/${patientDataDTO.id}/" var="bookTime"/>
-<c:url value="/adminpanel/ticket/${patientDataDTO.id}/${doctorDataDTO.id}/current" var="currentTicket"/>
+<c:url value="/schedule/${doctorDataDTO.id}/" var="getSchedule"/>
+<c:url value="/schedule/booking/${patientDataDTO.id}/" var="bookTime"/>
+<c:url value="/ticket/${patientDataDTO.id}/${doctorDataDTO.id}/current" var="currentTicket"/>
 
 <html>
 <head>
@@ -205,7 +205,7 @@
 
     function getSchedule() {
         var date = document.getElementById('bookingDate').value;
-        var url = "<c:url value="/adminpanel/schedule/${doctorDataDTO.id}/"/>" + date;
+        var url = "<c:url value="/schedule/${doctorDataDTO.id}/"/>" + date;
         $.ajax({
                 url: url,
                 dataType: 'json',

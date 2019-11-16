@@ -112,41 +112,41 @@
                                 <c:choose>
                                     <c:when test="${healthDataDTO.nervous eq 'Sanguine'}">
                                         <form:option value="Sanguine" selected="selected"><spring:message
-                                                code="health.nervous.sanguine"/></form:option>
+                                                code="health.nervous.Sanguine"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Sanguine"><spring:message
-                                                code="health.nervous.sanguine"/></form:option>
+                                                code="health.nervous.Sanguine"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
                                     <c:when test="${healthDataDTO.nervous eq 'Choleric'}">
                                         <form:option value="Choleric" selected="selected"><spring:message
-                                                code="health.nervous.choleric"/></form:option>
+                                                code="health.nervous.Choleric"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Choleric"><spring:message
-                                                code="health.nervous.choleric"/></form:option>
+                                                code="health.nervous.Choleric"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
                                     <c:when test="${healthDataDTO.nervous eq 'Phlegmatic'}">
                                         <form:option value="Phlegmatic" selected="selected"><spring:message
-                                                code="health.nervous.phlegmatic"/></form:option>
+                                                code="health.nervous.Phlegmatic"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Phlegmatic"><spring:message
-                                                code="health.nervous.phlegmatic"/></form:option>
+                                                code="health.nervous.Phlegmatic"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
                                     <c:when test="${healthDataDTO.nervous eq 'Melancholic'}">
                                         <form:option value="Melancholic" selected="selected"><spring:message
-                                                code="health.nervous.melancholic"/></form:option>
+                                                code="health.nervous.Melancholic"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Melancholic"><spring:message
-                                                code="health.nervous.melancholic"/></form:option>
+                                                code="health.nervous.Melancholic"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                             </form:select>
@@ -164,31 +164,31 @@
                                 <c:choose>
                                     <c:when test="${healthDataDTO.constitution eq 'Mesomorph'}">
                                         <form:option value="Mesomorph"><spring:message
-                                                code="health.constitution.mesomorph"/></form:option>
+                                                code="health.constitution.Mesomorph"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Mesomorph"><spring:message
-                                                code="health.constitution.mesomorph"/></form:option>
+                                                code="health.constitution.Mesomorph"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
-                                    <c:when test="${healthDataDTO.constitution eq 'Ectomoprh'}">
-                                        <form:option value="Ectomoprh" selected="selected"><spring:message
-                                                code="health.constitution.ectomorph"/></form:option>
+                                    <c:when test="${healthDataDTO.constitution eq 'Ectomorph'}">
+                                        <form:option value="Ectomorph" selected="selected"><spring:message
+                                                code="health.constitution.Ectomorph"/></form:option>
                                     </c:when>
                                     <c:otherwise>
-                                        <form:option value="Ectomoprh"><spring:message
-                                                code="health.constitution.ectomorph"/></form:option>
+                                        <form:option value="Ectomorph"><spring:message
+                                                code="health.constitution.Ectomorph"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
                                     <c:when test="${healthDataDTO.constitution eq 'Endomorph'}">
                                         <form:option value="Endomorph" selected="selected"><spring:message
-                                                code="health.constitution.endomorph"/></form:option>
+                                                code="health.constitution.Endomorph"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Endomorph"><spring:message
-                                                code="health.constitution.endomorph"/></form:option>
+                                                code="health.constitution.Endomorph"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                             </form:select>
@@ -206,41 +206,41 @@
                                 <c:choose>
                                     <c:when test="${healthDataDTO.musculature eq 'Harmonious'}">
                                         <form:option value="Harmonious" selected="selected"><spring:message
-                                                code="health.musculature.harmonious"/></form:option>
+                                                code="health.musculature.Harmonious"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Harmonious"><spring:message
-                                                code="health.musculature.harmonious"/></form:option>
+                                                code="health.musculature.Harmonious"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
                                     <c:when test="${healthDataDTO.musculature eq 'Disharmonious'}">
                                         <form:option value="Disharmonious" selected="selected"><spring:message
-                                                code="health.musculature.disharmonious"/></form:option>
+                                                code="health.musculature.Disharmonious"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Disharmonious"><spring:message
-                                                code="health.musculature.disharmonious"/></form:option>
+                                                code="health.musculature.Disharmonious"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
                                     <c:when test="${healthDataDTO.musculature eq 'Sharply disharmonious'}">
                                         <form:option value="Sharply disharmonious" selected="selected"><spring:message
-                                                code="health.musculature.sharplydisharmonious"/></form:option>
+                                                code="health.musculature.Sharplydisharmonious"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Sharply disharmonious"><spring:message
-                                                code="health.musculature.sharplydisharmonious"/></form:option>
+                                                code="health.musculature.Sharplydisharmonious"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
                                     <c:when test="${healthDataDTO.musculature eq 'Developmental delay'}">
                                         <form:option value="Developmental delay" selected="selected"><spring:message
-                                                code="health.musculature.developmentaldelay"/></form:option>
+                                                code="health.musculature.Developmentaldelay"/></form:option>
                                     </c:when>
                                     <c:otherwise>
                                         <form:option value="Developmental delay"><spring:message
-                                                code="health.musculature.developmentaldelay"/></form:option>
+                                                code="health.musculature.Developmentaldelay"/></form:option>
                                     </c:otherwise>
                                 </c:choose>
                             </form:select>

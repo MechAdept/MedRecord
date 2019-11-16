@@ -26,7 +26,7 @@ public class Schedule {
     private User doctor;
 
     @JoinColumn(name = "ticket_id")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Ticket ticket;
 
     @Column(name = "datetime")

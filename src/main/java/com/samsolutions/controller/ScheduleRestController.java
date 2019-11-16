@@ -1,4 +1,4 @@
-package com.samsolutions.controller.adminPanel;
+package com.samsolutions.controller;
 
 import com.samsolutions.dto.data.ScheduleDataDTO;
 import com.samsolutions.service.ScheduleService;
@@ -6,10 +6,8 @@ import com.samsolutions.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,13 +20,15 @@ public class ScheduleRestController {
     @Autowired
     TicketService ticketService;
 
-    @GetMapping(value = "/adminpanel/schedule/{id}/{date}")
+    @Secured("IS_AUTHENTICATED_FULLY")
+    @GetMapping(value = "/schedule/{id}/{date}")
     @ResponseBody
     public List<ScheduleDataDTO> getSchedule(@PathVariable("id") Long id, @PathVariable("date") String date) {
         return scheduleService.getDayByDateAndId(date, id);
     }
 
-    @GetMapping(value = "/adminpanel/schedule/booking/{patientId}/{scheduleId}")
+    @Secured({"ROLE_PATIENT", "ROLE_ADMIN"})
+    @GetMapping(value = "/schedule/booking/{patientId}/{scheduleId}")
     @ResponseBody
     public ResponseEntity<Object> bookTime(@PathVariable("patientId") Long patientId, @PathVariable("scheduleId") Long scheduleId) {
         if (scheduleService.booking(patientId, scheduleId)) {
@@ -38,7 +38,8 @@ public class ScheduleRestController {
         }
     }
 
-    @GetMapping(value = "/adminpanel/schedule/booking/{patientId}/{scheduleId}/dereserve")
+    @Secured({"ROLE_RECEPTIONIST", "ROLE_ADMIN"})
+    @GetMapping(value = "/aschedule/booking/{patientId}/{scheduleId}/dereserve")
     @ResponseBody
     public ResponseEntity<Object> deReserveTime(@PathVariable("patientId") Long patientId, @PathVariable("scheduleId") Long scheduleId) {
         if (scheduleService.booking(patientId, scheduleId)) {
@@ -48,5 +49,11 @@ public class ScheduleRestController {
         }
     }
 
-    //todo: Чтобы забронироват талон нужно: сохранить талон в бд, и поместить id этого талона в расписание врача
+    @Secured({"ROLE_RECEPTIONIST", "ROLE_ADMIN"})
+    @GetMapping(value = "/schedule/edit/{scheduleId}")
+    @ResponseBody
+    public ResponseEntity<Object> changeAvailable(@PathVariable("scheduleId") Long scheduleId) {
+        scheduleService.changeAvailableById(scheduleId);
+        return new ResponseEntity<>(scheduleService.getDayBySchedule(scheduleId), HttpStatus.OK);
+    }
 }

@@ -110,13 +110,13 @@
                             <form:select path="nervous" class="browser-default custom-select" cssStyle="width: 18.0em">
                                 <form:option value=""><spring:message code="health.alcohol.unselected"/></form:option>
                                 <form:option value="Sanguine"><spring:message
-                                        code="health.nervous.sanguine"/></form:option>
+                                        code="health.nervous.Sanguine"/></form:option>
                                 <form:option value="Choleric"><spring:message
-                                        code="health.nervous.choleric"/></form:option>
+                                        code="health.nervous.Choleric"/></form:option>
                                 <form:option value="Phlegmatic"><spring:message
-                                        code="health.nervous.phlegmatic"/></form:option>
+                                        code="health.nervous.Phlegmatic"/></form:option>
                                 <form:option value="Melancholic"><spring:message
-                                        code="health.nervous.melancholic"/></form:option>
+                                        code="health.nervous.Melancholic"/></form:option>
                             </form:select>
                             <form:errors path="nervous" cssStyle="color: red"/>
                         </div>
@@ -131,11 +131,11 @@
                                          cssStyle="width: 18.0em">
                                 <form:option value=""><spring:message code="health.alcohol.unselected"/></form:option>
                                 <form:option value="Mesomorph"><spring:message
-                                        code="health.constitution.mesomorph"/></form:option>
+                                        code="health.constitution.Mesomorph"/></form:option>
                                 <form:option value="Ectomoprh"><spring:message
-                                        code="health.constitution.ectomorph"/></form:option>
+                                        code="health.constitution.Ectomorph"/></form:option>
                                 <form:option value="Endomorph"><spring:message
-                                        code="health.constitution.endomorph"/></form:option>
+                                        code="health.constitution.Endomorph"/></form:option>
                             </form:select>
                             <form:errors path="constitution" cssStyle="color: red"/>
                         </div>
@@ -151,13 +151,13 @@
                                 <form:option value=""><spring:message
                                         code="health.musculature.unselected"/></form:option>
                                 <form:option value="Harmonious"><spring:message
-                                        code="health.musculature.harmonious"/></form:option>
+                                        code="health.musculature.Harmonious"/></form:option>
                                 <form:option value="Disharmonious"><spring:message
-                                        code="health.musculature.disharmonious"/></form:option>
+                                        code="health.musculature.Disharmonious"/></form:option>
                                 <form:option value="Sharply disharmonious"><spring:message
-                                        code="health.musculature.sharplydisharmonious"/></form:option>
+                                        code="health.musculature.Sharplydisharmonious"/></form:option>
                                 <form:option value="Developmental delay"><spring:message
-                                        code="health.musculature.developmentaldelay"/></form:option>
+                                        code="health.musculature.Developmentaldelay"/></form:option>
                             </form:select>
                             <form:errors path="constitution" cssStyle="color: red"/>
                         </div>

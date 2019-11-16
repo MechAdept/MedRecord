@@ -236,7 +236,7 @@ public class UserController {
     public String detailsHealth(@PathVariable(value = "id") final Long id, Model model) {
         model.addAttribute("healthDataDTO", healthService.findByPatientId(id));
         model.addAttribute("userDataDTO", userService.findById(id));
-        return "adminpanel/user/details/health/read";
+        return "adminpanel/user/details/health/details";
     }
 
     @RequestMapping(value = "/details/{id}/tickets/delete/{ticketId}", method = RequestMethod.GET)

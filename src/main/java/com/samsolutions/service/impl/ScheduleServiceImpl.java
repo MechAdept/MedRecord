@@ -16,13 +16,13 @@ import com.samsolutions.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Transactional
 public class ScheduleServiceImpl implements ScheduleService {
@@ -103,7 +103,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         Role role = roleRepository.findRoleByName(Roles.ROLE_MEDIC.getAuthority());
         List<User> doctors = userRepository.getAllByRolesIs(role);
         for (User user : doctors) {
-            List<Schedule> schedules = schedulePreparation();
+            List<Schedule> schedules = new ArrayList<>();
+            LocalDateTime today = LocalDateTime.now().with(LocalTime.of(8, 0, 0));
+            for (int i = 0; i < 12; i++) {
+                Schedule schedule = new Schedule();
+                schedule.setDatetime(today.plusHours(i));
+                schedules.add(schedule);
+            }
             for (Schedule schedule : schedules) {
                 schedule.setDoctor(user);
                 scheduleRepository.save(schedule);
@@ -128,6 +134,36 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
     }
 
+    @Override
+    public void changeAvailableById(Long id) {
+        Schedule schedule = scheduleRepository.getOne(id);
+        if (schedule.getTicket() == null) {
+            if (schedule.getAvailable() == null) {
+                schedule.setAvailable(true);
+            } else {
+                schedule.setAvailable(null);
+            }
+        } else {
+            ticketRepository.delete(schedule.getTicket());
+            schedule.setTicket(null);
+            schedule.setAvailable(null);
+        }
+        scheduleRepository.save(schedule);
+    }
+
+    @Override
+    public Map<String, Object> bookingPreparation() {
+        Map<String, Object> map = new HashMap<>();
+        Date currentDate = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        c.add(Calendar.MONTH, 1);
+        map.put("formatter", new SimpleDateFormat("yyyy-MM-dd"));
+        map.put("currentDate", currentDate);
+        map.put("maxDate", c.getTime());
+        return map;
+    }
+
     private void fillSchedule(User doctor) {
         LocalDateTime today = LocalDateTime.now().with(LocalTime.of(8, 0, 0));
         if (scheduleRepository.getAllByDoctorIs(doctor).isEmpty()) {
@@ -136,7 +172,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     Schedule schedule = new Schedule();
                     schedule.setDoctor(doctor);
                     schedule.setDatetime(today.plusDays(day).plusHours(hour));
-                    if (hour<8){
+                    if (hour < 8) {
                         schedule.setAvailable(true);
                     } else {
                         schedule.setAvailable(null);
@@ -145,16 +181,5 @@ public class ScheduleServiceImpl implements ScheduleService {
                 }
             }
         }
-    }
-
-    private List<Schedule> schedulePreparation() {
-        List<Schedule> schedules = new ArrayList<>();
-        LocalDateTime today = LocalDateTime.now().with(LocalTime.of(8, 0, 0));
-        for (int i = 0; i < 12; i++) {
-            Schedule schedule = new Schedule();
-            schedule.setDatetime(today.plusHours(i));
-            schedules.add(schedule);
-        }
-        return schedules;
     }
 }
