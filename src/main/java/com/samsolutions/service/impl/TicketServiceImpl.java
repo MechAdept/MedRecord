@@ -12,6 +12,8 @@ import com.samsolutions.repository.TicketRepository;
 import com.samsolutions.repository.UserRepository;
 import com.samsolutions.service.TicketService;
 import com.samsolutions.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +56,8 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     ScheduleRepository scheduleRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(TicketServiceImpl.class);
+
     @Override
     @Transactional(readOnly = true)
     public TicketDataDTO findById(final Long id) {
@@ -69,9 +73,13 @@ public class TicketServiceImpl implements TicketService {
     public void delete(final Long id) {
         Ticket ticket = ticketRepository.getOne(id);
         Schedule schedule = scheduleRepository.findByTicketIs(ticket);
-        schedule.setTicket(null);
-        schedule.setAvailable(true);
-        scheduleRepository.save(schedule);
+        try {
+            schedule.setTicket(null);
+            schedule.setAvailable(true);
+            scheduleRepository.save(schedule);
+        } catch (NullPointerException npe) {
+            logger.debug("schedule not exist");
+        }
         ticketRepository.deleteById(id);
     }
 

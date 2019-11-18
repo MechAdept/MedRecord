@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter;
 @Controller
 @RequestMapping(value = "/adminpanel/ticket")
 @Secured("ROLE_ADMIN")
-public class TicketController {
+public class AdminTicketController {
 
     @Autowired
     TicketService ticketService;

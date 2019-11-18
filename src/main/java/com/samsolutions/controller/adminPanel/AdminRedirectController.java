@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @Secured("ROLE_ADMIN")
-public class AdminController {
+public class AdminRedirectController {
 
     /**
      * Method shows the main page of admin panel.

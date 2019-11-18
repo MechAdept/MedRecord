@@ -5,6 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="spr" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:url value="/schedule/${doctorDataDTO.id}/" var="getSchedule"/>
 <c:url value="/adminpanel/user/details/" var="patientDetais"/>
 <c:url value="/adminpanel/ticket/" var="ticketHref"/>
@@ -41,6 +42,11 @@
             <div class="row">
                 <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
                         code="button.logout"/></a>
+            </div>
+            <div class="row">
+                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_RECEPTIONIST')">
+                    <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
+                </sec:authorize>
             </div>
         </div>
     </div>

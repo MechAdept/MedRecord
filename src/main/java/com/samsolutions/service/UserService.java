@@ -51,4 +51,6 @@ public interface UserService extends IEntity<UserDataDTO, UserFormDTO> {
     void updateProfile(UserFormDTO formDTO);
 
     void updateRoles(UserFormDTO formDTO);
+
+    UserDataDTO getCurrent();
 }

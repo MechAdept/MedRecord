@@ -26,7 +26,7 @@ public class VisitConverter implements DTOConverter<Visit, VisitDataDTO, VisitFo
     @Autowired
     TicketRepository ticketRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(VisitConverter.class);
 
     @Override
     public VisitDataDTO entityToDataDto(Visit source) {

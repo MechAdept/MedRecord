@@ -20,7 +20,7 @@ import java.util.List;
 @Component
 public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDTO> {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserConverter.class);
 
     @Autowired
     RoleConverter roleConverter;

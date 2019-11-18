@@ -4,73 +4,88 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="SEC" uri="http://www.springframework.org/security/tags" %>
 <c:url value="/logout" var="logout"/>
 
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <style>
-        <%@include file="/resources/css/bootstrap.min.css"%>
-        <%@include file="/resources/css/common.css"%>
-    </style>
-    <title><spring:message code="text.title.authorization"/></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><spring:message code="text.title.medrecord"/></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-xs-6"></div>
-        <div class="col-xs-3"></div>
-        <div class="col-xs-3">
-            <div class="row">
+<section class="window">
+    <div class="container">
+        <div class="main_window mt-5 w-25 text-center mx-auto">
+            <div class="languages d-flex justify-content-end">
                 <a href="?lang=pl">PL</a>
-                <a href="?lang=en">EN</a>
-                <a href="?lang=ru">RU</a>
+                <a href="?lang=en" class="ml-1">EN</a>
+                <a href="?lang=ru" class="ml-1">RU</a>
             </div>
-            <div class="row">
-                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
-                        code="button.logout"/></a>
+            <div class="choice_variants border border-dark p-3">
+                <div class="greeting mb-4">
+                    <h4><spring:message code="text.header.welcome"/> ${pageContext.request.userPrincipal.name}</h4>
+                </div>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <div class="col-auto">
+                        <a href="<c:url value="/adminpanel"/>">
+                            <button type="button" class="btn btn-outline-dark mb-3">
+                                <spring:message
+                                        code="text.header.adminPanel"/></button>
+                        </a>
+                    </div>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_PATIENT')">
+                    <div class="col-auto">
+                        <a href="<c:url value="/patientpanel"/>">
+                            <button type="button" class="btn btn-outline-dark mb-3">
+                                <spring:message
+                                        code="text.header.patientPanel"/></button>
+                        </a>
+                    </div>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_MEDIC')">
+                    <div class="col-auto">
+                        <a href="<c:url value="/medicpanel"/>">
+                            <button type="button" class="btn btn-outline-dark mb-3">
+                                <spring:message
+                                        code="text.header.medicPanel"/></button>
+                        </a>
+                    </div>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_RECEPTIONIST')">
+                    <div class="col-auto">
+                        <a href="<c:url value="/receptionistpanel"/>">
+                            <button type="button"
+                                    class="btn btn-outline-dark mb-3"><spring:message
+                                    code="text.header.receptionistpanel"/></button>
+                        </a>
+                    </div>
+                </sec:authorize>
+                <div class="col-auto">
+                    <a href="<c:url value="/logout"/>">
+                        <button type="button" class="btn btn-danger mb-2">
+                            <spring:message
+                                    code="button.logout"/></button>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-    <c:if test="${pageContext.request.userPrincipal.name != null}">
-        <div class="row">
-            <div class="row">
-                <div class="col-xs-3">
-                </div>
-                <div class="col-xs-6">
-                    <div class="img-thumbnail су" width="400" height="300" style="background-color: #fff">
-                        <h2><spring:message code="text.header.welcome"/> ${pageContext.request.userPrincipal.name}</h2>
-                        <br>
-                        <div class="center-block">
-                            <c:if test="${roles.contains(ROLE_ADMIN)}">
-                                <a href="<c:url value="/adminpanel"/>"><spring:message
-                                        code="text.header.adminPanel"/></a>
-                            </c:if>
-                            <br>
-                            <c:if test="${roles.contains(ROLE_PATIENT)}">
-                                <a href="<c:url value="/patientpanel"/>"><spring:message
-                                        code="text.header.patientPanel"/></a>
-                            </c:if>
-                            <br>
-                            <c:if test="${roles.contains(ROLE_MEDIC)}">
-                                <a href="<c:url value="/medicpanel"/>"><spring:message
-                                        code="text.header.medicPanel"/></a>
-                            </c:if>
-                            <br>
-                            <c:if test="${roles.contains(ROLE_RECEPTIONIST)}">
-                                <a href="<c:url value="/receptionistpanel"/>"><spring:message
-                                        code="text.header.receptionistpanel"/></a>
-                            </c:if>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-3">
-                </div>
-            </div>
-        </div>
-    </c:if>
-</div>
+    </div>
+</section>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

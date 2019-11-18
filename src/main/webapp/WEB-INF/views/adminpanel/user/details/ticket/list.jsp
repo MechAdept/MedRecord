@@ -3,6 +3,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 <head>
@@ -37,6 +38,11 @@
             <div class="row">
                 <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
                         code="button.logout"/></a>
+            </div>
+            <div class="row">
+                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_RECEPTIONIST')">
+                    <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
+                </sec:authorize>
             </div>
         </div>
     </div>
@@ -235,12 +241,12 @@
                                 <div class="row">
                                     <div class="col-xs-4">
                                         <c:if test="${pageNo > 1 && elementsCount > 0}">
-                                            <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}"/>"
+                                            <a href="<c:url value="/adminpanel/ticket/${userId}/list?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}"/>"
                                                class="btn btn-outline-primary" role="button"
                                                aria-pressed="true"><spring:message code="button.previously"/></a>
                                         </c:if>
                                         <c:if test="${pageCount != 0 && DTOList.size() == 0}">
-                                            <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=1&pageSize=${pageSize}&desc=${desc}"/>"
+                                            <a href="<c:url value="/adminpanel/ticket/${userId}/list?pageNo=1&pageSize=${pageSize}&desc=${desc}"/>"
                                                class="btn btn-outline-primary" role="button"
                                                aria-pressed="true"><spring:message code="button.previously"/></a>
                                         </c:if>
@@ -254,7 +260,7 @@
                                                     </c:when>
                                                     <c:otherwise>
                                                         <td>
-                                                            <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${i}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>">${i}</a>
+                                                            <a href="<c:url value="/adminpanel/ticket/${userId}/list?pageNo=${i}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>">${i}</a>
                                                         </td>
                                                     </c:otherwise>
                                                 </c:choose>
@@ -263,7 +269,7 @@
                                     </div>
                                     <div class="col-xs-4">
                                         <c:if test="${(pageSize*pageNo)<elementsCount}">
-                                            <a href="<c:url value="/adminpanel/user/details/${userDTO.id}/tickets?pageNo=${pageNo+1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
+                                            <a href="<c:url value="/adminpanel/ticket/${userId}/list?pageNo=${pageNo+1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
                                                class="btn btn-outline-primary" role="button"
                                                aria-pressed="true"><spring:message code="button.next"/></a>
                                         </c:if>

@@ -31,7 +31,7 @@ public class ScheduleConverter implements DTOConverter<Schedule, ScheduleDataDTO
     @Autowired
     TicketRepository ticketRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleConverter.class);
 
     @Override
     public ScheduleDataDTO entityToDataDto(Schedule source) {

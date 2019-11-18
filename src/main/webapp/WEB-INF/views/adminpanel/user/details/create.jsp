@@ -39,6 +39,11 @@
                 <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
                         code="button.logout"/></a>
             </div>
+            <div class="row">
+                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_RECEPTIONIST')">
+                    <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
+                </sec:authorize>
+            </div>
         </div>
     </div>
     <h3><spring:message code="text.header.userCreate"/></h3>

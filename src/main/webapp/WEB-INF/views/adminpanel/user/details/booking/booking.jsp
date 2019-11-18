@@ -5,9 +5,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="spr" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:url value="/schedule/${doctorDataDTO.id}/" var="getSchedule"/>
 <c:url value="/schedule/booking/${patientDataDTO.id}/" var="bookTime"/>
-<c:url value="/ticket/${patientDataDTO.id}/${doctorDataDTO.id}/current" var="currentTicket"/>
+<c:url value="/adminpanel/ticket/${patientDataDTO.id}/${doctorDataDTO.id}/current" var="currentTicket"/>
 
 <html>
 <head>
@@ -42,11 +43,16 @@
                 <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
                         code="button.logout"/></a>
             </div>
+            <div class="row">
+                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_RECEPTIONIST')">
+                    <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
+                </sec:authorize>
+            </div>
         </div>
     </div>
-    <h3>Booking a ticket to Dr. Petrov</h3>
+    <h4><spring:message code="text.header.bookingTicket"/> ${doctorDataDTO.surname} ${doctorDataDTO.name} ${doctorDataDTO.patronymic}</h4>
     <br>
-    <b>Выберите дату: </b>
+    <b><spring:message code="text.label.chooseDate"/>: </b>
     <input type="date" id="bookingDate" name="trip-start"
            value="${formatter.format(currentDate)}"
            min="${formatter.format(currentDate)}" max="${formatter.format(maxDate)}" style="visibility: hidden">
@@ -169,7 +175,6 @@
     $(function () {
         $('.bookingButton').on('click', function () {
             console.log(this)
-            alert(this.style.backgroundColor)
             if (this.style.backgroundColor === 'rgb(62, 116, 146)') {
                 var url = this.querySelector('.bookingHref').textContent;
                 console.log(url);

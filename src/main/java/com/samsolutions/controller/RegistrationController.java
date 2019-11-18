@@ -125,10 +125,6 @@ public class RegistrationController {
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         if (roles.size() > 1) {
             model.addAttribute("roles", roles);
-            model.addAttribute("ROLE_ADMIN", Roles.ROLE_ADMIN.getAuthority());
-            model.addAttribute("ROLE_MEDIC", Roles.ROLE_MEDIC.getAuthority());
-            model.addAttribute("ROLE_PATIENT", Roles.ROLE_PATIENT.getAuthority());
-            model.addAttribute("ROLE_RECEPTIONIST", Roles.ROLE_RECEPTIONIST.getAuthority());
         } else {
             return "redirect: /" + roles.get(0);
         }

@@ -21,6 +21,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -220,6 +222,12 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getOneWithRoles(formDTO.getId());
         user.setRoles(roleRepository.findRolesByIdIn(Arrays.asList(formDTO.getRolesId())));
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDataDTO getCurrent() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userConverter.entityToDataDto(userRepository.findByUsername(auth.getName()));
     }
 
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {

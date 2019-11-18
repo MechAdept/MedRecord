@@ -4,8 +4,6 @@ import com.samsolutions.service.ScheduleService;
 import com.samsolutions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,20 +28,16 @@ public class BookingController {
                                @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
                                @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
                                @RequestParam(value = "sort", required = false, defaultValue = "id") String sort) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("patientDataDTO", userService.findByUsername(auth.getName()));
+        model.addAttribute("patientDataDTO", userService.getCurrent());
         model.mergeAttributes(userService.getMapAndPageForDoctors(pageNo, pageSize, desc, sort));
-        return "/patientpanel/booking/doctors";
+        return "/patientpanel/ticket/booking/doctors";
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, value = "/{doctorId}")
     public String booking(@PathVariable("doctorId") Long doctorId, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.mergeAttributes(scheduleService.bookingPreparation());
-        model.addAttribute("patientDataDTO", userService.findByUsername(auth.getName()));
+        model.addAttribute("patientDataDTO", userService.getCurrent());
         model.addAttribute("doctorDataDTO", userService.findById(doctorId));
-        return "adminpanel/user/details/booking/booking";
+        return "patientpanel/ticket/booking/booking";
     }
-
-
 }

@@ -3,6 +3,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:url value="/adminpanel/user/edit/pass" var="changePass"/>
 <c:url value="/adminpanel/user/edit/photo" var="changeImage"/>
 <c:url value="/adminpanel/user/edit/profile" var="changeProfile"/>
@@ -42,6 +43,11 @@
             <div class="row">
                 <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
                         code="button.logout"/></a>
+            </div>
+            <div class="row">
+                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_RECEPTIONIST')">
+                    <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
+                </sec:authorize>
             </div>
         </div>
     </div>

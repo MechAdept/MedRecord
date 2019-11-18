@@ -40,7 +40,7 @@
                         code="button.logout"/></a>
             </div>
             <div class="row">
-                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_RECEPTIONIST')">
+                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_ADMIN','ROLE_RECEPTIONIST')">
                     <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
                 </sec:authorize>
             </div>
@@ -59,11 +59,8 @@
                     <div class="col-xs-1" style="text-align: center">
                         <label><spring:message code="text.label.id"/></label>
                     </div>
-                    <div class="col-xs-1">
+                    <div class="col-xs-3">
                         <label><spring:message code="text.label.doctor"/></label>
-                    </div>
-                    <div class="col-xs-1">
-                        <label><spring:message code="text.label.patient"/></label>
                     </div>
                     <div class="col-xs-2" style="text-align: center">
                         <label><spring:message code="text.label.datetime"/></label>
@@ -71,6 +68,7 @@
                     <div class="col-xs-2" style="text-align: center">
                         <label><spring:message code="text.label.relatedItems"/></label>
                     </div>
+                    <div class="col-xs-1"></div>
                     <div class="col-xs-3" style="text-align: center">
                         <label><spring:message code="text.label.action"/></label>
                     </div>
@@ -79,29 +77,24 @@
                     <div class="col-xs-1" style="text-align: center">
                         <label>${ticketDataDTO.id}</label>
                     </div>
-                    <div class="col-xs-1">
-                        <a href="<c:url value="/adminpanel/user/details/${ticketDataDTO.doctor.id}"/>"
+                    <div class="col-xs-3">
+                        <a href="<c:url value="/patientpanel/doctor/${ticketDataDTO.doctor.id}"/>"
                            class="btn-sm btn-primary"
                            role="button"
-                           aria-pressed="true">${ticketDataDTO.doctor.username}</a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="<c:url value="/adminpanel/user/details/${ticketDataDTO.patient.id}"/>"
-                           class="btn-sm btn-primary"
-                           role="button"
-                           aria-pressed="true">${ticketDataDTO.patient.username}</a>
+                           aria-pressed="true">${ticketDataDTO.doctor.surname} ${ticketDataDTO.doctor.name} ${ticketDataDTO.doctor.patronymic}</a>
                     </div>
                     <div class="col-xs-2" style="text-align: center">
                         <label>${ticketDataDTO.datetime.format(formatter)}</label>
                     </div>
                     <div class="col-xs-2" style="text-align: center">
-                        <a href="<c:url value="/adminpanel/visit/${ticketDataDTO.id}"/>"
+                        <a href="<c:url value="/patientpanel/visit/${ticketDataDTO.id}"/>"
                            class="btn-sm btn-primary"
                            role="button"
                            aria-pressed="true"><spring:message code="text.header.visit"/></a>
                     </div>
+                    <div class="col-xs-1"></div>
                     <div class="col-xs-3" style="text-align: center"><a
-                            href="<c:url value="/adminpanel/ticket/${patientDataDTO.id}/${doctorDataDTO.id}/${ticketDataDTO.id}/delete"/>"
+                            href="<c:url value="/patientpanel/ticket/${ticketDataDTO.id}/delete"/>"
                             class="btn-sm btn-danger"
                             role="button"
                             aria-pressed="true"><spring:message code="button.delete"/></a>

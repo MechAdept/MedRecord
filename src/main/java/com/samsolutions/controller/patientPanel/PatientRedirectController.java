@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Secured("ROLE_PATIENT")
 @Controller
-public class PatientController {
+public class PatientRedirectController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/patientpanel")
     public String patientPanel() {
