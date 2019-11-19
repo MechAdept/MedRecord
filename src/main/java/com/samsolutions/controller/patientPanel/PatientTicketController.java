@@ -35,13 +35,13 @@ public class PatientTicketController {
         model.mergeAttributes(ticketService.getMapAndPageByUser(currentUser.getId(), pageNo, pageSize, desc, sort));
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         model.addAttribute("userDataDTO", userService.findById(currentUser.getId()));
-        return "patientpanel/ticket/list";
+        return "/patientpanel/ticket/list";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/ticket/{doctorId}/current")
     public String currentDetails(@PathVariable(value = "doctorId") final Long doctorId) {
         Long currentTicketId = ticketService.current(userService.getCurrent().getId(), doctorId).getId();
-        return "redirect:/ticket/" + currentTicketId;
+        return "redirect: /patientpanel/ticket/" + currentTicketId;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/ticket/{ticketId}")

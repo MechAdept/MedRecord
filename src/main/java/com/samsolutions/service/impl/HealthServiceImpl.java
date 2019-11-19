@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,5 +80,11 @@ public class HealthServiceImpl implements HealthService {
     @Override
     public void delete(Long id) {
         healthRepository.deleteHealthByPatient(userRepository.getOne(id));
+    }
+
+    @Override
+    public HealthDataDTO getCurrent() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return healthConverter.entityToDataDto(healthRepository.findHealthByPatient(userRepository.findByUsername(auth.getName())));
     }
 }

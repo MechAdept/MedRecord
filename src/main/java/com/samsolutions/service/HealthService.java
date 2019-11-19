@@ -23,4 +23,6 @@ public interface HealthService extends IEntity<HealthDataDTO, HealthFormDTO> {
     void deleteHealthByPatientId(Long id);
 
     HealthDataDTO findByPatientId(Long id);
+
+    HealthDataDTO getCurrent();
 }

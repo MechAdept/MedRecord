@@ -19,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -101,16 +103,14 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Map<String, Object> getMapAndPageByUser(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         User user = userRepository.getOne(id);
-        Map<String, Object> map = new HashMap<>();
-        map.put("DTOList", getPageByUser(user, pageNo, pageSize, desc, sort));
-        map.put("pageNo", pageNo);
-        map.put("pageSize", pageSize);
-        map.put("desc", desc);
-        map.put("sort", sort);
-        map.put("pageCount", getPageCountByUser(pageSize, user));
-        map.put("elementsCount", getTotalCountByUser(user));
-        map.put("userDTO", userConverter.entityToDataDto(user));
-        return map;
+        return pagePreparation(user,pageNo,pageSize,desc,sort);
+    }
+
+    @Override
+    public Map<String, Object> getMapAndPageForCurrentUser(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(auth.getName());
+        return pagePreparation(user,pageNo,pageSize,desc,sort);
     }
 
     private Pageable getPageable(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
@@ -139,5 +139,18 @@ public class TicketServiceImpl implements TicketService {
 
     private Long getTotalCountByUser(User user) {
         return ticketRepository.countAllByDoctorOrPatient(user, user);
+    }
+
+    private Map<String, Object> pagePreparation(final User user, final Integer pageNo, final Integer pageSize, final Boolean desc, final String sort){
+        Map<String, Object> map = new HashMap<>();
+        map.put("DTOList", getPageByUser(user, pageNo, pageSize, desc, sort));
+        map.put("pageNo", pageNo);
+        map.put("pageSize", pageSize);
+        map.put("desc", desc);
+        map.put("sort", sort);
+        map.put("pageCount", getPageCountByUser(pageSize, user));
+        map.put("elementsCount", getTotalCountByUser(user));
+        map.put("userDTO", userConverter.entityToDataDto(user));
+        return  map;
     }
 }

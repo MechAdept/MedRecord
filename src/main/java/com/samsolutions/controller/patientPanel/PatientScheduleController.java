@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value = "/patientpanel/booking")
 @Secured("ROLE_PATIENT")
-public class BookingController {
+public class PatientScheduleController {
 
     @Autowired
     UserService userService;

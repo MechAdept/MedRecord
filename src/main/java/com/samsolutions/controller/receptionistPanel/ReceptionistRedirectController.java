@@ -5,9 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Secured("ROLE_RECEPTIONIST")
 @Controller
-public class ReceptionistController {
+@Secured("ROLE_RECEPTIONIST")
+@RequestMapping("/receptionistpanel")
+public class ReceptionistRedirectController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/receptionistpanel")
     public String receptionistPanel() {

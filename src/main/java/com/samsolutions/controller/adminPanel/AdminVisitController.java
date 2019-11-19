@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter;
 @Controller
 @RequestMapping("/adminpanel/visit")
 @Secured("ROLE_ADMIN")
-public class VisitController {
+public class AdminVisitController {
     @Autowired
     private VisitService visitService;
 
@@ -57,7 +57,7 @@ public class VisitController {
         VisitDataDTO visitDataDTO = visitService.findByTicketId(ticketId);
         if (visitDataDTO.getId() != null) {
             model.addAttribute("visitDataDTO", visitDataDTO);
-            model.addAttribute("ticketDataDTO",ticketService.findById(ticketId));
+            model.addAttribute("ticketDataDTO", ticketService.findById(ticketId));
             model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             return "/adminpanel/user/details/ticket/visit/details";
         } else {

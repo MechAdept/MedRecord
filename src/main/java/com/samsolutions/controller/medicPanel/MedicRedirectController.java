@@ -1,4 +1,4 @@
-package com.samsolutions.controller.doctorPanel;
+package com.samsolutions.controller.medicPanel;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Secured("ROLE_MEDIC")
 @Controller
-public class MedicController {
+public class MedicRedirectController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/medicpanel")
     public String medicPanel() {
-        return "";
+        return "redirect:/medicpanel/user";
     }
 
     @RequestMapping(method = RequestMethod.GET, value ="/ROLE_MEDIC")
     public String roleMedic() {
-        return "";
+        return "redirect:/medicpanel/user";
     }
 }

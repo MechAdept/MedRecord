@@ -51,7 +51,9 @@
                 </ul>
             </div>
             <div class="languages d-flex justify-content-end">
-                <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
+                <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MEDIC','ROLE_RECEPTIONIST')">
+                    <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
+                </sec:authorize>
             </div>
             <div class="row" style="margin-top: 10px">
                 <div class="col-xs-3">

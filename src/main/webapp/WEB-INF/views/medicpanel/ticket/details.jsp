@@ -23,12 +23,22 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
-            <a href="<c:url value="/patientpanel/profile"/>" class="btn btn-info" role="button"
-               aria-pressed="true"><spring:message code="button.profile"/></a>
-            <a href="<c:url value="/patientpanel/health"/>" class="btn btn-info" role="button"
-               aria-pressed="true"><spring:message code="button.health"/></a>
-            <a href="<c:url value="/patientpanel/tickets"/>" class="btn btn-success" role="button"
-               aria-pressed="true"><spring:message code="button.tickets"/></a>
+            <a href="<c:url value="/medicpanel/user"/>">
+                <button type="button" class="btn btn-info"><spring:message
+                        code="button.profile"/></button>
+            </a>
+            <a href="<c:url value="/medicpanel/schedule"/>">
+                <button type="button" class="btn btn-info ml-3"><spring:message
+                        code="button.schedule"/></button>
+            </a>
+            <a href="<c:url value="/medicpanel/user/patients"/> ">
+                <button type="button" class="btn btn-info ml-3"><spring:message
+                        code="button.patients"/></button>
+            </a>
+            <a href="<c:url value="/medicpanel/ticket"/> ">
+                <button type="button" class="btn btn-success ml-3"><spring:message
+                        code="button.tickets"/></button>
+            </a>
         </div>
         <div class="col-xs-3"></div>
         <div class="col-xs-3">
@@ -42,7 +52,7 @@
                         code="button.logout"/></a>
             </div>
             <div class="row">
-                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_ADMIN','ROLE_RECEPTIONIST')">
+                <sec:authorize access="hasAnyRole('ROLE_PATIENT','ROLE_ADMIN','ROLE_RECEPTIONIST')">
                     <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
                 </sec:authorize>
             </div>
@@ -62,6 +72,9 @@
                         <label><spring:message code="text.label.id"/></label>
                     </div>
                     <div class="col-xs-3">
+                        <label><spring:message code="text.label.patient"/></label>
+                    </div>
+                    <div class="col-xs-3">
                         <label><spring:message code="text.label.doctor"/></label>
                     </div>
                     <div class="col-xs-2" style="text-align: center">
@@ -71,16 +84,19 @@
                         <label><spring:message code="text.label.relatedItems"/></label>
                     </div>
                     <div class="col-xs-1"></div>
-                    <div class="col-xs-3" style="text-align: center">
-                        <label><spring:message code="text.label.action"/></label>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-1" style="text-align: center">
                         <label>${ticketDataDTO.id}</label>
                     </div>
                     <div class="col-xs-3">
-                        <a href="<c:url value="/patientpanel/doctor/${ticketDataDTO.doctor.id}"/>"
+                        <a href="<c:url value="/medicpanel/user/${ticketDataDTO.patient.id}"/>"
+                           class="btn-sm btn-primary"
+                           role="button"
+                           aria-pressed="true">${ticketDataDTO.patient.surname} ${ticketDataDTO.patient.name} ${ticketDataDTO.patient.patronymic}</a>
+                    </div>
+                    <div class="col-xs-3">
+                        <a href="<c:url value="/medicpanel/user/${ticketDataDTO.doctor.id}"/>"
                            class="btn-sm btn-primary"
                            role="button"
                            aria-pressed="true">${ticketDataDTO.doctor.surname} ${ticketDataDTO.doctor.name} ${ticketDataDTO.doctor.patronymic}</a>
@@ -89,20 +105,12 @@
                         <label>${ticketDataDTO.datetime.format(formatter)}</label>
                     </div>
                     <div class="col-xs-2" style="text-align: center">
-                        <c:if test="${!(ticketDataDTO.visit.id eq null)}">
-                            <a href="<c:url value="/patientpanel/visit/${ticketDataDTO.id}"/>"
-                               class="btn-sm btn-primary"
+                            <a href="<c:url value="/medicpanel/visit/${ticketDataDTO.id}/start"/>"
+                               class="btn-sm btn-success"
                                role="button"
                                aria-pressed="true"><spring:message code="text.header.visit"/></a>
-                        </c:if>
                     </div>
                     <div class="col-xs-1"></div>
-                    <div class="col-xs-3" style="text-align: center"><a
-                            href="<c:url value="/patientpanel/ticket/${ticketDataDTO.id}/delete"/>"
-                            class="btn-sm btn-danger"
-                            role="button"
-                            aria-pressed="true"><spring:message code="button.delete"/></a>
-                    </div>
                     <div class="clearfix"></div>
                 </div>
 

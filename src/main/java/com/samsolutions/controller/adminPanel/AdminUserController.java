@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -33,16 +32,13 @@ import java.util.HashSet;
 @Controller
 @RequestMapping("/adminpanel/user")
 @Secured("ROLE_ADMIN")
-public class UserController {
+public class AdminUserController {
 
     @Autowired
     private UserService userService;
 
     @Autowired
     private RoleService roleService;
-
-    @Autowired
-    private TicketService ticketService;
 
     @Autowired
     private HealthService healthService;
@@ -214,41 +210,11 @@ public class UserController {
         return "adminpanel/user/details/details";
     }
 
-    @RequestMapping(value = "/details/{id}/roles", method = RequestMethod.GET)
-    public String detailsRole(@PathVariable(value = "id") final Long id, Model model) {
-        model.addAttribute("userDTO", userService.findWithRolesById(id));
-        return "/adminpanel/user/details/roles";
-    }
-
-    @RequestMapping(value = "/details/{id}/tickets", method = RequestMethod.GET)
-    public String detailsTickets(final Model model, @PathVariable(value = "id") Long id,
-                                 @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
-                                 @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                 @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
-                                 @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
-        model.mergeAttributes(ticketService.getMapAndPageByUser(id, pageNo, pageSize, desc, sort));
-        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        model.addAttribute("userDTO", userService.findById(id));
-        return "adminpanel/user/details/tickets/tickets";
-    }
 
     @RequestMapping(value = "/details/{id}/health", method = RequestMethod.GET)
     public String detailsHealth(@PathVariable(value = "id") final Long id, Model model) {
         model.addAttribute("healthDataDTO", healthService.findByPatientId(id));
         model.addAttribute("userDataDTO", userService.findById(id));
         return "adminpanel/user/details/health/details";
-    }
-
-    @RequestMapping(value = "/details/{id}/tickets/delete/{ticketId}", method = RequestMethod.GET)
-    public String detailsTicketsDelete(final Model model, @PathVariable(value = "id") Long id,
-                                       @PathVariable(value = "ticketId") Long ticketId,
-                                       @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
-                                       @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                       @RequestParam(value = "desc", required = false, defaultValue = "true") Boolean desc,
-                                       @RequestParam(value = "sort", required = false, defaultValue = "datetime") String sort) {
-        ticketService.delete(ticketId);
-        model.mergeAttributes(ticketService.getMapAndPageByUser(id, pageNo, pageSize, desc, sort));
-        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        return "adminpanel/user/details/tickets/tickets";
     }
 }

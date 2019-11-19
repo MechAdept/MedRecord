@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 @RequestMapping("/patientpanel")
 @Controller
 @Secured("ROLE_PATIENT")
-public class ProfileController {
+public class PatientUserController {
 
     @Autowired
     UserService userService;
@@ -30,7 +30,7 @@ public class ProfileController {
         model.addAttribute("userDataDTO", userService.getCurrent());
         model.addAttribute("userFormDTO", new UserFormDTO());
         model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
-        return "/patientpanel/profile";
+        return "patientpanel/user/profile";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/updatephoto")
@@ -43,7 +43,7 @@ public class ProfileController {
     public String doctorProfile(Model model, @PathVariable("doctorId") Long doctorId) {
         model.addAttribute("userDataDTO", userService.findById(doctorId));
         model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
-        return "patientpanel/doctor";
+        return "patientpanel/user/details";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/updatepass")
@@ -52,7 +52,7 @@ public class ProfileController {
         if ((bindingResult.hasErrors())) {
             model.addAttribute("formatter", new SimpleDateFormat("yyyy-MM-dd"));
             model.addAttribute("userDataDTO", userService.getCurrent());
-            return "/patientpanel/profile";
+            return "patientpanel/user/profile";
         }
         userService.updatePassword(userFormDTO);
         return "redirect:/patientpanel/profile";

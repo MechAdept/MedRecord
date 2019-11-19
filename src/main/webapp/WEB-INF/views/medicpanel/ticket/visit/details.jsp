@@ -23,12 +23,22 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
-            <a href="<c:url value="/patientpanel/profile"/>" class="btn btn-info" role="button"
-               aria-pressed="true"><spring:message code="button.profile"/></a>
-            <a href="<c:url value="/patientpanel/health"/>" class="btn btn-info" role="button"
-               aria-pressed="true"><spring:message code="button.health"/></a>
-            <a href="<c:url value="/patientpanel/tickets"/>" class="btn btn-success" role="button"
-               aria-pressed="true"><spring:message code="button.tickets"/></a>
+            <a href="<c:url value="/medicpanel/user"/>">
+                <button type="button" class="btn btn-info"><spring:message
+                        code="button.profile"/></button>
+            </a>
+            <a href="<c:url value="/medicpanel/schedule"/>">
+                <button type="button" class="btn btn-info ml-3"><spring:message
+                        code="button.schedule"/></button>
+            </a>
+            <a href="<c:url value="/medicpanel/user/patients"/> ">
+                <button type="button" class="btn btn-info ml-3"><spring:message
+                        code="button.patients"/></button>
+            </a>
+            <a href="<c:url value="/medicpanel/ticket"/> ">
+                <button type="button" class="btn btn-success ml-3"><spring:message
+                        code="button.tickets"/></button>
+            </a>
         </div>
         <div class="col-xs-3"></div>
         <div class="col-xs-3">
@@ -42,7 +52,7 @@
                         code="button.logout"/></a>
             </div>
             <div class="row">
-                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_RECEPTIONIST')">
+                <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_PATIENT','ROLE_RECEPTIONIST')">
                     <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
                 </sec:authorize>
             </div>
@@ -144,21 +154,21 @@
                 <label><spring:message code="text.label.ticket"/>: </label>
             </div>
             <div class="row">
-                <a href="/adminpanel/ticket/${ticketDataDTO.id}">${ticketDataDTO.id}</a>
+                <a href="<c:url value="/medicpanel/ticket/${ticketDataDTO.id}"/>"> ${ticketDataDTO.id}</a>
             </div>
             <br>
             <div class="row">
                 <label><spring:message code="text.label.patient"/>: </label>
             </div>
             <div class="row">
-                <a href="/adminpanel/user/details/${ticketDataDTO.patient.id}">${ticketDataDTO.patient.surname} ${ticketDataDTO.patient.name} ${ticketDataDTO.patient.patronymic}</a>
+                <a href="<c:url value="/medicpanel/user/${ticketDataDTO.patient.id}"/>">${ticketDataDTO.patient.surname} ${ticketDataDTO.patient.name} ${ticketDataDTO.patient.patronymic}</a>
             </div>
             <br>
             <div class="row">
                 <label><spring:message code="text.label.doctor"/>:</label>
             </div>
             <div class="row">
-                <a href="/adminpanel/user/details/${ticketDataDTO.doctor.id}">${ticketDataDTO.doctor.surname} ${ticketDataDTO.doctor.name} ${ticketDataDTO.doctor.patronymic}</a>
+                <a href="<c:url value="/medicpanel/user/${ticketDataDTO.doctor.id}"/>">${ticketDataDTO.doctor.surname} ${ticketDataDTO.doctor.name} ${ticketDataDTO.doctor.patronymic}</a>
             </div>
             <br>
             <div class="row">

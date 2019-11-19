@@ -4,13 +4,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:url value="/medicpanel/user/updatepass" var="changePass"/>
 
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Profile</title>
+    <title><spring:message code="button.profile"/></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -28,19 +29,25 @@
             <div class="top_bar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a href="<c:url value="/patientpanel/profile"/>">
+                        <a href="<c:url value="/medicpanel/user"/>">
                             <button type="button" class="btn btn-success"><spring:message
                                     code="button.profile"/></button>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<c:url value="/patientpanel/health"/>">
+                        <a href="<c:url value="/medicpanel/schedule"/>">
                             <button type="button" class="btn btn-info ml-3"><spring:message
-                                    code="text.header.card"/></button>
+                                    code="button.schedule"/></button>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<c:url value="/patientpanel/tickets"/> ">
+                        <a href="<c:url value="/medicpanel/user/patients"/> ">
+                            <button type="button" class="btn btn-info ml-3"><spring:message
+                                    code="button.patients"/></button>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<c:url value="/medicpanel/ticket"/> ">
                             <button type="button" class="btn btn-info ml-3"><spring:message
                                     code="button.tickets"/></button>
                         </a>
@@ -54,7 +61,7 @@
                 </ul>
             </div>
             <div class="languages d-flex justify-content-end">
-                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_ADMIN','ROLE_RECEPTIONIST')">
+                <sec:authorize access="hasAnyRole('ROLE_PATIENT','ROLE_ADMIN','ROLE_RECEPTIONIST')">
                     <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
                 </sec:authorize>
             </div>
@@ -67,6 +74,18 @@
                                  style="border-radius: 10px; background-size: contain;"
                                  onerror="this.style.visibility = 'hidden'">
                         </div>
+                        <form method="post" action="<c:url value="/medicpanel/user/updatephoto"/>"
+                              enctype="multipart/form-data">
+                            <div class="photo_buttons mt-3">
+                                <div class="upload_photo">
+                                    <input type="file" id="imgInp" name="file"/>
+                                </div>
+                                <div class="save_photo mt-3">
+                                    <input type="submit" class="form-control btn btn-warning"
+                                           value="<spring:message code="button.changePhoto"/>"/>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="col-7">
                         <div class="profile_info">
@@ -85,51 +104,29 @@
                                         code="user.sex.female"/></p>
                                     </c:if>
                                 </h4>
-                            </h4>
-                            <div class="panel-group" id="accordion">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h5 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                                <spring:message code="collapse.updatePassword"/>
-                                            </a>
-                                        </h5>
-                                    </div>
-                                    <div id="collapseOne" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="col-xs-2">
-                                                </div>
-                                                <div class="col-xs-8">
-                                                    <form:form method="post" modelAttribute="userFormDTO"
-                                                               action="${changePass}">
-                                                        <form:hidden path="id" value="${userDataDTO.id}"/>
-                                                        <form:input type="password" path="password" class="form-control"
-                                                                    placeholder="Password"/>
-                                                        <form:errors path="password" cssStyle="color: red;"/>
-                                                        <br>
-                                                        <form:input type="passwordConfirm" path="passwordConfirm"
-                                                                    class="form-control"
-                                                                    placeholder="Confirm"/>
-                                                        <form:errors path="passwordConfirm" cssStyle="color: red;"/>
-                                                        <br>
-                                                        <input type="submit" class="form-control"
-                                                               value="<spring:message code="button.save"/>"/>
-                                                    </form:form>
-                                                </div>
-                                                <div class="col-xs-2">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                        <div>
+                            <h4><label><spring:message code="collapse.updatePassword"/></label></h4>
+                            <form:form method="post" modelAttribute="userFormDTO"
+                                       action="${changePass}">
+                                <form:hidden path="id" value="${userDataDTO.id}"/>
+                                <form:input type="password" path="password" class="form-control"
+                                            placeholder="Password"/>
+                                <form:errors path="password" cssStyle="color: red;"/>
+                                <br>
+                                <form:input type="passwordConfirm" path="passwordConfirm"
+                                            class="form-control"
+                                            placeholder="Confirm"/>
+                                <form:errors path="passwordConfirm" cssStyle="color: red;"/>
+                                <br>
+                                <input type="submit" class="form-control"
+                                       value="<spring:message code="button.save"/>"/>
+                            </form:form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </section>
 
@@ -143,6 +140,21 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script>
+    $("#imgInp").change(function () {
+        readURL(this);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+                $('#blah').css('visibility', 'visible')
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>
 </body>
 </html>

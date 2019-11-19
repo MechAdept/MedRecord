@@ -7,7 +7,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
-public class HealthCreateValidator implements Validator {
+public class HealthValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {

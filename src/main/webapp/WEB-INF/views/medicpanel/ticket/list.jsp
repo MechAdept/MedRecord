@@ -25,19 +25,25 @@
             <div class="top_bar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a href="<c:url value="/patientpanel/profile"/>">
+                        <a href="<c:url value="/medicpanel/user"/>">
                             <button type="button" class="btn btn-info"><spring:message
                                     code="button.profile"/></button>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<c:url value="/patientpanel/health"/>">
+                        <a href="<c:url value="/medicpanel/schedule"/>">
                             <button type="button" class="btn btn-info ml-3"><spring:message
-                                    code="text.header.card"/></button>
+                                    code="button.schedule"/></button>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<c:url value="/patientpanel/tickets"/> ">
+                        <a href="<c:url value="/medicpanel/user/patients"/> ">
+                            <button type="button" class="btn btn-info ml-3"><spring:message
+                                    code="button.patients"/></button>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<c:url value="/medicpanel/ticket"/> ">
                             <button type="button" class="btn btn-success ml-3"><spring:message
                                     code="button.tickets"/></button>
                         </a>
@@ -64,12 +70,7 @@
             </div>
             <br>
             <div class="row justify-content-between">
-                <div class="col-xs-3 d-flex align-items-center">
-                    <a href="<c:url value="/patientpanel/booking/doctors"/>">
-                    <button type="button" class="btn btn-info ml-3"><spring:message code="button.booking"/></button>
-                    </a>
-                </div>
-                <div class="col-xs-3 d-flex align-items-center">
+                <div class="col-xs-3 d-flex align-items-start">
                     <c:if test="${DTOList.size() != 0}">
                         <spring:message
                                 code="text.info.shown"/> ${1+((pageNo-1)*pageSize)} - ${DTOList.size()+((pageNo-1)*pageSize)}
@@ -80,6 +81,8 @@
                         <spring:message code="text.info.empty"/>
                     </c:if>
                 </div>
+                <div class="col-xs-3 d-flex align-items-center">
+                </div>
                 <div class="col-xs-3 col-xs-offset-3 d-flex align-items-center">
                     <spring:message code="button.dropdown.show"/>
                     <div class="dropdown m-2">
@@ -89,11 +92,11 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item"
-                               href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${7}&desc${desc}&sort${sort}"/>">7</a>
+                               href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${7}&desc${desc}&sort${sort}"/>">7</a>
                             <a class="dropdown-item"
-                               href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${15}&desc${desc}&sort${sort}"/>">15</a>
+                               href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${15}&desc${desc}&sort${sort}"/>">15</a>
                             <a class="dropdown-item"
-                               href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${25}&desc${desc}&sort${sort}"/>">25</a>
+                               href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${25}&desc${desc}&sort${sort}"/>">25</a>
                         </div>
                     </div>
                     <span>
@@ -106,41 +109,41 @@
                 <tr>
                     <th scope="col">
                         <c:if test="${desc == false}">
-                            <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=id"/>"><spring:message
+                            <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=id"/>"><spring:message
                                     code="text.label.id"/></a>
                         </c:if>
                         <c:if test="${desc == true}">
-                            <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=id"/>"><spring:message
+                            <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=id"/>"><spring:message
                                     code="text.label.id"/></a>
                         </c:if>
                     </th>
                     <th scope="col">
                         <c:if test="${desc == false}">
-                            <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=doctor"/>"><spring:message
-                                    code="text.label.doctor"/></a>
+                            <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=patient"/>"><spring:message
+                                    code="text.label.patient"/></a>
                         </c:if>
                         <c:if test="${desc == true}">
-                            <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=doctor"/>"><spring:message
-                                    code="text.label.doctor"/></a>
+                            <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=patient"/>"><spring:message
+                                    code="text.label.patient"/></a>
                         </c:if>
                     </th>
                     <th scope="col">
                         <c:if test="${desc == false}">
-                            <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=datetime"/>"><spring:message
+                            <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=datetime"/>"><spring:message
                                     code="text.label.datetime"/></a>
                         </c:if>
                         <c:if test="${desc == true}">
-                            <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=datetime"/>"><spring:message
+                            <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=datetime"/>"><spring:message
                                     code="text.label.datetime"/></a>
                         </c:if>
                     </th>
                     <th scope="col" style="width: 100px;">
                         <c:if test="${desc == false}">
-                            <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=attendance"/>"><spring:message
+                            <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${true}&sort=attendance"/>"><spring:message
                                     code="text.label.attendance"/></a>
                         </c:if>
                         <c:if test="${desc == true}">
-                            <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=attendance"/>"><spring:message
+                            <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo}&pageSize=${pageSize}&desc=${false}&sort=attendance"/>"><spring:message
                                     code="text.label.attendance"/></a>
                         </c:if>
                     </th>
@@ -154,21 +157,17 @@
                                 <tr style="background: rgba(0,255,52,0.58)">
                                     <th scope="row">${ticket.id}</th>
                                     <th scope="row">
-                                        <a href="<c:url value="/patientpanel/doctor/${ticket.doctor.id}"/>"
+                                        <a href="<c:url value="/medicpanel/user/${ticket.patient.id}"/>"
                                            class="btn-sm btn-primary"
                                            role="button"
-                                           aria-pressed="true">${ticket.doctor.surname} ${ticket.doctor.name} ${ticket.doctor.patronymic}</a>
+                                           aria-pressed="true">${ticket.patient.surname} ${ticket.patient.name} ${ticket.patient.patronymic}</a>
                                     </th>
                                     <th scope="row">${ticket.datetime.format(formatter)}</th>
                                     <th>
-                                        <a href="<c:url value="/patientpanel/ticket/${ticket.id}"/>"
+                                        <a href="<c:url value="/medicpanel/ticket/${ticket.id}"/>"
                                            class="btn-sm btn-primary"
                                            role="button"
                                            aria-pressed="true"><spring:message code="button.details"/></a>
-
-                                        <a href="<c:url value="/patientpanel/ticket/delete/${ticket.id}"/>"
-                                           class="btn-sm btn-danger" role="button"
-                                           aria-pressed="true"><spring:message code="button.delete"/></a>
                                     </th>
                                 </tr>
                             </c:when>
@@ -176,21 +175,17 @@
                                 <tr style="background: rgba(255,33,43,0.58)">
                                     <th scope="row">${ticket.id}</th>
                                     <th scope="row">
-                                        <a href="<c:url value="/patientpanel/doctor/${ticket.doctor.id}"/>"
+                                        <a href="<c:url value="/medicpanel/user/${ticket.patient.id}"/>"
                                            class="btn-sm btn-primary"
                                            role="button"
-                                           aria-pressed="true">${ticket.doctor.surname} ${ticket.doctor.name} ${ticket.doctor.patronymic}</a>
+                                           aria-pressed="true">${ticket.patient.surname} ${ticket.patient.name} ${ticket.patient.patronymic}</a>
                                     </th>
                                     <th scope="row">${ticket.datetime.format(formatter)}</th>
                                     <th>
-                                        <a href="<c:url value="/patientpanel/ticket/${ticket.id}"/>"
+                                        <a href="<c:url value="/medicpanel/ticket/${ticket.id}"/>"
                                            class="btn-sm btn-primary"
                                            role="button"
                                            aria-pressed="true"><spring:message code="button.details"/></a>
-
-                                        <a href="<c:url value="/patientpanel/ticket/delete/${ticket.id}"/>"
-                                           class="btn-sm btn-danger" role="button"
-                                           aria-pressed="true"><spring:message code="button.delete"/></a>
                                     </th>
                                 </tr>
                             </c:when>
@@ -198,21 +193,17 @@
                                 <tr style="background: rgba(250,255,2,0.58)">
                                     <th scope="row">${ticket.id}</th>
                                     <th scope="row">
-                                        <a href="<c:url value="/patientpanel/doctor/${ticket.doctor.id}"/>"
+                                        <a href="<c:url value="/medicpanel/user/${ticket.patient.id}"/>"
                                            class="btn-sm btn-primary"
                                            role="button"
-                                           aria-pressed="true">${ticket.doctor.surname} ${ticket.doctor.name} ${ticket.doctor.patronymic}</a>
+                                           aria-pressed="true">${ticket.patient.surname} ${ticket.patient.name} ${ticket.patient.patronymic}</a>
                                     </th>
                                     <th scope="row">${ticket.datetime.format(formatter)}</th>
                                     <th>
-                                        <a href="<c:url value="/patientpanel/ticket/${ticket.id}"/>"
+                                        <a href="<c:url value="/medicpanel/ticket/${ticket.id}"/>"
                                            class="btn-sm btn-primary"
                                            role="button"
                                            aria-pressed="true"><spring:message code="button.details"/></a>
-
-                                        <a href="<c:url value="/patientpanel/ticket/delete/${ticket.id}"/>"
-                                           class="btn-sm btn-danger" role="button"
-                                           aria-pressed="true"><spring:message code="button.delete"/></a>
                                     </th>
                                 </tr>
                             </c:otherwise>
@@ -232,13 +223,13 @@
                                         <div class="row">
                                             <div class="col-xs-4">
                                                 <c:if test="${pageNo > 1 && elementsCount > 0}">
-                                                    <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}"/>"
+                                                    <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo-1}&pageSize=${pageSize}&desc=${desc}"/>"
                                                        class="btn btn-outline-primary" role="button"
                                                        aria-pressed="true"><spring:message
                                                             code="button.previously"/></a>
                                                 </c:if>
                                                 <c:if test="${pageCount != 0 && DTOList.size() == 0}">
-                                                    <a href="<c:url value="/patientpanel/tickets?pageNo=1&pageSize=${pageSize}&desc=${desc}"/>"
+                                                    <a href="<c:url value="/medicpanel/ticket?pageNo=1&pageSize=${pageSize}&desc=${desc}"/>"
                                                        class="btn btn-outline-primary" role="button"
                                                        aria-pressed="true"><spring:message
                                                             code="button.previously"/></a>
@@ -253,7 +244,7 @@
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <td>
-                                                                    <a href="<c:url value="/patientpanel/tickets?pageNo=${i}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>">${i}</a>
+                                                                    <a href="<c:url value="/medicpanel/ticket?pageNo=${i}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>">${i}</a>
                                                                 </td>
                                                             </c:otherwise>
                                                         </c:choose>
@@ -262,7 +253,7 @@
                                             </div>
                                             <div class="col-xs-4">
                                                 <c:if test="${(pageSize*pageNo)<elementsCount}">
-                                                    <a href="<c:url value="/patientpanel/tickets?pageNo=${pageNo+1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
+                                                    <a href="<c:url value="/medicpanel/ticket?pageNo=${pageNo+1}&pageSize=${pageSize}&desc=${desc}&sort=${sort}"/>"
                                                        class="btn btn-outline-primary" role="button"
                                                        aria-pressed="true"><spring:message code="button.next"/></a>
                                                 </c:if>

@@ -137,6 +137,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Map<String, Object> getMapAndPageForPatients(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Map<String, Object> map = new HashMap<>();
+        Role role = roleRepository.findRoleByName(Roles.ROLE_PATIENT.getAuthority());
+        map.put("DTOList", getPageByRole(role, pageNo, pageSize, desc, sort));
+        map.put("pageNo", pageNo);
+        map.put("pageSize", pageSize);
+        map.put("desc", desc);
+        map.put("sort", sort);
+        map.put("pageCount", pageCountByRole(pageSize, role));
+        map.put("elementsCount", countByRole(role));
+        map.put("roleDTO", role);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> getMapAndPageByRole(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Role role = roleRepository.getOne(id);
         Map<String, Object> map = new HashMap<>();

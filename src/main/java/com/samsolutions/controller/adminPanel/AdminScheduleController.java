@@ -12,16 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
 @Secured("ROLE_ADMIN")
 @RequestMapping("/adminpanel/schedule")
-public class ScheduleController {
+public class AdminScheduleController {
 
     @Autowired
     ScheduleService scheduleService;
@@ -49,21 +43,21 @@ public class ScheduleController {
         model.mergeAttributes(scheduleService.bookingPreparation());
         model.addAttribute("patientDataDTO", userService.findById(patientId));
         model.addAttribute("doctorDataDTO", userService.findById(doctorId));
-        return "adminpanel/user/details/booking/booking";
+        return "adminpanel/user/details/booking/scheduleBooking";
     }
 
     @RequestMapping(value = "/{doctorId}/readSchedule", method = RequestMethod.GET)
-    public String bookingRead(@PathVariable("doctorId") final Long doctorId, Model model) {
+    public String scheduleDetails(@PathVariable("doctorId") final Long doctorId, Model model) {
         model.mergeAttributes(scheduleService.bookingPreparation());
         model.addAttribute("doctorDataDTO", userService.findById(doctorId));
-        return "/adminpanel/user/details/booking/readBooking";
+        return "adminpanel/user/details/booking/scheduleDetails";
     }
 
     @RequestMapping(value = "/{doctorId}/editSchedule", method = RequestMethod.GET)
-    public String bookingEdit(@PathVariable("doctorId") final Long doctorId, Model model) {
+    public String scheduleEdit(@PathVariable("doctorId") final Long doctorId, Model model) {
         model.mergeAttributes(scheduleService.bookingPreparation());
         model.addAttribute("doctorDataDTO", userService.findById(doctorId));
-        return "/adminpanel/user/details/booking/editBooking";
+        return "adminpanel/user/details/booking/scheduleEdit";
     }
 
 }
