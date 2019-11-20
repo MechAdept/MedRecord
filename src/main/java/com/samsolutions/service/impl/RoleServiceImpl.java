@@ -7,6 +7,7 @@ import com.samsolutions.dto.form.RoleFormDTO;
 import com.samsolutions.dto.form.UserFormDTO;
 import com.samsolutions.entity.Role;
 import com.samsolutions.repository.RoleRepository;
+import com.samsolutions.roles.Roles;
 import com.samsolutions.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,6 +56,20 @@ public class RoleServiceImpl implements RoleService {
     @Transactional(readOnly = true)
     public List<RoleDataDTO> findAll() {
         return roleConverter.entitiesToDataDtoList(roleRepository.findAll(Sort.by("id").ascending()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RoleDataDTO> findAllWithoutAdmin() {
+        Role admin = roleRepository.findRoleByName(Roles.ROLE_ADMIN.getAuthority());
+        List<Role> roles = roleRepository.findAll(Sort.by("id").ascending());
+        roles.remove(admin);
+        return roleConverter.entitiesToDataDtoList(roles);
+    }
+
+    @Override
+    public RoleDataDTO findByName(String name) {
+        return roleConverter.entityToDataDto(roleRepository.findRoleByName(name));
     }
 
 //    @Override

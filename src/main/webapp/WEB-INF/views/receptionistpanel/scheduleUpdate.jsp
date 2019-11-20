@@ -7,8 +7,8 @@
 <%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:url value="/schedule/${doctorDataDTO.id}/" var="getSchedule"/>
-<c:url value="/schedule/booking/${patientDataDTO.id}/" var="bookTime"/>
-<c:url value="/patientpanel/ticket/${doctorDataDTO.id}/current" var="currentTicket"/>
+<c:url value="/receptionistpanel/user/" var="patientDetais"/>
+<c:url value="/edit/" var="scheduleEdit" context="/schedule"/>
 
 <html>
 <head>
@@ -27,10 +27,14 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
-            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
-               aria-pressed="true"><spring:message code="button.roles"/></a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
-               aria-pressed="true"><spring:message code="button.users"/></a>
+            <a href="<c:url value="/receptionistpanel/user/profile"/>">
+                <button type="button" class="btn btn-success"><spring:message
+                        code="button.profile"/></button>
+            </a>
+            <a href="<c:url value="/receptionistpanel/user"/>">
+                <button type="button" class="btn btn-info ml-3"><spring:message
+                        code="button.users"/></button>
+            </a>
         </div>
         <div class="col-xs-3"></div>
         <div class="col-xs-3">
@@ -40,19 +44,19 @@
                 <a href="?lang=ru">RU</a>
             </div>
             <div class="row">
-                <a href="<c:url value="/logout"/>" type="button" class="btn btn-danger"><spring:message
+                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
                         code="button.logout"/></a>
             </div>
             <div class="row">
-                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_RECEPTIONIST')">
+                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_ADMIN')">
                     <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
                 </sec:authorize>
             </div>
         </div>
     </div>
-    <h4><spring:message code="text.header.bookingTicket"/> ${doctorDataDTO.surname} ${doctorDataDTO.name} ${doctorDataDTO.patronymic}</h4>
+    <h3>Schedule of Doctor Sidorov</h3>
     <br>
-    <b><spring:message code="text.label.chooseDate"/>: </b>
+    <b>Выберите дату: </b>
     <input type="date" id="bookingDate" name="trip-start"
            value="${formatter.format(currentDate)}"
            min="${formatter.format(currentDate)}" max="${formatter.format(maxDate)}" style="visibility: hidden">
@@ -65,7 +69,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.3s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">8:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -73,7 +77,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">9:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -81,7 +85,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">10:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -89,7 +93,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">11:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -97,7 +101,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">12:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -105,7 +109,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">13:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
         </div>
@@ -118,7 +122,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">14:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -126,7 +130,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">15:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -134,7 +138,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">16:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -142,7 +146,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">17:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -150,7 +154,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">18:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2">
@@ -158,7 +162,7 @@
                         style="background-color: white; color: black; text-align:  center; transition: 0.35s; width: 118%; height: 80px;">
                     <div class="bookingTime" style="background-color: #ffa97d; border-radius: 10px;">19:00</div>
                     <div class="scheduleId" style="display: none"></div>
-                    <div class="bookingHref" style="display: none"></div>
+                    <div class="scheduleEdit" style="display: none"></div>
                 </button>
             </div>
             <div class="col-xs-2"></div>
@@ -174,37 +178,44 @@
 
     $(function () {
         $('.bookingButton').on('click', function () {
-            console.log(this)
-            if (this.style.backgroundColor === 'rgb(62, 116, 146)') {
-                var url = this.querySelector('.bookingHref').textContent;
-                console.log(url);
-                if (!isEmpty(url)) {
-                    var newTicketHref = "${currentTicket}";
-                    document.location.href = newTicketHref;
-                }
-            } else {
-                var url = this.querySelector('.bookingHref').textContent;
-                console.log(url);
-                if (!isEmpty(url)) {
-                    $.ajax({
-                        url: url,
-                        datatype: 'json',
-                        type: 'get',
-                        success: function (json) {
-                            var newTicketHref = "${currentTicket}";
-                            document.location.href = newTicketHref;
-                        },
-                        error: function (e) {
-                            var message = "<spring:message code="booking.message.duplicate"/>";
-                            alert(message);
-                            console.log(e.responseText)
+            var date = document.getElementById('bookingDate').value;
+            var url = this.querySelector('.scheduleEdit').textContent;
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                type: 'get',
+                success: function (json) {
+                    if (json.length > 0) {
+                        for (i = 0; i < 12; i++) {
+                            var selector = $('#thumbnail' + i);
+                            var scheduleEdit = selector[0].querySelector('.scheduleEdit');
+                            if (json[i].available === true) {
+                                selector.css('background-color', '#7DFFD4');
+                                console.log(json[i]);
+                                scheduleEdit.textContent = "${scheduleEdit}" + json[i].id;
+                            } else if (json[i].available === false) {
+                                if (json[i].ticket != null) {
+                                    console.log(json[i].ticket.patient.id)
+                                    if (json[i].ticket.attendance === null) {
+                                        selector.css('background-color', '#fffd44');
+                                        scheduleEdit.textContent = "${scheduleEdit}" + json[i].id;
+                                    }
+                                }
+                            } else {
+                                selector.css('background-color', '#889599');
+                                scheduleEdit.textContent = "${scheduleEdit}" + json[i].id;
+                            }
                         }
-                    })
-                } else {
-                    var message = "<spring:message code="booking.message.error"/>";
-                    alert(message);
+                    } else {
+                        for (i = 0; i < 12; i++) {
+                            var selector = $('#thumbnail' + i);
+                            var scheduleEdit = selector[0].querySelector('.scheduleEdit');
+                            selector.css('background-color', '#889599');
+                            scheduleEdit.textContent = "${scheduleEdit}" + json[i].id;
+                        }
+                    }
                 }
-            }
+            });
         });
     });
 
@@ -220,41 +231,30 @@
                     if (json.length > 0) {
                         for (i = 0; i < 12; i++) {
                             var selector = $('#thumbnail' + i);
-                            var scheduleId=selector[0].querySelector('.scheduleId');
-                            var bookingHref=selector[0].querySelector('.bookingHref');
+                            var scheduleEdit = selector[0].querySelector('.scheduleEdit');
                             if (json[i].available === true) {
                                 selector.css('background-color', '#7DFFD4');
-                                scheduleId.textContent = json[i].id;
-                                bookingHref.textContent = "${bookTime}"+json[i].id;
-                                console.log(selector[0].querySelector('.bookingHref').textContent);
+                                console.log(json[i]);
+                                scheduleEdit.textContent = "${scheduleEdit}" + json[i].id;
                             } else if (json[i].available === false) {
-                                if(json[i].ticket != null){
+                                if (json[i].ticket != null) {
                                     console.log(json[i].ticket.patient.id)
-                                    if(json[i].ticket.patient.id == ${patientDataDTO.id}){
-                                        selector.css('background-color', '#3E7492');
-                                        scheduleId.textContent = json[i].id;
-                                        bookingHref.textContent = "${bookTime}"+json[i].id + "/dereserve";
-                                    }
-                                    else {
-                                        selector.css('background-color', '#CC5078');
-                                        scheduleId.textContent = "";
-                                        bookingHref.textContent = "";
+                                    if (json[i].ticket.attendance === null) {
+                                        selector.css('background-color', '#fffd44');
+                                        scheduleEdit.textContent = "${scheduleEdit}" + json[i].id;
                                     }
                                 }
                             } else {
                                 selector.css('background-color', '#889599');
-                                scheduleId.textContent = "";
-                                bookingHref.textContent = "";
+                                scheduleEdit.textContent = "${scheduleEdit}" + json[i].id;
                             }
                         }
                     } else {
                         for (i = 0; i < 12; i++) {
                             var selector = $('#thumbnail' + i);
-                            var scheduleId=selector[0].querySelector('.scheduleId');
-                            var bookingHref=selector[0].querySelector('.bookingHref');
+                            var scheduleEdit = selector[0].querySelector('.scheduleEdit');
                             selector.css('background-color', '#889599');
-                            scheduleId.textContent = "";
-                            bookingHref.textContent = "";
+                            scheduleEdit.textContent = "${scheduleEdit}" + json[i].id;
                         }
                     }
                 },
@@ -284,5 +284,6 @@
             return true;
         return false;
     };
+
 </script>
 </html>

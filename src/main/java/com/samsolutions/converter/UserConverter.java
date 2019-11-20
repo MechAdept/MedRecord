@@ -31,7 +31,12 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
     @Override
     public UserDataDTO entityToDataDto(User source) {
         UserDataDTO target = new UserDataDTO();
-        target.setId(source.getId());
+        try {
+            target.setId(source.getId());
+        } catch (NullPointerException npe) {
+            logger.debug("user don't exist");
+            return target;
+        }
         target.setUsername(source.getUsername());
         target.setPassword(source.getPassword());
         target.setName(source.getName());

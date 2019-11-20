@@ -44,7 +44,7 @@ public class TicketServiceImpl implements TicketService {
     private TicketRepository ticketRepository;
 
     @Autowired
-    TicketConverter ticketConverter;
+    private TicketConverter ticketConverter;
 
     @Autowired
     UserConverter userConverter;

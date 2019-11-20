@@ -1,10 +1,7 @@
 package com.samsolutions.service;
 
 import com.samsolutions.dto.data.UserDataDTO;
-import com.samsolutions.dto.form.TicketFormDTO;
 import com.samsolutions.dto.form.UserFormDTO;
-import com.samsolutions.entity.Role;
-import com.samsolutions.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +36,10 @@ public interface UserService extends IEntity<UserDataDTO, UserFormDTO> {
     Map<String, Object> getMapAndPageForDoctors(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     Map<String, Object> getMapAndPageForPatients(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+
+    Map<String, Object> getMapAndPageWithDoctorsForReceptionist(Integer pageNo, Integer pageSize, Boolean desc, String sort);
+
+    Map<String, Object> getMapAndPageWithPatientsForReceptionist(Integer pageNo, Integer pageSize, Boolean desc, String sort);
 
     void updatePhoto(Long id, MultipartFile file) throws IOException;
 

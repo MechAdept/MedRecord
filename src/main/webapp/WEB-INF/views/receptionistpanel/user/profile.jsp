@@ -4,13 +4,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:url value="/medicpanel/user/updatepass" var="changePass"/>
 
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Profile</title>
+    <title><spring:message code="button.profile"/></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -28,27 +29,15 @@
             <div class="top_bar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a href="<c:url value="/medicpanel/user"/>">
-                            <button type="button" class="btn btn-info"><spring:message
+                        <a href="<c:url value="/receptionistpanel/user/profile"/>">
+                            <button type="button" class="btn btn-success"><spring:message
                                     code="button.profile"/></button>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<c:url value="/medicpanel/schedule"/>">
+                        <a href="<c:url value="/receptionistpanel/user"/>">
                             <button type="button" class="btn btn-info ml-3"><spring:message
-                                    code="button.schedule"/></button>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<c:url value="/medicpanel/user/patients"/> ">
-                            <button type="button" class="btn btn-info ml-3"><spring:message
-                                    code="button.patients"/></button>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<c:url value="/medicpanel/ticket"/> ">
-                            <button type="button" class="btn btn-success ml-3"><spring:message
-                                    code="button.tickets"/></button>
+                                    code="button.users"/></button>
                         </a>
                     </li>
                     <li class="nav-item ml-auto">
@@ -60,7 +49,7 @@
                 </ul>
             </div>
             <div class="languages d-flex justify-content-end">
-                <sec:authorize access="hasAnyRole('ROLE_PATIENT','ROLE_ADMIN','ROLE_RECEPTIONIST')">
+                <sec:authorize access="hasAnyRole('ROLE_PATIENT','ROLE_ADMIN','ROLE_MEDIC')">
                     <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
                 </sec:authorize>
             </div>
@@ -73,6 +62,11 @@
                                  style="border-radius: 10px; background-size: contain;"
                                  onerror="this.style.visibility = 'hidden'">
                         </div>
+                        <br>
+                        <a href="<c:url value="/receptionistpanel/user/${userDataDTO.id}/update"/>">
+                            <button type="button" class="btn btn-warning"><spring:message
+                                    code="button.edit"/></button>
+                        </a>
                     </div>
                     <div class="col-7">
                         <div class="profile_info">
@@ -83,21 +77,19 @@
                             </h4>
                             <h4><spring:message code="text.label.birth"/>: <p>${formatter.format(userDataDTO.birth)}</p>
                             </h4>
-                            <c:if test="${userDataDTO.sex == true}">
-                            <h4><spring:message code="text.label.sex"/>: <p><spring:message code="user.sex.male"/></p>
+                            <h4>
+                                <c:if test="${userDataDTO.sex == true}">
+                                    <spring:message code="text.label.sex"/>: <p><spring:message
+                                        code="user.sex.male"/></p>
                                 </c:if>
-                                <c:if test="${userDataDTO.sex == false}">
-                                    <h4><spring:message code="text.label.sex"/>: <p><spring:message
-                                            code="user.sex.female"/></p></h4>
+                                <c:if test="${userDataDTO.sex == false}"><spring:message code="text.label.sex"/>: <p>
+                                    <spring:message
+                                            code="user.sex.female"/></p>
                                 </c:if>
-                                <a href="<c:url value="/medicpanel/ticket/${userDataDTO.id}/list"/>">
-                                    <button type="button" class="btn btn-info ml-3"><spring:message
-                                            code="button.tickets"/></button>
-                                </a>
-                                <a href="<c:url value="/medicpanel/health/${userDataDTO.id}"/>">
-                                    <button type="button" class="btn btn-success ml-3"><spring:message
-                                            code="button.health"/></button>
-                                </a>
+                                <h4><b><spring:message code="text.label.roles"/>:</b></h4>
+                                <c:forEach items="${userDataDTO.roles}" var="role">
+                                    <h4><b><spring:message code="${role.name}"/></b></h4>
+                                </c:forEach>
                             </h4>
                         </div>
                     </div>
@@ -117,6 +109,21 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script>
+    $("#imgInp").change(function () {
+        readURL(this);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+                $('#blah').css('visibility', 'visible')
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>
 </body>
 </html>

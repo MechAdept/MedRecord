@@ -31,7 +31,7 @@ public class MedicHealthController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{patientId}")
     public String details(@PathVariable("patientId") final Long patientId, Model model) {
-        model.addAttribute("healthDataDTO", healthService.findById(patientId));
+        model.addAttribute("healthDataDTO", healthService.findByPatientId(patientId));
         model.addAttribute("userDataDTO", userService.findById(patientId));
         return "/medicpanel/health/details";
     }

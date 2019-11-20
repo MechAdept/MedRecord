@@ -7,16 +7,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @Secured("ROLE_RECEPTIONIST")
-@RequestMapping("/receptionistpanel")
 public class ReceptionistRedirectController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/receptionistpanel")
     public String receptionistPanel() {
-        return "";
+        return "redirect:/receptionistpanel/user/profile";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/ROLE_RECEPTIONIST")
     public String roleReceptionist() {
-        return "";
+        return "redirect:/receptionistpanel/user/profile";
     }
 }

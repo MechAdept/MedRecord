@@ -14,7 +14,7 @@ public class MedicRedirectController {
         return "redirect:/medicpanel/user";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value ="/ROLE_MEDIC")
+    @RequestMapping(method = RequestMethod.GET, value = "/ROLE_MEDIC")
     public String roleMedic() {
         return "redirect:/medicpanel/user";
     }

@@ -37,7 +37,7 @@
                 <a href="?lang=ru">RU</a>
             </div>
             <div class="row">
-                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
+                <a href="<c:url value="/logout"/>" type="button" class="btn btn-danger"><spring:message
                         code="button.logout"/></a>
             </div>
             <div class="row">

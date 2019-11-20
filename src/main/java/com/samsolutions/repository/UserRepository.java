@@ -38,6 +38,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findUsersByIdIn(List<Long> ids);
 
+    Page<User> findByRolesContainsAndRolesNotContains(Role role, Role admin, Pageable pageable);
+
     @Query(value = "select u from User u inner join u.roles where u.id = ?1")
     User getOneWithRoles(Long id);
 }

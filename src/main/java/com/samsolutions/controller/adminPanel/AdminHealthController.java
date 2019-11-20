@@ -106,7 +106,7 @@ public class AdminHealthController {
      */
     @RequestMapping(value = "/{patientId}/delete", method = RequestMethod.GET)
     public String delete(@PathVariable("patientId") final Long patientId) {
-        healthService.delete(patientId);
+        healthService.deleteHealthByPatientId(patientId);
         return "redirect: /adminpanel/user/details/" + patientId + "/health";
     }
 

@@ -48,7 +48,7 @@
                 <a href="?lang=ru">RU</a>
             </div>
             <div class="row">
-                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
+                <a href="<c:url value="/logout"/>" type="button" class="btn btn-danger"><spring:message
                         code="button.logout"/></a>
             </div>
             <div class="row">
@@ -64,7 +64,7 @@
                 code="text.header.userNotHaveCard2"/></h3>
         <div class="row" style="margin-top: 15px">
             <div class="col-xs-4">
-                <a href="<c:url value="/adminpanel/health/${userDataDTO.id}/create"/>" class="btn-lg btn-success"
+                <a href="<c:url value="/medicpanel/health/${userDataDTO.id}/create"/>" class="btn-lg btn-success"
                    role="button"
                    aria-pressed="true"><spring:message code="button.create"/></a>
             </div>
@@ -206,7 +206,7 @@
         </div>
         <div class="col-xs-3">
             <br>
-            <a href="<c:url value="/adminpanel/health/${userDataDTO.id}/edit"/>"
+            <a href="<c:url value="/medicpanel/health/${userDataDTO.id}/update"/>"
                class="btn btn-warning align-content-center" role="button"
                aria-pressed="true"><spring:message code="button.edit"/></a>
         </div>

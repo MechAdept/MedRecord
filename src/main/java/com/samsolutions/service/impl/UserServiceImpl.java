@@ -123,61 +123,45 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, Object> getMapAndPageForDoctors(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        Map<String, Object> map = new HashMap<>();
         Role role = roleRepository.findRoleByName(Roles.ROLE_MEDIC.getAuthority());
-        map.put("DTOList", getPageByRole(role, pageNo, pageSize, desc, sort));
-        map.put("pageNo", pageNo);
-        map.put("pageSize", pageSize);
-        map.put("desc", desc);
-        map.put("sort", sort);
-        map.put("pageCount", pageCountByRole(pageSize, role));
-        map.put("elementsCount", countByRole(role));
-        map.put("roleDTO", role);
-        return map;
+        return getMapAndPageByRole(role.getId(), pageNo, pageSize, desc, sort);
     }
 
     @Override
     public Map<String, Object> getMapAndPageForPatients(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        Map<String, Object> map = new HashMap<>();
         Role role = roleRepository.findRoleByName(Roles.ROLE_PATIENT.getAuthority());
-        map.put("DTOList", getPageByRole(role, pageNo, pageSize, desc, sort));
-        map.put("pageNo", pageNo);
-        map.put("pageSize", pageSize);
-        map.put("desc", desc);
-        map.put("sort", sort);
-        map.put("pageCount", pageCountByRole(pageSize, role));
-        map.put("elementsCount", countByRole(role));
-        map.put("roleDTO", role);
-        return map;
+        return getMapAndPageByRole(role.getId(), pageNo, pageSize, desc, sort);
     }
 
     @Override
     public Map<String, Object> getMapAndPageByRole(Long id, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
         Role role = roleRepository.getOne(id);
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = mapPreparation(pageNo, pageSize, desc, sort, countByRole(role));
         map.put("DTOList", getPageByRole(role, pageNo, pageSize, desc, sort));
-        map.put("pageNo", pageNo);
-        map.put("pageSize", pageSize);
-        map.put("desc", desc);
-        map.put("sort", sort);
         map.put("pageCount", pageCountByRole(pageSize, role));
-        map.put("elementsCount", countByRole(role));
         map.put("roleDTO", role);
         return map;
     }
 
     @Override
     public Map<String, Object> getMapAndPage(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
-        Map<String, Object> map = new HashMap<>();
         Long count = userRepository.count();
-        map.put("DTOList", getPage(pageNo, pageSize, desc, sort));
-        map.put("pageNo", pageNo);
-        map.put("pageSize", pageSize);
-        map.put("desc", desc);
-        map.put("sort", sort);
+        Map<String, Object> map = mapPreparation(pageNo, pageSize, desc, sort, count);
         map.put("pageCount", count / pageSize);
-        map.put("elementsCount", count);
+        map.put("DTOList", getPage(pageNo, pageSize, desc, sort));
         return map;
+    }
+
+    @Override
+    public Map<String, Object> getMapAndPageWithDoctorsForReceptionist(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Role medic = roleRepository.findRoleByName(Roles.ROLE_MEDIC.getAuthority());
+        return receptionistPreparation(medic, pageNo, pageSize, desc, sort);
+    }
+
+    @Override
+    public Map<String, Object> getMapAndPageWithPatientsForReceptionist(Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Role patient = roleRepository.findRoleByName(Roles.ROLE_PATIENT.getAuthority());
+        return receptionistPreparation(patient, pageNo, pageSize, desc, sort);
     }
 
     @Override
@@ -216,7 +200,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getOneWithRoles(userFormDTO.getId());
         user.setPassword(bCryptPasswordEncoder.encode(userFormDTO.getPassword()));
         userRepository.save(user);
-
     }
 
     @Override
@@ -269,5 +252,23 @@ public class UserServiceImpl implements UserService {
 
     private Long countByRole(Role role) {
         return userRepository.countUsersByRoles(role);
+    }
+
+    private Map<String, Object> mapPreparation(Integer pageNo, Integer pageSize, Boolean desc, String sort, Long count) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageNo", pageNo);
+        map.put("pageSize", pageSize);
+        map.put("desc", desc);
+        map.put("sort", sort);
+        map.put("elementsCount", count);
+        return map;
+    }
+
+    private Map<String, Object> receptionistPreparation(Role role, Integer pageNo, Integer pageSize, Boolean desc, String sort) {
+        Role admin = roleRepository.findRoleByName(Roles.ROLE_ADMIN.getAuthority());
+        Page<User> page = userRepository.findByRolesContainsAndRolesNotContains(role, admin, getPageable(pageNo, pageSize, desc, sort));
+        Map<String, Object> map = mapPreparation(pageNo, pageSize, desc, sort, page.getTotalElements());
+        map.put("DTOList", userConverter.entitiesToDataDtoList(page.getContent()));
+        return map;
     }
 }

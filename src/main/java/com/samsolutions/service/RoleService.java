@@ -32,6 +32,8 @@ public interface RoleService{
     List<Role> findByIds(Long[] ids);
 
     List<RoleDataDTO> findAll();
-//
-//    List<Role> getByName(String name);
+
+    RoleDataDTO findByName(String name);
+
+    List<RoleDataDTO> findAllWithoutAdmin();
 }

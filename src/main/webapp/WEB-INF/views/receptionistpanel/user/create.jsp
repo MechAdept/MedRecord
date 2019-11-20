@@ -3,7 +3,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<c:url value="/adminpanel/user/create" var="create"/>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:url value="/receptionistpanel/user/create" var="create"/>
 
 <html>
 <head>
@@ -23,9 +24,9 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
-            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
-               aria-pressed="true"><spring:message code="button.roles"/></a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
+            <a href="<c:url value="/receptionistpanel/user/profile"/>" class="btn btn-info" role="button"
+               aria-pressed="true"><spring:message code="button.profile"/></a>
+            <a href="<c:url value="/receptionistpanel/user"/>" class="btn btn-success" role="button"
                aria-pressed="true"><spring:message code="button.users"/></a>
         </div>
         <div class="col-xs-3"></div>
@@ -40,7 +41,7 @@
                         code="button.logout"/></a>
             </div>
             <div class="row">
-                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_RECEPTIONIST')">
+                <sec:authorize access="hasAnyRole('ROLE_MEDIC','ROLE_PATIENT','ROLE_ADMIN')">
                     <a href="<c:url value="/welcome"/>"><spring:message code="button.changeRole"/></a>
                 </sec:authorize>
             </div>

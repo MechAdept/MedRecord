@@ -25,10 +25,14 @@
     <%--START OF HEADER--%>
     <div class="row">
         <div class="col-xs-6">
-            <a href="<c:url value="/adminpanel/role"/>" class="btn btn-info" role="button"
-               aria-pressed="true"><spring:message code="button.roles"/></a>
-            <a href="<c:url value="/adminpanel/user"/>" class="btn btn-success" role="button"
-               aria-pressed="true"><spring:message code="button.users"/></a>
+            <a href="<c:url value="/receptionistpanel/user/profile"/>">
+                <button type="button" class="btn btn-success"><spring:message
+                        code="button.profile"/></button>
+            </a>
+            <a href="<c:url value="/receptionistpanel/user"/>">
+                <button type="button" class="btn btn-info ml-3"><spring:message
+                        code="button.users"/></button>
+            </a>
         </div>
         <div class="col-xs-3"></div>
         <div class="col-xs-3">
@@ -38,7 +42,7 @@
                 <a href="?lang=ru">RU</a>
             </div>
             <div class="row">
-                <a href="<c:url value="/logout"/>" type="button" class="btn btn-default"><spring:message
+                <a href="<c:url value="/logout"/>" type="button" class="btn btn-danger"><spring:message
                         code="button.logout"/></a>
             </div>
             <div class="row">
@@ -86,24 +90,8 @@
                 </div>
                 <div class="row">
                     <c:forEach items="${userDataDTO.roles}" var="role">
-                        <c:if test="${role.name == 'ROLE_PATIENT'}">
-                            <br>
-                            <a href="<c:url value="/adminpanel/user/details/${userDataDTO.id}/health"/>"
-                               class="btn btn-primary align-content-center" role="button"
-                               aria-pressed="true"><spring:message code="button.health"/></a>
-                            <a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/doctors"/>"
-                               class="btn btn-primary align-content-center" role="button"
-                               aria-pressed="true"><spring:message code="button.booking"/></a>
-                            <a href="<c:url value="/adminpanel/ticket/${userDataDTO.id}/list"/>"
-                               class="btn btn-primary align-content-center" role="button"
-                               aria-pressed="true"><spring:message code="button.tickets"/></a>
-                            <br>
-                        </c:if>
                         <c:if test="${role.name == 'ROLE_MEDIC'}">
-                            <a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/readSchedule"/>"
-                               class="btn btn-primary align-content-center" role="button"
-                               aria-pressed="true"><spring:message code="button.readSchedule"/></a>
-                            <a href="<c:url value="/adminpanel/schedule/${userDataDTO.id}/editSchedule"/>"
+                            <a href="<c:url value="/receptionistpanel/schedule/${userDataDTO.id}"/>"
                                class="btn btn-primary align-content-center" role="button"
                                aria-pressed="true"><spring:message code="button.editSchedule"/></a>
                             <br>
@@ -118,10 +106,10 @@
                     <h4><b><spring:message code="${role.name}"/></b></h4>
                 </c:forEach>
                 <br>
-                <a href="<c:url value="/adminpanel/user/edit/${userDataDTO.id}"/>"
+                <a href="<c:url value="/receptionistpanel/user/${userDataDTO.id}/update"/>"
                    class="btn btn-warning align-content-center" role="button"
                    aria-pressed="true"><spring:message code="button.edit"/></a>
-                <a href="<c:url value="/adminpanel/user/delete/${userDataDTO.id}"/>"
+                <a href="<c:url value="/receptionistpanel/user/${userDataDTO.id}/delete"/>"
                    class="btn btn-danger align-content-center" role="button"
                    aria-pressed="true"><spring:message code="button.delete"/></a>
             </div>
