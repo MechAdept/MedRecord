@@ -23,10 +23,10 @@ public class UserConverter implements DTOConverter<User, UserDataDTO, UserFormDT
     private static final Logger logger = LoggerFactory.getLogger(UserConverter.class);
 
     @Autowired
-    RoleConverter roleConverter;
+    private RoleConverter roleConverter;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
     @Override
     public UserDataDTO entityToDataDto(User source) {

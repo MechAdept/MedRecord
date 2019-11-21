@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MedicScheduleController {
 
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String scheduleDetails(Model model) {

@@ -19,13 +19,13 @@ import java.util.List;
 public class TicketConverter implements DTOConverter<Ticket, TicketDataDTO, TicketFormDTO> {
 
     @Autowired
-    UserConverter userConverter;
+    private UserConverter userConverter;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    VisitConverter visitConverter;
+    private VisitConverter visitConverter;
 
     private static final Logger logger = LoggerFactory.getLogger(TicketConverter.class);
 

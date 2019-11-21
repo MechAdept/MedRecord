@@ -27,25 +27,25 @@ import java.util.Date;
 public class ReceptionistUserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
     @Autowired
-    UserCreateValidator userCreateValidator;
+    private UserCreateValidator userCreateValidator;
 
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
 
     @Autowired
-    UserProfileValidator userProfileValidator;
+    private UserProfileValidator userProfileValidator;
 
     @Autowired
-    UserPasswordValidator userPasswordValidator;
+    private UserPasswordValidator userPasswordValidator;
 
     @Autowired
-    UserRolesValidator userRolesValidator;
+    private UserRolesValidator userRolesValidator;
 
     @RequestMapping(method = RequestMethod.GET)
     public String roleChoose() {

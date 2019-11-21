@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PatientScheduleController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/doctors")
     public String doctorSelect(Model model,

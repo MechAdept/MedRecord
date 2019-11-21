@@ -18,13 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AdminScheduleController {
 
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
 
     @Autowired
-    TicketService ticketService;
-
-    @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(value = "/{patientId}/doctors", method = RequestMethod.GET)
     public String doctorsForBooking(Model model, @PathVariable(name = "patientId") final Long patientId,

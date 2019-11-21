@@ -29,10 +29,10 @@ import java.time.format.DateTimeFormatter;
 public class AdminTicketController {
 
     @Autowired
-    TicketService ticketService;
+    private TicketService ticketService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(value = "/{patientId}/{doctorId}/current", method = RequestMethod.GET)
     public String current(@PathVariable(value = "patientId") Long patientId, @PathVariable(value = "doctorId") Long doctorId, Model model) {

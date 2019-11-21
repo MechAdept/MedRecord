@@ -21,10 +21,10 @@ import java.text.SimpleDateFormat;
 public class MedicUserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    UserPasswordValidator userPasswordValidator;
+    private UserPasswordValidator userPasswordValidator;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
     public String details(@PathVariable("userId") final Long userId, Model model) {

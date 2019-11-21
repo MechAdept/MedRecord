@@ -20,10 +20,10 @@ import java.text.SimpleDateFormat;
 public class PatientUserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    UserPasswordValidator userPasswordValidator;
+    private UserPasswordValidator userPasswordValidator;
 
     @RequestMapping(method = RequestMethod.GET, value = "/profile")
     public String profile(Model model) {

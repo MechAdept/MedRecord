@@ -19,10 +19,10 @@ import java.time.format.DateTimeFormatter;
 public class PatientVisitController {
 
     @Autowired
-    VisitService visitService;
+    private VisitService visitService;
 
     @Autowired
-    TicketService ticketService;
+    private TicketService ticketService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{ticketId}")
     public String details(@PathVariable("ticketId") final Long ticketId, Model model) {

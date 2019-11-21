@@ -22,10 +22,10 @@ import java.time.format.DateTimeFormatter;
 public class MedicVisitController {
 
     @Autowired
-    VisitService visitService;
+    private VisitService visitService;
 
     @Autowired
-    TicketService ticketService;
+    private TicketService ticketService;
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/{ticketId}")

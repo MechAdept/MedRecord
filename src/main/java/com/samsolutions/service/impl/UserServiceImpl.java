@@ -47,7 +47,7 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     @Value("${server.upload.path}")
-    String serverUploadPath;
+    private String serverUploadPath;
 
     @Autowired
     private UserRepository userRepository;
@@ -60,9 +60,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserConverter userConverter;
-
-    @Autowired
-    ScheduleRepository scheduleRepository;
 
     @Autowired
     @Qualifier("encoder")

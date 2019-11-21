@@ -13,10 +13,10 @@ import java.util.*;
 public class RoleConverter implements DTOConverter<Role, RoleDataDTO, RoleFormDTO> {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    UserConverter userConverter;
+    private UserConverter userConverter;
 
     @Override
     public RoleDataDTO entityToDataDto(final Role source) {

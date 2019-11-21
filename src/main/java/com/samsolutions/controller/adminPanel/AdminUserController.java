@@ -44,19 +44,19 @@ public class AdminUserController {
     private HealthService healthService;
 
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
 
     @Autowired
-    UserCreateValidator userCreateValidator;
+    private UserCreateValidator userCreateValidator;
 
     @Autowired
-    UserProfileValidator userProfileValidator;
+    private UserProfileValidator userProfileValidator;
 
     @Autowired
-    UserPasswordValidator userPasswordValidator;
+    private UserPasswordValidator userPasswordValidator;
 
     @Autowired
-    UserRolesValidator userRolesValidator;
+    private UserRolesValidator userRolesValidator;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute final UserFormDTO userFormDTO, Model model) {

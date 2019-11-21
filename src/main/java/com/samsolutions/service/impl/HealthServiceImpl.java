@@ -37,7 +37,7 @@ public class HealthServiceImpl implements HealthService {
     private UserService userService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
     public HealthDataDTO findById(final Long id) {

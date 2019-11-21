@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MedicHealthController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    HealthService healthService;
+    private HealthService healthService;
 
     @Autowired
-    HealthValidator healthValidator;
+    private HealthValidator healthValidator;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{patientId}")
     public String details(@PathVariable("patientId") final Long patientId, Model model) {

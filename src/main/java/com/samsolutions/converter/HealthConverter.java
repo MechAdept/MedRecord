@@ -5,26 +5,20 @@ import com.samsolutions.dto.form.HealthFormDTO;
 import com.samsolutions.entity.Health;
 import com.samsolutions.repository.HealthRepository;
 import com.samsolutions.repository.UserRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class HealthConverter implements DTOConverter<Health, HealthDataDTO, HealthFormDTO> {
 
     @Autowired
-    UserConverter userConverter;
+    private UserConverter userConverter;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    HealthRepository healthRepository;
+    private UserRepository userRepository;
 
     @Override
     public HealthDataDTO entityToDataDto(final Health source) {

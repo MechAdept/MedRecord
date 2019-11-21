@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ReceptionistScheduleController {
 
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{doctorId}")
     public String scheduleEdit(@PathVariable("doctorId") final Long doctorId, Model model) {

@@ -47,16 +47,13 @@ public class TicketServiceImpl implements TicketService {
     private TicketConverter ticketConverter;
 
     @Autowired
-    UserConverter userConverter;
+    private UserConverter userConverter;
 
     @Autowired
-    UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ScheduleRepository scheduleRepository;
+    private ScheduleRepository scheduleRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(TicketServiceImpl.class);
 

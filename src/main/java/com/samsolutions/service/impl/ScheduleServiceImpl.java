@@ -28,19 +28,19 @@ import java.util.*;
 public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
-    ScheduleRepository scheduleRepository;
+    private ScheduleRepository scheduleRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    TicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     @Autowired
-    ScheduleConverter scheduleConverter;
+    private ScheduleConverter scheduleConverter;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Override
     public List<ScheduleDataDTO> getDayByDateAndId(String date, Long id) {

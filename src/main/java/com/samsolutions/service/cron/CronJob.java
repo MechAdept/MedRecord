@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CronJob {
 
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
 
     @Scheduled(cron = "0 0 0-23 * * * ")
     public void blockSchedule() {

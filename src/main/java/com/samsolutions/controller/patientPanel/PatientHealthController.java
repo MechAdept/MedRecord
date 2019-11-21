@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class PatientHealthController {
 
     @Autowired
-    HealthService healthService;
+    private HealthService healthService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String details(Model model) {

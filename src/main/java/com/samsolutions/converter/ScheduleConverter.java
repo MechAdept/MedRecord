@@ -20,16 +20,16 @@ import java.util.List;
 public class ScheduleConverter implements DTOConverter<Schedule, ScheduleDataDTO, ScheduleFormDTO> {
 
     @Autowired
-    UserConverter userConverter;
+    private UserConverter userConverter;
 
     @Autowired
-    TicketConverter ticketConverter;
+    private TicketConverter ticketConverter;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    TicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduleConverter.class);
 

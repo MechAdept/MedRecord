@@ -15,10 +15,7 @@ import java.util.List;
 public class ScheduleRestController {
 
     @Autowired
-    ScheduleService scheduleService;
-
-    @Autowired
-    TicketService ticketService;
+    private ScheduleService scheduleService;
 
     @Secured("IS_AUTHENTICATED_FULLY")
     @GetMapping(value = "/schedule/{id}/{date}")

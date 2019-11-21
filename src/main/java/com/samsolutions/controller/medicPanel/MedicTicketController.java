@@ -20,10 +20,10 @@ import java.time.format.DateTimeFormatter;
 public class MedicTicketController {
 
     @Autowired
-    TicketService ticketService;
+    private TicketService ticketService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{ticketId}")
     public String details(@PathVariable("ticketId") final Long ticketId, Model model) {

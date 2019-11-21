@@ -21,10 +21,10 @@ import java.time.format.DateTimeFormatter;
 public class PatientTicketController {
 
     @Autowired
-    TicketService ticketService;
+    private TicketService ticketService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/tickets")
     public String list(Model model, @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
