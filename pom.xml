@@ -33,7 +33,7 @@
     <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
     <hibernate-entitymanager.version>5.4.2.Final</hibernate-entitymanager.version>
     <spring-data-jpa.version>1.0.2.RELEASE</spring-data-jpa.version>
-    <com.google.guava.version>27.1-jre</com.google.guava.version>
+    <com.google.guava.version>29.0-jre</com.google.guava.version>
     <hibernate.version>5.2.1.Final</hibernate.version>
     <c3p0.version>0.9.5.2</c3p0.version>
     <spring-orm.version>5.1.7.RELEASE</spring-orm.version>
